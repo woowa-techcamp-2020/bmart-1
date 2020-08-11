@@ -1,28 +1,31 @@
 {
   "name": "bmart-1",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
+    "@prisma/client": "^2.4.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.54",
     "@types/react": "^16.9.45",
     "@types/react-dom": "^16.9.8",
+    "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "dev": "npm run prisma:generate && npm-run-all --parallel dev:client dev:server",
+    "dev:client": "react-scripts start",
+    "build:client": "react-scripts build",
+    "test:client": "react-scripts test",
+    "eject:client": "react-scripts eject",
+    "dev:server": "env TS_NODE_PROJECT=src/server/tsconfig.json tsnd --no-notify --respawn --transpile-only -r tsconfig-paths/register src/server/main.ts",
+    "build:server": "ttsc --project src/server/tsconfig.json",
+    "prisma:introspect": "prisma introspect",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio --experimental"
   },
   "browserslist": {
     "production": [
@@ -37,8 +40,16 @@
     ]
   },
   "devDependencies": {
+    "@prisma/cli": "^2.4.1",
+    "@types/express": "^4.17.7",
+    "@types/node": "^12.12.54",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5"
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "ts-node-dev": "^1.0.0-pre.56",
+    "tsconfig-paths": "^3.9.0",
+    "ttypescript": "^1.5.10"
   }
 }

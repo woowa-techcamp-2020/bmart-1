@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cart {
+  userId    Int
+  productId Int
+  product   product @relation(fields: [productId], references: [id])
+  user      user    @relation(fields: [userId], references: [id])
+
+  @@id([userId, productId])
+  @@index([userId], name: "fkIdx_40")
+  @@index([productId], name: "fkIdx_43")
+}
+
+model jjim {
+  userId    Int
+  productId Int
+  product   product @relation(fields: [productId], references: [id])
+  user      user    @relation(fields: [userId], references: [id])
+
+  @@id([userId, productId])
+  @@index([userId], name: "fkIdx_33")
+  @@index([productId], name: "fkIdx_36")
+}
+
+model product {
+  id           Int      @default(autoincrement()) @id
+  name         String
+  defaultPrice Int
+  discount     Int
+  price        Int
+  category     String
+  img          String
+  createdAt    DateTime @default(now())
+  cart         cart[]
+  jjim         jjim[]
+
+  @@index([category], name: "category_index")
+  @@index([price], name: "price_index")
+}
+
+model user {
+  id        Int      @default(autoincrement()) @id
+  email     String   @unique
+  createdAt DateTime @default(now())
+  cart      cart[]
+  jjim      jjim[]
+}
