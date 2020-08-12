@@ -48,6 +48,7 @@
     "@typescript-eslint/parser": "^3.9.0",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "cross-env": "^7.0.2",
+    "csv-parser": "^2.3.3",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "npm-run-all": "^4.1.5",
