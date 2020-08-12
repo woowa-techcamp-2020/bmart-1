@@ -12,13 +12,13 @@
     "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "typescript": "^3.7.5"
+    "react-scripts": "^3.4.2",
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "dev": "npm run prisma:generate && npm-run-all --parallel dev:client dev:server",
     "build": "npm run build:client && npm run build:server",
-    "dev:client": "react-scripts start",
+    "dev:client": "cross-env PORT=4000 react-scripts start",
     "build:client": "react-scripts build",
     "test:client": "react-scripts test",
     "eject:client": "react-scripts eject",
@@ -43,8 +43,12 @@
   "devDependencies": {
     "@prisma/cli": "^2.4.1",
     "@types/express": "^4.17.7",
-    "@types/node": "^12.12.54",
+    "@types/node": "^14.0.27",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
     "@zerollup/ts-transform-paths": "^1.7.18",
+    "cross-env": "^7.0.2",
+    "csv-parser": "^2.3.3",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "npm-run-all": "^4.1.5",
