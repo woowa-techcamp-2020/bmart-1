@@ -24,8 +24,9 @@
     "eject:client": "react-scripts eject",
     "dev:server": "env TS_NODE_PROJECT=src/server/tsconfig.json tsnd --no-notify --respawn --transpile-only -r tsconfig-paths/register src/server/main.ts",
     "build:server": "ttsc --project src/server/tsconfig.json",
-    "prisma:introspect": "prisma introspect",
+    "prisma:introspect": "prisma introspect --experimental-reintrospection",
     "prisma:generate": "prisma generate",
+    "prisma:all": "npm run prisma:introspect && npm run prisma:generate",
     "prisma:studio": "prisma studio --experimental"
   },
   "browserslist": {
