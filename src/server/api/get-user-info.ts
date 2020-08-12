@@ -1,9 +1,9 @@
 import express from 'express'
-import { prisma } from './utils/prisma'
+import { prisma } from '../utils/prisma'
 
-const apiRouter = express.Router()
+const getUserInfoRouter = express.Router()
 
-apiRouter.get('/me', async (req, res) => {
+getUserInfoRouter.get('/me', async (req, res) => {
   const userId = req.auth?.userId
 
   const user = await prisma.user.findOne({
@@ -18,4 +18,4 @@ apiRouter.get('/me', async (req, res) => {
   res.json(user)
 })
 
-export { apiRouter }
+export { getUserInfoRouter }
