@@ -3,6 +3,7 @@ declare namespace Express {
     auth?: {
       userId: number
     }
+    authMessage: string
   }
 }
 
