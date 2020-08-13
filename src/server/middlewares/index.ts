@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { TokenExpiredError } from 'jsonwebtoken'
+import { ERROR_MSG } from '~/../constants'
 type DecodedData = {
   userId: number
 }
@@ -7,14 +8,14 @@ export function tokenVerifier() {
   return (req: Request, res: Response, next: NextFunction) => {
     const { token } = req
     try {
-      if (!token) throw new Error('토큰 정보가 존재하지 않습니다.')
+      if (!token) throw new Error(ERROR_MSG.NO_TOKEN)
       const { userId } = jwt.verify(token, process.env.TOKEN_SECRET) as DecodedData
       req.auth = {
         userId,
       }
     } catch (e) {
       if (e instanceof TokenExpiredError) {
-        req.authMessage = '만료된 토큰입니다.'
+        req.authMessage = ERROR_MSG.EXPIRED_TOKEN
         return
       }
       req.authMessage = e.message
