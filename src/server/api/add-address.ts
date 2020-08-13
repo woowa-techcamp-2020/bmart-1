@@ -5,14 +5,15 @@ const addAddressRouter = express.Router()
 
 export type AddAddressApiRequestData = {
   address1: string
-  address2: string
+  address2?: string
 }
 
 addAddressRouter.post(
   '/add-address',
   async (req: Request<{}, {}, AddAddressApiRequestData>, res) => {
     const userId = req.auth?.userId ?? 18
-    const { address1, address2 } = req.body
+    const address1 = req.body.address1.trim()
+    const address2 = req.body.address2?.trim()
 
     if (!address1) {
       res.sendStatus(500)
@@ -23,7 +24,7 @@ addAddressRouter.post(
       await prisma.address.create({
         data: {
           address1,
-          address2,
+          address2: address2 || null,
           user: {
             connect: {
               id: userId,
