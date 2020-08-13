@@ -3,14 +3,14 @@ import { prisma } from '../utils/prisma'
 
 const addAddressRouter = express.Router()
 
-export type AddAddressApiRequestData = {
+export type AddAddressApiRequestBody = {
   address1: string
   address2?: string
 }
 
 addAddressRouter.post(
   '/add-address',
-  async (req: Request<{}, {}, AddAddressApiRequestData>, res) => {
+  async (req: Request<{}, {}, AddAddressApiRequestBody>, res) => {
     const userId = req.auth?.userId ?? 18
     const address1 = req.body.address1.trim()
     const address2 = req.body.address2?.trim()
