@@ -8,17 +8,23 @@ deleteFromCartRouter.delete('/delete-from-cart', async (req, res) => {
 
   const productIds = req.body.productIds
 
-  for await (let productId of productIds) {
-    await prisma.cart.delete({
-      where: {
-        userId_productId: {
-          userId,
-          productId,
+  try {
+    for await (let productId of productIds) {
+      await prisma.cart.delete({
+        where: {
+          userId_productId: {
+            userId,
+            productId,
+          },
         },
-      },
-    })
+      })
+    }
+    res.json(true)
+  } catch (err) {
+    console.error(err)
+
+    res.sendStatus(500)
   }
-  res.json(true)
 })
 
 export { deleteFromCartRouter }
