@@ -1,10 +1,9 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Home from './components/Home'
-import Jjims from './components/Jjims'
-import Bmart from './components/Bmart'
-import SlideTabs from './components/SlideTabs'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Logo from './components/Logo'
+import SlideTabs from './components/SlideTabs'
+import Bmart from './pages/Bmart'
+import Jjims from './pages/Jjims'
 
 function App() {
   return (

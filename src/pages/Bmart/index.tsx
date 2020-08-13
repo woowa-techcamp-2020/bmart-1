@@ -1,8 +1,8 @@
 import React from 'react'
 import './style.scss'
-import Home from '../Home'
-import Sale from '../Sale'
-import Me from '../Me'
+import Sale from './Sale'
+import Home from './Home'
+import Me from './Me'
 
 export type BmartProps = unknown
 
