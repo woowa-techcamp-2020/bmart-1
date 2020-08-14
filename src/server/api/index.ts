@@ -15,18 +15,20 @@ import { toggleJjimRouter } from './toggle-jjim'
 
 const apiRouter = express.Router()
 
+apiRouter.use(getProductsByCategoryRouter)
+apiRouter.use(searchRouter)
+apiRouter.use(getProductsByTopicRouter)
+
 apiRouter.use(needToken())
-apiRouter.use('/api', getUserInfoRouter)
-apiRouter.use('/api', getJjimsRouter)
-apiRouter.use('/api', getProductsByTopicRouter)
-apiRouter.use('/api', addToCartRouter)
-apiRouter.use('/api', deleteAddressRouter)
-apiRouter.use('/api', addAddressRouter)
-apiRouter.use('/api', getProductsByCategoryRouter)
-apiRouter.use('/api', getProductsInCartRouter)
-apiRouter.use('/api', deleteFromCartRouter)
-apiRouter.use('/api', setDefaultAddressRouter)
-apiRouter.use('/api', searchRouter)
-apiRouter.use('/api', toggleJjimRouter)
+
+apiRouter.use(getUserInfoRouter)
+apiRouter.use(getJjimsRouter)
+apiRouter.use(addToCartRouter)
+apiRouter.use(deleteAddressRouter)
+apiRouter.use(addAddressRouter)
+apiRouter.use(getProductsInCartRouter)
+apiRouter.use(deleteFromCartRouter)
+apiRouter.use(setDefaultAddressRouter)
+apiRouter.use(toggleJjimRouter)
 
 export { apiRouter }
