@@ -7,43 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model address {
+model Address {
   id       Int     @default(autoincrement()) @id
   userId   Int?
   address1 String
   address2 String?
-  user     user?   @relation("address_userIdTouser", fields: [userId], references: [id])
-  users    user[]  @relation("addressTouser_defaultAddressId")
+  user     User?   @relation("Address_userIdToUser", fields: [userId], references: [id])
+  users    User[]  @relation("AddressToUser_defaultAddressId")
 
   @@index([userId], name: "address_user_id")
+  @@map("address")
 }
 
-model cart {
+model Cart {
   userId    Int
   productId Int
   quantity  Int      @default(1)
   addedAt   DateTime @default(now())
-  product   product  @relation(fields: [productId], references: [id])
-  user      user     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@id([userId, productId])
   @@index([userId], name: "fkIdx_40")
   @@index([productId], name: "fkIdx_43")
+  @@map("cart")
 }
 
-model jjim {
+model Jjim {
   userId    Int
   productId Int
   addedAt   DateTime @default(now())
-  product   product  @relation(fields: [productId], references: [id])
-  user      user     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@id([userId, productId])
   @@index([userId], name: "fkIdx_33")
   @@index([productId], name: "fkIdx_36")
+  @@map("jjim")
 }
 
-model product {
+model Product {
   id           Int      @default(autoincrement()) @id
   name         String   @default("")
   defaultPrice Int
@@ -52,24 +55,26 @@ model product {
   category     String
   img          String
   createdAt    DateTime @default(now())
-  carts        cart[]
-  jjims        jjim[]
+  carts        Cart[]
+  jjims        Jjim[]
 
   @@index([category], name: "category_index")
   @@index([price], name: "price_index")
+  @@map("product")
 }
 
-model user {
+model User {
   id               Int       @default(autoincrement()) @id
   name             String    @default("")
   phone            String    @default("")
   email            String    @unique
   createdAt        DateTime  @default(now())
   defaultAddressId Int?
-  defaultAddress   address?  @relation("addressTouser_defaultAddressId", fields: [defaultAddressId], references: [id])
-  addresses        address[] @relation("address_userIdTouser")
-  carts            cart[]
-  jjims            jjim[]
+  defaultAddress   Address?  @relation("AddressToUser_defaultAddressId", fields: [defaultAddressId], references: [id])
+  addresses        Address[] @relation("Address_userIdToUser")
+  carts            Cart[]
+  jjims            Jjim[]
 
   @@index([defaultAddressId], name: "user_address_id")
+  @@map("user")
 }
