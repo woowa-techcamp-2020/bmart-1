@@ -62,6 +62,8 @@ Generate TypeScript types of the introspected schema.
 npm run prisma:generate
 ```
 
+> You can run both scripts by run `prisma:all`
+
 ## License
 
 MIT 2020 © [agrajak](https://github.com/agrajak), [jenny](https://github.com/eunjung-jenny), [jhaemin](https://github.com/jhaemin)
