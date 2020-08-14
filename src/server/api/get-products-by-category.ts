@@ -1,6 +1,6 @@
 import express, { Request } from 'express'
 import { prisma } from '../utils/prisma'
-import { productOrderByInput } from '@prisma/client'
+import { ProductOrderByInput, Product } from '@prisma/client'
 
 const getProductsByCategoryRouter = express.Router()
 
@@ -10,6 +10,8 @@ export type GetProductsByCategoryApiRequestQuery = {
   sortBy?: string
   direction?: 'asc' | 'desc'
 }
+
+export type GetProductsByCategoryApiResponse = Product[]
 
 const amountOfPage = 30
 
@@ -23,7 +25,7 @@ getProductsByCategoryRouter.get(
         [sortBy || 'createdAt']: direction || 'desc',
       },
     } as {
-      orderBy: productOrderByInput | productOrderByInput[] | undefined
+      orderBy: ProductOrderByInput | ProductOrderByInput[] | undefined
     }
 
     const products = await prisma.product.findMany({
