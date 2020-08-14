@@ -3,5 +3,12 @@ declare namespace Express {
     auth?: {
       userId: number
     }
+    authMessage: string
+  }
+}
+
+declare namespace NodeJS {
+  interface ProcessEnv {
+    TOKEN_SECRET: string
   }
 }

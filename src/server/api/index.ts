@@ -1,4 +1,5 @@
 import express from 'express'
+import { needToken } from '~/middlewares'
 import { getUserInfoRouter } from './get-user-info'
 import { getProductsInCartRouter } from './get-products-in-cart'
 import { deleteFromCartRouter } from './delete-from-cart'
@@ -8,6 +9,7 @@ import { toggleJjimRouter } from './toggle-jjim'
 
 const apiRouter = express.Router()
 
+apiRouter.use(needToken())
 apiRouter.use('/api', getUserInfoRouter)
 apiRouter.use('/api', getProductsInCartRouter)
 apiRouter.use('/api', deleteFromCartRouter)
