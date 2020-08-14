@@ -49,11 +49,13 @@ model Jjim {
 model Product {
   id           Int      @default(autoincrement()) @id
   name         String   @default("")
+  description  String?
   defaultPrice Int
-  discount     Int
   price        Int
+  discount     Int      @default(0)
   category     String
-  img          String
+  imgV         String   @default("")
+  imgH         String   @default("")
   createdAt    DateTime @default(now())
   carts        Cart[]
   jjims        Jjim[]
