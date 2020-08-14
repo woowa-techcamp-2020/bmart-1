@@ -12,6 +12,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(bearerToken())
 app.use(tokenVerifier())
 
-app.use(apiRouter)
+app.use('/api', apiRouter)
 
 app.listen(port, () => console.log(`Listening on port ${port}`))
