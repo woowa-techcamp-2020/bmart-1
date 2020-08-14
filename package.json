@@ -31,7 +31,8 @@
     "prisma:introspect": "prisma introspect --experimental-reintrospection",
     "prisma:generate": "prisma generate",
     "prisma:all": "npm run prisma:introspect && npm run prisma:generate",
-    "prisma:studio": "prisma studio --experimental"
+    "prisma:studio": "prisma studio --experimental",
+    "typecheck": "tsc --project src/server/tsconfig.json --noEmit"
   },
   "browserslist": {
     "production": [
