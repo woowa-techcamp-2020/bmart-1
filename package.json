@@ -32,7 +32,8 @@
     "prisma:generate": "prisma generate",
     "prisma:all": "npm run prisma:introspect && npm run prisma:generate",
     "prisma:studio": "prisma studio --experimental",
-    "typecheck": "tsc --project src/server/tsconfig.json --noEmit"
+    "typecheck": "tsc --project src/server/tsconfig.json --noEmit",
+    "ts-node:server": "env TS_NODE_PROJECT=src/server/tsconfig.json npx ts-node -r tsconfig-paths/register"
   },
   "browserslist": {
     "production": [
