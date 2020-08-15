@@ -3,6 +3,7 @@ export const enum ERROR_MSG {
   EXPIRED_TOKEN = '만료된 토큰 정보 입니다.',
   BAD_REQUEST = '잘못된 요청 데이터 입니다.',
   INTERNAL_ERROR = '저희의 잘못입니다.',
+  NO_PRODUCT = '존재하지 않는 상품입니다.',
 }
 
 export const enum STATUS_CODE {
@@ -16,6 +17,7 @@ export const enum STATUS_CODE {
 
 export const enum CONSTRAINT {
   MAX_ADDRESS_LENGTH = 300,
+  MIN_QUANTITY = 1,
 }
 
 export const enum PAGINATION {
