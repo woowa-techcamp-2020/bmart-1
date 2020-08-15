@@ -1,6 +1,8 @@
-import express, { Request } from 'express'
+import express, { Request, Response } from 'express'
 import { prisma } from '../utils/prisma'
 import { ProductOrderByInput, Product } from '@prisma/client'
+import { ErrorResponse } from '~/types/res'
+import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 
 const getProductsByCategoryRouter = express.Router()
 
@@ -11,13 +13,16 @@ export type GetProductsByCategoryApiRequestQuery = {
   direction?: 'asc' | 'desc'
 }
 
-export type GetProductsByCategoryApiResponse = Product[]
+export type GetProductsByCategoryApiResponse = Product[] | ErrorResponse
 
 const amountOfPage = 30
 
 getProductsByCategoryRouter.get(
   '/products-by-category',
-  async (req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>, res) => {
+  async (
+    req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
+    res: Response<GetProductsByCategoryApiResponse>
+  ) => {
     const { category, page, sortBy, direction } = req.query
 
     const orderByOptions = {
@@ -28,16 +33,20 @@ getProductsByCategoryRouter.get(
       orderBy: ProductOrderByInput | ProductOrderByInput[] | undefined
     }
 
-    const products = await prisma.product.findMany({
-      where: {
-        category,
-      },
-      skip: ((page ?? 1) - 1) * amountOfPage,
-      take: amountOfPage,
-      ...orderByOptions,
-    })
+    try {
+      const products = await prisma.product.findMany({
+        where: {
+          category,
+        },
+        skip: ((page ?? 1) - 1) * amountOfPage,
+        take: amountOfPage,
+        ...orderByOptions,
+      })
 
-    res.json(products)
+      res.json(products)
+    } catch (err) {
+      res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
+    }
   }
 )
 

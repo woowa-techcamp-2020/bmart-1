@@ -1,5 +1,6 @@
 import express, { Request } from 'express'
 import { prisma } from '../utils/prisma'
+import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 
 const addAddressRouter = express.Router()
 
@@ -32,12 +33,11 @@ addAddressRouter.post(
           },
         },
       })
-    } catch (err) {
-      console.error(err)
-      res.sendStatus(500)
-    }
 
-    res.json(true)
+      res.sendStatus(STATUS_CODE.OK)
+    } catch (err) {
+      res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
+    }
   }
 )
 
