@@ -1,7 +1,16 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import { prisma } from '../utils/prisma'
+import { Product } from '@prisma/client'
+import { STATUS_CODE, ERROR_MSG } from '~/../constants'
+import { ErrorResponse } from '~/types/res'
 
 const searchRouter = express.Router()
+
+export type SearchApiRequestQuery = {
+  term: string
+}
+
+export type SearchApiResponse = Product[] | ErrorResponse
 
 function getInsertionCondition(field: string, term: string, index: number) {
   return `${field} LIKE '%${term.substring(0, index)}_${term.substring(index)}%'`
@@ -26,21 +35,20 @@ function getQueryCondition(field: string, term: string) {
   return conditions.join(' OR ')
 }
 
-searchRouter.get('/search', async (req, res) => {
-  const searchTerm = req.query.term as string
-  const queryCondition = getQueryCondition('name', searchTerm)
+searchRouter.get(
+  '/search',
+  async (req: Request<{}, {}, {}, SearchApiRequestQuery>, res: Response<SearchApiResponse>) => {
+    const { term } = req.query
+    const queryCondition = getQueryCondition('name', term)
 
-  try {
-    const result = await prisma.$queryRaw(`
-    SELECT * FROM product WHERE ${queryCondition}
-  `)
+    try {
+      const products = await prisma.$queryRaw(`SELECT * FROM product WHERE ${queryCondition}`)
 
-    res.json(result)
-  } catch (err) {
-    console.error(err)
-
-    res.sendStatus(500)
+      res.json(products)
+    } catch (err) {
+      res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
+    }
   }
-})
+)
 
 export { searchRouter }
