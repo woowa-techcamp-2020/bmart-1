@@ -1,10 +1,7 @@
 import { prisma } from '~/utils/prisma'
 
 const past = +new Date() - 1000 * 3600
-const ids: number[] = []
-for (let id = 2929; id <= 9528; id++) {
-  ids.push(id)
-}
+
 async function shuffle(id: number) {
   const t = past + 1000 * Math.random() * 3600
   await prisma.product.update({
@@ -20,9 +17,11 @@ async function shuffle(id: number) {
 }
 
 async function run() {
+  const ids = (await prisma.product.findMany()).map((x) => x.id)
   for (const id of ids) {
     await shuffle(id)
   }
+  prisma.$disconnect()
 }
 
 run()
