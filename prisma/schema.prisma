@@ -57,6 +57,7 @@ model Product {
   imgV         String   @default("")
   imgH         String   @default("")
   createdAt    DateTime @default(now())
+  subcategory  String
   carts        Cart[]
   jjims        Jjim[]
 
