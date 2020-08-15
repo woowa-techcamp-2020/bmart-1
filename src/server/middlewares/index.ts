@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { TokenExpiredError } from 'jsonwebtoken'
-import { ERROR_MSG } from '~/../constants'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { validationResult } from 'express-validator'
 type DecodedData = {
   userId: number
 }
@@ -32,5 +33,19 @@ export function needToken() {
       return
     }
     res.status(401).json({ message: req.authMessage }).end()
+  }
+}
+
+export function requestValidator() {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(STATUS_CODE.BAD_REQUEST).json({
+        message: `${ERROR_MSG.BAD_REQUEST} ${errors
+          .array()
+          .map(({ value, msg, param }) => `${msg} ${value} for ${param}`)}`,
+      })
+    }
+    next()
   }
 }
