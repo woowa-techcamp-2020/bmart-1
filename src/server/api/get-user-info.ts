@@ -6,9 +6,9 @@ import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 
 const getUserInfoRouter = express.Router()
 
-type UserFound = (User & { addresses: Address[] }) | null
+type FoundUser = (User & { addresses: Address[] }) | null
 
-export type GetUserInfoApiResponse = UserFound | ErrorResponse
+export type GetUserInfoApiResponse = FoundUser | ErrorResponse
 
 getUserInfoRouter.get('/me', async (req: Request, res: Response<GetUserInfoApiResponse>) => {
   const userId = req.auth?.userId
@@ -25,6 +25,8 @@ getUserInfoRouter.get('/me', async (req: Request, res: Response<GetUserInfoApiRe
 
     res.json(user)
   } catch (e) {
+    console.error(e)
+
     res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
   }
 })
