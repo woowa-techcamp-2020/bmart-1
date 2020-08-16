@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { body } from 'express-validator'
 import { requestValidator } from '~/middlewares'
-type DeleteAddressBody = {
+type DeleteAddressRequestBody = {
   addressId: number
 }
 
@@ -12,7 +12,7 @@ deleteAddressRouter.delete(
   '/delete-address',
   [body('addressId').exists()],
   requestValidator(),
-  async (req: Request<{}, {}, DeleteAddressBody>, res: Response) => {
+  async (req: Request<{}, {}, DeleteAddressRequestBody>, res: Response) => {
     const userId = req.auth?.userId
     const { addressId } = req.body
     try {
@@ -28,6 +28,7 @@ deleteAddressRouter.delete(
       await prisma.address.delete({ where: { id: addressId, userId: userId } })
       res.status(STATUS_CODE.OK)
     } catch (e) {
+      console.error(e)
       res.status(STATUS_CODE.BAD_REQUEST).send({ message: e.message })
     }
   }

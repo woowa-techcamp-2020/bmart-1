@@ -5,7 +5,7 @@ import { STATUS_CODE, ERROR_MSG, CONSTRAINT } from '~/../constants'
 import { requestValidator } from '~/middlewares'
 import { prisma } from '../utils/prisma'
 
-type AddToCartBodyRequest = {
+type AddToCartRequestBody = {
   productId: number
   quantity: number
 }
@@ -16,7 +16,7 @@ addToCartRouter.post(
   '/add-to-cart',
   [body('productId').isInt(), body('quantity').isInt({ min: CONSTRAINT.MIN_QUANTITY })],
   requestValidator(),
-  async (req: Request<{}, {}, AddToCartBodyRequest>, res: Response) => {
+  async (req: Request<{}, {}, AddToCartRequestBody>, res: Response) => {
     const userId = req.auth?.userId as number
     const { productId, quantity } = req.body
 
@@ -53,6 +53,7 @@ addToCartRouter.post(
       })
       res.status(STATUS_CODE.OK)
     } catch (e) {
+      console.error(e)
       res.status(STATUS_CODE.BAD_REQUEST).send({ message: e.message })
     }
   }
