@@ -15,7 +15,7 @@ export type GetProductsInCartResponse = ProductsInCart | ErrorResponse
 getProductsInCartRouter.get(
   '/products-in-cart',
   async (req: Request, res: Response<GetProductsInCartResponse>) => {
-    const userId = req.auth?.userId as number
+    const userId = req.auth?.userId
 
     try {
       const productsInCart = await prisma.cart.findMany({
@@ -24,7 +24,9 @@ getProductsInCartRouter.get(
       })
 
       res.json(productsInCart)
-    } catch (err) {
+    } catch (e) {
+      console.error(e)
+
       res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
     }
   }
