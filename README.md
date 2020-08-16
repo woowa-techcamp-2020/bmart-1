@@ -1,5 +1,10 @@
 <h1 align="center">⚡️ 𝑩 𝒎𝒂𝒓𝒕 ⚡</h1>
 
+## Resources
+
+- [Discussions](https://github.com/orgs/woowa-techcamp-2020/teams/bmart-team-one)
+- [Design](https://www.figma.com/file/MXVVUZmgoY4NPO2BO0nfLq/%EC%9A%B0%EC%95%84%ED%95%9C-%ED%85%8C%ED%81%AC%EC%BA%A0%ED%94%84?node-id=613%3A302)
+
 ## Configure environment variables
 
 ### Global
