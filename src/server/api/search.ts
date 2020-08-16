@@ -3,6 +3,8 @@ import { prisma } from '../utils/prisma'
 import { Product } from '@prisma/client'
 import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { ErrorResponse } from '~/types/res'
+import { query } from 'express-validator'
+import { requestValidator } from '~/middlewares'
 
 const searchRouter = express.Router()
 
@@ -37,15 +39,19 @@ function getQueryCondition(field: string, term: string) {
 
 searchRouter.get(
   '/search',
+  [query('term').notEmpty().isString()],
+  requestValidator(),
   async (req: Request<{}, {}, {}, SearchApiRequestQuery>, res: Response<SearchApiResponse>) => {
-    const { term } = req.query
+    const term = req.query.term.trim()
     const queryCondition = getQueryCondition('name', term)
 
     try {
       const products = await prisma.$queryRaw(`SELECT * FROM product WHERE ${queryCondition}`)
 
       res.json(products)
-    } catch (err) {
+    } catch (e) {
+      console.error(e)
+
       res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
     }
   }
