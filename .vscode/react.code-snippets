@@ -7,7 +7,7 @@
       "import React from 'react'",
       "import './style.scss'",
       "",
-      "export type $1Props = ${2:unknown}",
+      "export type $1Props = {$2}",
       "",
       "const ${1:Component}: React.FC<$1Props> = (${3:props}) => {",
       "  return <div className=\"$4\">$0</div>",
