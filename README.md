@@ -2,8 +2,9 @@
 
 ## Resources
 
-- [Discussions](https://github.com/orgs/woowa-techcamp-2020/teams/bmart-team-one)
-- [Design](https://www.figma.com/file/MXVVUZmgoY4NPO2BO0nfLq/%EC%9A%B0%EC%95%84%ED%95%9C-%ED%85%8C%ED%81%AC%EC%BA%A0%ED%94%84?node-id=613%3A302)
+- [🗒 Notes in Notion](https://www.notion.so/BMART-ad57078df0cf4dbf9558bcb170ac4aa1)
+- [💬 Discussions at GitHub](https://github.com/orgs/woowa-techcamp-2020/teams/bmart-team-one)
+- [🎨 Design in Figma](https://www.figma.com/file/MXVVUZmgoY4NPO2BO0nfLq/%EC%9A%B0%EC%95%84%ED%95%9C-%ED%85%8C%ED%81%AC%EC%BA%A0%ED%94%84?node-id=613%3A302)
 
 ## Configure environment variables
 
