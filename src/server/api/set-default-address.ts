@@ -1,6 +1,8 @@
-import express, { Request } from 'express'
+import express, { Request, Response } from 'express'
 import { prisma } from '../utils/prisma'
 import { STATUS_CODE, ERROR_MSG } from '~/../constants'
+import { body } from 'express-validator'
+import { requestValidator } from '~/middlewares'
 
 const setDefaultAddressRouter = express.Router()
 
@@ -10,11 +12,19 @@ export type SetDefaultAddressApiRequestBody = {
 
 setDefaultAddressRouter.patch(
   '/set-default-address',
-  async (req: Request<{}, {}, SetDefaultAddressApiRequestBody>, res) => {
+  [body('defaultAddressId').isInt(), requestValidator()],
+  async (req: Request<{}, {}, SetDefaultAddressApiRequestBody>, res: Response) => {
     const userId = req.auth?.userId
     const { defaultAddressId } = req.body
 
     try {
+      const selectedAddress = await prisma.address.findOne({
+        where: { id: defaultAddressId },
+      })
+
+      if (!selectedAddress) throw new Error(ERROR_MSG.NO_ADDRESS)
+      if (selectedAddress.userId !== userId) throw new Error(ERROR_MSG.NOT_YOUR_ADDRESS)
+
       await prisma.user.update({
         where: {
           id: userId,
@@ -29,10 +39,10 @@ setDefaultAddressRouter.patch(
       })
 
       res.sendStatus(STATUS_CODE.OK)
-    } catch (err) {
-      console.error(err)
+    } catch (e) {
+      console.error(e)
 
-      res.status(STATUS_CODE.INTERNAL_ERROR).send(ERROR_MSG.INTERNAL_ERROR)
+      res.status(STATUS_CODE.BAD_REQUEST).send(e.message)
     }
   }
 )
