@@ -1,4 +1,5 @@
 .heart-icon {
+  display: inline-block;
   background-image: url('../../assets/images/heart.svg');
   background-position: center;
   background-size: contain;
@@ -10,11 +11,11 @@
     background-image: url('../../assets/images/attached-heart.svg');
   }
   &.small {
-    width: 55px;
-    height: 55px;
+    width: 25px;
+    height: 25px;
   }
   &.big {
-    width: 82px;
-    height: 82px;
+    width: 52px;
+    height: 52px;
   }
 }
