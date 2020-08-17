@@ -58,3 +58,12 @@ export const CATEGORIES = [
   '지속가능한 상품',
   '채소',
 ] as const
+
+export const SORT_BY_TYPES = [
+  '기본 정렬',
+  '인기 상품순',
+  '금액 낮은순',
+  '금액 높은순',
+  '신규 상품순',
+  '할인율 순',
+] as const
