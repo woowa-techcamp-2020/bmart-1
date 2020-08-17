@@ -3,6 +3,8 @@ import { prisma } from '../utils/prisma'
 import { ProductOrderByInput, Product } from '@prisma/client'
 import { ErrorResponse } from '~/types/res'
 import { STATUS_CODE, ERROR_MSG } from '~/../constants'
+import { query } from 'express-validator'
+import { requestValidator } from '~/middlewares'
 
 const getProductsByCategoryRouter = express.Router()
 
@@ -19,6 +21,13 @@ const amountOfPage = 30
 
 getProductsByCategoryRouter.get(
   '/products-by-category',
+  [
+    query('category').exists({ checkFalsy: true }),
+    query('page').optional().isInt(),
+    query('sortBy').optional().isString(),
+    query('direction').optional().isString(),
+    requestValidator(),
+  ],
   async (
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
@@ -44,8 +53,10 @@ getProductsByCategoryRouter.get(
       })
 
       res.json(products)
-    } catch (err) {
-      res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
+    } catch (e) {
+      console.log(e)
+
+      res.status(STATUS_CODE.BAD_REQUEST).send({ message: ERROR_MSG.INTERNAL_ERROR })
     }
   }
 )
