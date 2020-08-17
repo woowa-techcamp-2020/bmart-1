@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getSubCategories } from 'src/apis'
-import { CategoryDetailsProps } from '..'
+import { CategoryDetailsProps, SubCategoryContext } from '..'
 import './style.scss'
 
 export type SubCategorySelectorProps = CategoryDetailsProps
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({ category = '채소' }) => {
   const [subCategories, setSubCategories] = useState([])
-  const [subCategory, setSubCategory] = useState(null)
+  const { subCategory, setSubCategory } = useContext(SubCategoryContext)
 
   useEffect(() => {
     loadSubCategories(category)
@@ -26,7 +26,9 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({ category = '�
         <span
           key={x}
           className={x === subCategory ? 'active' : null}
-          onClick={() => setSubCategory(x)}
+          onClick={() => {
+            return setSubCategory(x)
+          }}
         >
           {x}&nbsp;
         </span>

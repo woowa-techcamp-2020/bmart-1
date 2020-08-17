@@ -1,5 +1,10 @@
 .sub-category-selector {
+  font-family: PAYW Pro;
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 600;
+  font-style: normal;
   :not(.active) {
-    opacity: 0.35;
+    color: #cccccc;
   }
 }
