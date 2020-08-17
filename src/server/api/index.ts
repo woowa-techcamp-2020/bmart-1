@@ -12,12 +12,15 @@ import { deleteFromCartRouter } from './delete-from-cart'
 import { setDefaultAddressRouter } from './set-default-address'
 import { searchRouter } from './search'
 import { toggleJjimRouter } from './toggle-jjim'
+import { getSubCategoriesRouter } from './get-sub-categories'
 
 const apiRouter = express.Router()
 
 apiRouter.use(getProductsByCategoryRouter)
-apiRouter.use(searchRouter)
 apiRouter.use(getProductsByTopicRouter)
+apiRouter.use(getSubCategoriesRouter)
+
+apiRouter.use(searchRouter)
 
 apiRouter.use(needToken())
 
