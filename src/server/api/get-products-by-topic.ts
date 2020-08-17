@@ -7,10 +7,12 @@ type GetProductsByTopicRequestQuery = {
 }
 
 const getProductsByTopicRouter = express.Router()
+
 getProductsByTopicRouter.get(
   '/products-by-topic',
   async (req: Request<{}, GetProductsByTopicRequestQuery>, res: Response) => {
     const topic = req.query.topic
+
     try {
       switch (topic) {
         case 'new':
@@ -20,12 +22,16 @@ getProductsByTopicRouter.get(
               createdAt: 'desc',
             },
           })
+
           return res.send(newProducts).end()
+
         case 'now':
           const nowProducts = await prisma.$queryRaw(
             `SELECT * from product order by rand() limit ${PAGINATION.PRODUCTS_NUM_IN_NOW}`
           )
+
           return res.send(nowProducts)
+
         default:
           return res.status(STATUS_CODE.BAD_REQUEST).send({ message: ERROR_MSG.INVALID_TOPIC })
       }

@@ -1,8 +1,26 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: ['react-app', '', 'plugin:prettier/recommended'],
+  extends: ['react-app', 'plugin:prettier/recommended'],
   plugins: ['@typescript-eslint'],
   rules: {
     'react-hooks/exhaustive-deps': [0],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: ['const', 'let', 'var', 'function'], next: '*' },
+      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+      { blankLine: 'always', prev: 'import', next: '*' },
+      { blankLine: 'any', prev: 'import', next: 'import' },
+      { blankLine: 'always', prev: 'directive', next: '*' },
+      { blankLine: 'any', prev: 'directive', next: 'directive' },
+      { blankLine: 'always', prev: ['case', 'default'], next: '*' },
+      { blankLine: 'always', prev: 'if', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'if' },
+      { blankLine: 'always', prev: 'block-like', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'export' },
+      { blankLine: 'any', prev: 'export', next: 'export' },
+      { blankLine: 'always', prev: 'block-like', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'block-like' },
+    ],
   },
 }

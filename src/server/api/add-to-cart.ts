@@ -26,6 +26,7 @@ addToCartRouter.post(
           id: productId,
         },
       })
+
       if (!product) throw new Error(ERROR_MSG.NO_PRODUCT)
 
       const query: CartCreateInput | CartUpdateInput = {
@@ -41,6 +42,7 @@ addToCartRouter.post(
         },
         quantity,
       }
+
       await prisma.cart.upsert({
         create: query as CartCreateInput,
         update: query as CartUpdateInput,

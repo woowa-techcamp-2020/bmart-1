@@ -23,6 +23,7 @@ setDefaultAddressRouter.patch(
       })
 
       if (!selectedAddress) throw new Error(ERROR_MSG.NO_ADDRESS)
+
       if (selectedAddress.userId !== userId) throw new Error(ERROR_MSG.NOT_YOUR_ADDRESS)
 
       await prisma.user.update({

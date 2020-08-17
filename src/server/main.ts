@@ -3,6 +3,7 @@ import { apiRouter } from './api'
 import bearerToken from 'express-bearer-token'
 import { tokenVerifier } from './middlewares'
 import dotenv from 'dotenv'
+
 const app = express()
 const port = 3000
 

@@ -15,12 +15,15 @@ function loadToken(): string {
 
 function addToken() {
   const token = loadToken()
+
   if (!token) return null
+
   return { Authorization: `Bearer ${token}` }
 }
 
 function addBody(body) {
   if (body === undefined) return null
+
   return {
     body: JSON.stringify(body),
   }
@@ -40,11 +43,14 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
 async function request(url, method) {
   try {
     const response = await fetch(url, defaultOptions(method))
+
     if (!response.ok) {
       console.error(response.status)
       throw new Error(ERROR_MSG.BAD_REQUEST)
     }
+
     const result = await response.json()
+
     return result
   } catch (e) {
     console.error(e)

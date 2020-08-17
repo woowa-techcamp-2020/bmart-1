@@ -28,12 +28,16 @@ function getSubstitutionCondition(field: string, term: string, index: number) {
 
 function getQueryCondition(field: string, term: string) {
   const conditions: Array<string> = []
+
   for (let i = 0; i <= term.length; i++) {
     conditions.push(getDeletionCondition(field, term, i))
+
     if (i === term.length) continue
+
     conditions.push(getInsertionCondition(field, term, i))
     conditions.push(getSubstitutionCondition(field, term, i))
   }
+
   return conditions.join(' OR ')
 }
 

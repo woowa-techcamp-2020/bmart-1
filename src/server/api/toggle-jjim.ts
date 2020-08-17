@@ -20,6 +20,7 @@ toggleJjimRouter.put(
 
     try {
       const product = await prisma.product.findOne({ where: { id: productId } })
+
       if (!product) throw new Error(ERROR_MSG.NO_PRODUCT)
 
       const jjim = await prisma.jjim.findOne({ where: { userId_productId: { userId, productId } } })
