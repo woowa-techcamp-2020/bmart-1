@@ -61,3 +61,7 @@ async function request(url, method) {
 export async function getJjims() {
   return await request('/jjims', 'GET')
 }
+
+export async function getSubCategories(category: string) {
+  return await request('/sub-categories', 'GET')
+}

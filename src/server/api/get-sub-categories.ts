@@ -9,7 +9,7 @@ const getSubCategoriesRouter = express.Router()
 export type GetSubCategoriesApiResponse = string[] | ErrorResponse
 
 getSubCategoriesRouter.get(
-  '/get-sub-categories',
+  '/sub-categories',
   [query('category').exists()],
   async (req: Request, res: Response<GetSubCategoriesApiResponse>) => {
     const category = req.query.category
