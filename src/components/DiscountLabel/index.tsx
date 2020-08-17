@@ -1,15 +1,17 @@
 import React from 'react'
 import './style.scss'
 
+export type DiscountLabelPropsSize = 'small' | 'big'
+
 export type DiscountLabelProps = {
-  size: string
-  discountPercentage: number
+  size: DiscountLabelPropsSize
+  discount: number
 }
 
-const DiscountLabel: React.FC<DiscountLabelProps> = ({ size, discountPercentage }) => {
+const DiscountLabel: React.FC<DiscountLabelProps> = ({ size = 'small', discount = 0 }) => {
   return (
     <div className={`discount-label ${size}`}>
-      <span className="discount-percentage">{discountPercentage}%</span>
+      <span className="discount-percentage">{discount}%</span>
     </div>
   )
 }
