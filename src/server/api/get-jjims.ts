@@ -22,6 +22,7 @@ getJjimsRouter.get('/jjims', async (req: Request, res: Response<GetJjimsApiRespo
 
     res.send(jjimsByUser)
   } catch (e) {
+    console.error(e)
     res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
   }
 })
