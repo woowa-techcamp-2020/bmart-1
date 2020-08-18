@@ -1,16 +1,9 @@
 import express, { Request, Response } from 'express'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { GetProductsInCartResponse } from '~/../types/api'
 import { prisma } from '../utils/prisma'
-import { Product, Cart } from '@prisma/client'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
-import { ErrorResponse } from '~/types/res'
 
 const getProductsInCartRouter = express.Router()
-
-type ProductsInCart = (Cart & {
-  product: Product
-})[]
-
-export type GetProductsInCartResponse = ProductsInCart | ErrorResponse
 
 getProductsInCartRouter.get(
   '/products-in-cart',

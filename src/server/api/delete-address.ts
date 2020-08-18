@@ -1,12 +1,9 @@
-import { prisma } from '../utils/prisma'
 import express, { Request, Response } from 'express'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { body } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { DeleteAddressRequestBody } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
-
-type DeleteAddressRequestBody = {
-  addressId: number
-}
+import { prisma } from '../utils/prisma'
 
 const deleteAddressRouter = express.Router()
 

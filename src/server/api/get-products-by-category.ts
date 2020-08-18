@@ -1,21 +1,15 @@
+import { ProductOrderByInput } from '@prisma/client'
 import express, { Request, Response } from 'express'
-import { prisma } from '../utils/prisma'
-import { ProductOrderByInput, Product } from '@prisma/client'
-import { ErrorResponse } from '~/types/res'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { query } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import {
+  GetProductsByCategoryApiRequestQuery,
+  GetProductsByCategoryApiResponse,
+} from '~/../types/api'
 import { requestValidator } from '~/middlewares'
+import { prisma } from '../utils/prisma'
 
 const getProductsByCategoryRouter = express.Router()
-
-export type GetProductsByCategoryApiRequestQuery = {
-  category: string
-  page?: number
-  sortBy?: string
-  direction?: 'asc' | 'desc'
-}
-
-export type GetProductsByCategoryApiResponse = Product[] | ErrorResponse
 
 const amountOfPage = 30
 

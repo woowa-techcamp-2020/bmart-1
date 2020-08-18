@@ -1,14 +1,9 @@
 import express, { Request, Response } from 'express'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { GetUserInfoApiResponse } from '~/../types/api'
 import { prisma } from '../utils/prisma'
-import { Address, User } from '@prisma/client'
-import { ErrorResponse } from '~/types/res'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 
 const getUserInfoRouter = express.Router()
-
-type FoundUser = (User & { addresses: Address[] }) | null
-
-export type GetUserInfoApiResponse = FoundUser | ErrorResponse
 
 getUserInfoRouter.get('/me', async (req: Request, res: Response<GetUserInfoApiResponse>) => {
   const userId = req.auth?.userId

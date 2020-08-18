@@ -1,10 +1,7 @@
 import express, { Request, Response } from 'express'
+import { ERROR_MSG, PAGINATION, STATUS_CODE } from '~/../constants'
+import { GetProductsByTopicRequestQuery } from '~/../types/api'
 import { prisma } from '~/utils/prisma'
-import { ERROR_MSG, STATUS_CODE, PAGINATION } from '~/../constants'
-
-type GetProductsByTopicRequestQuery = {
-  topic: string
-}
 
 const getProductsByTopicRouter = express.Router()
 

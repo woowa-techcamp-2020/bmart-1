@@ -1,14 +1,11 @@
 import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
 import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { ToggleJjimRequestBody } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
 import { prisma } from '../utils/prisma'
 
 const toggleJjimRouter = express.Router()
-
-export type ToggleJjimRequestBody = {
-  productId: number
-}
 
 toggleJjimRouter.put(
   '/jjim',
