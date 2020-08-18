@@ -9,52 +9,29 @@ export type CategoryDetailsProps = {
   category: CategoryType
 }
 
-export const CategoryContext = createContext<{
-  category: CategoryType
-  setCategory: DispatchByType<CategoryType>
-}>(undefined)
-
-export const SubCategoryContext = createContext<{
+export const CategoryDetailsContext = createContext<{
   subCategory: string
-  setSubCategory: DispatchByType<string>
-}>(undefined)
-
-export const SortByContext = createContext<{
   sortBy: SortByType
+  setSubCategory: DispatchByType<string>
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
 
-export const CategoryContextProvider: React.FC = ({ children }) => {
-  const [category, setCategory] = useState<CategoryType>('채소')
-
-  return (
-    <CategoryContext.Provider value={{ category, setCategory }}>
-      {children}
-    </CategoryContext.Provider>
-  )
-}
-
-export const SubCategoryContextProvider: React.FC = ({ children }) => {
-  const [subCategory, setSubCategory] = useState<string>('')
-
-  return (
-    <SubCategoryContext.Provider value={{ subCategory, setSubCategory }}>
-      {children}
-    </SubCategoryContext.Provider>
-  )
-}
-
-export const SortByContextProvider: React.FC = ({ children }) => {
+export const CategoryDetailsContextProvider: React.FC = ({ children }) => {
+  const [subCategory, setSubCategory] = useState<CategoryType>('채소')
   const [sortBy, setSortBy] = useState<SortByType>('기본 정렬')
 
-  return <SortByContext.Provider value={{ sortBy, setSortBy }}>{children}</SortByContext.Provider>
+  return (
+    <CategoryDetailsContext.Provider value={{ subCategory, setSubCategory, sortBy, setSortBy }}>
+      {children}
+    </CategoryDetailsContext.Provider>
+  )
 }
 
 export const CombineProvider = (...Providers: React.FC[]) => (App: React.FC) =>
   Providers.reduce((acc, Provider) => <Provider>{acc}</Provider>, <App />)
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }) => {
-  const { subCategory } = useContext(SubCategoryContext)
+  const { subCategory } = useContext(CategoryDetailsContext)
 
   return (
     <div className="category-details">
@@ -65,12 +42,10 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }
   )
 }
 
-const Component: React.FC<CategoryDetailsProps> = () => {
-  return CombineProvider(
-    CategoryContextProvider,
-    SubCategoryContextProvider,
-    SortByContextProvider
-  )(CategoryDetails)
+export default (props: CategoryDetailsProps) => {
+  return (
+    <CategoryDetailsContextProvider>
+      <CategoryDetails {...props}></CategoryDetails>
+    </CategoryDetailsContextProvider>
+  )
 }
-
-export default Component
