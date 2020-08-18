@@ -1,0 +1,43 @@
+.carousel-dots {
+  width: 100%;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .dots-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    // background-color: var(--element-fill);
+    // padding: 5px 9px;
+    // border-radius: 9999px;
+    // transition: transform 100ms ease;
+
+    &.traveling {
+      transform: scale(1.5);
+    }
+
+    .dot {
+      $dot-color: #b0b0b0;
+      $dot-size: 3px;
+      width: $dot-size;
+      height: $dot-size;
+      background-color: $dot-color;
+      border-radius: 9999px;
+      margin-right: 11px;
+      transition: background-color 200ms ease, box-shadow 200ms ease;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.current {
+        box-shadow: 0 0 0 1px var(--distinct-surface);
+        background-color: var(--distinct-surface);
+        background-color: var(--distinct-surface);
+      }
+    }
+  }
+}
