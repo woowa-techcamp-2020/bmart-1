@@ -50,11 +50,7 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
   ...addBody(body),
 })
 
-async function request(
-  url: string,
-  method: Method,
-  body?: Record<string, unknown>
-): Promise<any> {
+async function request(url: string, method: Method, body?: Record<string, unknown>): Promise<any> {
   try {
     const response = await fetch(`/api${url}`, defaultOptions(method, body))
 
@@ -72,13 +68,14 @@ async function request(
   }
 }
 
-export async function getJjims():Promise<GetJjimsApiResponse> {
+export async function getJjims(): Promise<GetJjimsApiResponse> {
   return await request('/jjims', 'GET')
 }
 
 export async function toggleJjim(body: ToggleJjimRequestBody) {
   return await request('/jjim', 'PUT', body)
-  
+}
+
 export async function getSubCategories(category: string) {
   return await request(`/sub-categories${createQuery({ category })}`, 'GET')
 }
