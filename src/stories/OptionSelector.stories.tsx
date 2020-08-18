@@ -13,7 +13,7 @@ export default {
   },
   argTypes: {
     optionIdx: {
-      control: { type: 'range', min: 0, max: SORT_BY_TYPES.length, step: 1 },
+      control: { type: 'range', min: 0, max: SORT_BY_TYPES.length - 1, step: 1 },
     },
   },
 } as Meta
