@@ -1,4 +1,5 @@
-import React, { RefObject, useEffect, useRef } from 'react'
+import React, { createContext, RefObject, useEffect, useRef } from 'react'
+import { DispatchByType } from 'src/pages/CategoryDetails'
 import './style.scss'
 
 export type DrawerProps = {
@@ -23,6 +24,11 @@ function moveRef(
   ref.current.style.bottom = `-${position}px`
   ref.current.style.transitionDuration = smooth ? '0.5s' : null
 }
+
+export const DrawerContext = createContext<{
+  isOpened: boolean
+  setOpened: DispatchByType<boolean>
+}>(undefined)
 
 const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened }) => {
   const bodyRef = useRef<HTMLDivElement>()
@@ -63,7 +69,9 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
           <div className="holder">
             <div className="handle" />
           </div>
-          {children}
+          <DrawerContext.Provider value={{ isOpened, setOpened }}>
+            {children}
+          </DrawerContext.Provider>
         </div>
       </div>
     </>
