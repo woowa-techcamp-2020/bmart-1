@@ -60,3 +60,5 @@ export type SetDefaultAddressApiRequestBody = {
 export type ToggleJjimRequestBody = {
   productId: number
 }
+
+export type GetSubCategoriesApiResponse = string[] | ErrorResponse
