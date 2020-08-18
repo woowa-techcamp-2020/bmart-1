@@ -22,6 +22,15 @@ function addToken() {
   return { Authorization: `Bearer ${token}` }
 }
 
+const createQuery = (data: Record<string, string>): string => {
+  return data
+    ? '?' +
+        Object.keys(data)
+          .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+          .join('&')
+    : ''
+}
+
 function addBody(body) {
   if (body === undefined) return null
 
@@ -45,7 +54,7 @@ async function request(
   url: string,
   method: Method,
   body?: Record<string, unknown>
-): Promise<unknown> {
+): Promise<any> {
   try {
     const response = await fetch(`/api${url}`, defaultOptions(method, body))
 
@@ -63,10 +72,13 @@ async function request(
   }
 }
 
-export async function getJjims(): Promise<GetJjimsApiResponse> {
+export async function getJjims():Promise<GetJjimsApiResponse> {
   return await request('/jjims', 'GET')
 }
 
 export async function toggleJjim(body: ToggleJjimRequestBody) {
   return await request('/jjim', 'PUT', body)
+  
+export async function getSubCategories(category: string) {
+  return await request(`/sub-categories${createQuery({ category })}`, 'GET')
 }
