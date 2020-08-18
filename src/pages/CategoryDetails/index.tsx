@@ -47,9 +47,16 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }
 
   return (
     <div className="category-details">
-      <div className="title">{category}</div>
+      <div className="title">
+        {category}
+        <div className="title-icon" />
+      </div>
       <SubCategorySelector category={category} />
-      <div className="sort-by">{SORT_BY_TYPES[optionIdx]}</div>
+      <div className="sort-by">
+        <div className="sort-by-icon"></div>
+        {SORT_BY_TYPES[optionIdx]}
+      </div>
+
       <OptionSelector
         options={SORT_BY_TYPES.slice()}
         optionIdx={optionIdx}
