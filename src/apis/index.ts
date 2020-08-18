@@ -21,6 +21,15 @@ function addToken() {
   return { Authorization: `Bearer ${token}` }
 }
 
+const createQuery = (data: Record<string, string>): string => {
+  return data
+    ? '?' +
+        Object.keys(data)
+          .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+          .join('&')
+    : ''
+}
+
 function addBody(body) {
   if (body === undefined) return null
 
@@ -42,7 +51,7 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
 
 async function request(url, method) {
   try {
-    const response = await fetch(url, defaultOptions(method))
+    const response = await fetch('/api/' + url, defaultOptions(method))
 
     if (!response.ok) {
       console.error(response.status)
@@ -60,4 +69,8 @@ async function request(url, method) {
 
 export async function getJjims() {
   return await request('/jjims', 'GET')
+}
+
+export async function getSubCategories(category: string) {
+  return await request(`/sub-categories${createQuery({ category })}`, 'GET')
 }
