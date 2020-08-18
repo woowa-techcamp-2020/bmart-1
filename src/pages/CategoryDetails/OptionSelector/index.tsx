@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import { DrawerContext } from 'src/components/Drawer'
 import './style.scss'
 
 export type OptionSelectorProps = {
@@ -8,6 +9,13 @@ export type OptionSelectorProps = {
 }
 
 export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorProps) => {
+  const drawerContext = useContext(DrawerContext)
+  const [toggle, setToggle] = useState(false)
+
+  function selectItem(idx) {
+    setOptionIdx && setOptionIdx(idx)
+  }
+
   return (
     <div className="option-selector">
       {options.length === 0 && <div>표시할 옵션이 없습니다.</div>}
@@ -16,7 +24,12 @@ export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorPro
           <li
             key={x}
             className={idx === optionIdx ? 'active' : null}
-            onClick={() => setOptionIdx && setOptionIdx(idx)}
+            onPointerDown={() => setToggle(true)}
+            onPointerEnter={() => toggle && selectItem(idx)}
+            onPointerUp={() => {
+              setToggle(false)
+              drawerContext && drawerContext.setOpened(false)
+            }}
           >
             {x}
           </li>
