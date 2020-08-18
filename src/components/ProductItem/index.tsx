@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/DiscountLabel'
 import HeartIcon from 'src/components/HeartIcon'
+import { CONSTRAINT } from 'src/constants'
 import './style.scss'
 
 export type ProductItemProps = {
@@ -14,7 +16,7 @@ export type ProductItemProps = {
 }
 
 const mockData = {
-  id: 1,
+  id: 9529,
   name: '[KF365] 애호박 1개',
   defaultPrice: 4800,
   price: 4580,
@@ -23,18 +25,52 @@ const mockData = {
   isJjimmed: true,
 }
 
+let timer
+let isLongPress = false
+
+// TODO: scroll & pointermove conflict 해결
 const ProductItem: React.FC<ProductItemProps> = (props) => {
+  const [isJjimmed, setIsJjimmed] = useState(mockData.isJjimmed)
+
+  const productItem = useRef<HTMLDivElement>()
+
+  useEffect(() => {
+    const { current: productItemElem } = productItem
+
+    productItemElem.addEventListener('pointerdown', () => {
+      timer = setTimeout(async () => {
+        await toggleJjim({ productId: mockData.id })
+        setIsJjimmed((previousState) => {
+          return !previousState
+        })
+        isLongPress = true
+      }, CONSTRAINT.LONG_PRESS_DURATION)
+    })
+    productItemElem.addEventListener('pointerup', () => {
+      if (isLongPress) {
+        isLongPress = false
+      } else {
+        // TODO: 상품 디테일 페이지로
+      }
+
+      clearTimeout(timer)
+    })
+
+    return clearTimeout(timer)
+  }, [])
+
   return (
     <div
+      ref={productItem}
       className="product-item"
       style={{
         backgroundImage: `url(${mockData.imgV})`,
       }}
     >
-      {mockData.isJjimmed ? <HeartIcon size="small" isBroken={false} isAttached={true} /> : ''}
+      {isJjimmed ? <HeartIcon size="small" isBroken={false} isAttached={true} /> : ''}
       {mockData.discount ? <DiscountLabel size="small" discount={mockData.discount} /> : ''}
       <div className="product-item-info">
-        <span className="product-item-info-name">{mockData.name}</span>
+        <div className="product-item-info-name">{mockData.name}</div>
         <div className="product-item-info-price">
           {mockData.defaultPrice !== mockData.price ? (
             <span className="product-item-info-price-default">{mockData.defaultPrice}</span>
