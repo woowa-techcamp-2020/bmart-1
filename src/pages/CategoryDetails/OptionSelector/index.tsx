@@ -14,6 +14,7 @@ export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorPro
       <ul>
         {options.map((x, idx) => (
           <li
+            key={x}
             className={idx === optionIdx ? 'active' : null}
             onClick={() => setOptionIdx && setOptionIdx(idx)}
           >
