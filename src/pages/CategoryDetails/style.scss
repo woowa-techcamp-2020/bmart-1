@@ -1,9 +1,18 @@
+body {
+  padding: 0px !important;
+}
 .category-details {
   font-family: PAYW Pro;
+  padding: 25px;
+  font-weight: 600;
   .title {
     font-style: normal;
-    font-size: 18px;
+    font-size: 25px;
     line-height: 140%;
-    font-weight: 600;
+    margin-bottom: 17px;
+  }
+  .sort-by {
+    display: flex;
+    justify-content: flex-end;
   }
 }

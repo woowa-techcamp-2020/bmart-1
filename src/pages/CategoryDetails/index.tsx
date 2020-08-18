@@ -1,9 +1,18 @@
-import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { SORT_BY_TYPES } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
+import OptionSelector from './OptionSelector'
 import './style.scss'
 import SubCategorySelector from './SubCategorySelector'
 
-type DispatchByType<T> = Dispatch<SetStateAction<T>>
+export type DispatchByType<T> = Dispatch<SetStateAction<T>>
 
 export type CategoryDetailsProps = {
   category: CategoryType
@@ -32,12 +41,20 @@ export const CombineProvider = (...Providers: React.FC[]) => (App: React.FC) =>
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }) => {
   const { subCategory } = useContext(CategoryDetailsContext)
+  const [optionIdx, setOptionIdx] = useState(0)
+
+  useEffect(() => {}, [subCategory])
 
   return (
     <div className="category-details">
       <div className="title">{category}</div>
       <SubCategorySelector category={category} />
-      <div>{subCategory}</div>
+      <div className="sort-by">{SORT_BY_TYPES[optionIdx]}</div>
+      <OptionSelector
+        options={SORT_BY_TYPES.slice()}
+        optionIdx={optionIdx}
+        setOptionIdx={setOptionIdx}
+      ></OptionSelector>
     </div>
   )
 }
