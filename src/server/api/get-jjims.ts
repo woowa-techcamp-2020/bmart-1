@@ -1,8 +1,8 @@
-import { prisma } from '../utils/prisma'
-import express, { Request, Response } from 'express'
 import { Jjim } from '@prisma/client'
+import express, { Request, Response } from 'express'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
 import { ErrorResponse } from '~/types/res'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
+import { prisma } from '../utils/prisma'
 
 const getJjimsRouter = express.Router()
 

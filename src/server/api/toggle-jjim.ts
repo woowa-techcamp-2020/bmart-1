@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
-import { prisma } from '../utils/prisma'
 import { body } from 'express-validator'
-import { requestValidator } from '~/middlewares'
 import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { requestValidator } from '~/middlewares'
+import { prisma } from '../utils/prisma'
 
 const toggleJjimRouter = express.Router()
 
