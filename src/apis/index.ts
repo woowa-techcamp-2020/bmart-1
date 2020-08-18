@@ -1,6 +1,5 @@
 import { ERROR_MSG } from 'src/constants'
-import type { GetJjimsApiResponse } from 'src/server/api/get-jjims'
-import { ToggleJjimRequestBody } from 'src/server/api/toggle-jjim'
+import type { GetJjimsApiResponse, ToggleJjimRequestBody } from 'src/types/api'
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
