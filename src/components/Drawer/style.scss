@@ -1,0 +1,38 @@
+.drawer {
+  .background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.2;
+    z-index: 1;
+  }
+  .body {
+    position: fixed;
+    z-index: 2;
+    bottom: 0px;
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(30px);
+    border-radius: 20px 20px 0px 0px;
+    &.hidden {
+      bottom: -222px;
+    }
+    max-height: 100vh;
+    .holder {
+      min-height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .handle {
+        display: inline-block;
+        background-image: url('~src/assets/images/drawer-handle.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 3px;
+        width: 36px;
+      }
+    }
+  }
+}
