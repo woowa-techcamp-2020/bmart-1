@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
+import Drawer from 'src/components/Drawer'
 import { SORT_BY_TYPES } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
 import OptionSelector from './OptionSelector'
@@ -41,6 +42,7 @@ export const CombineProvider = (...Providers: React.FC[]) => (App: React.FC) =>
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }) => {
   const { subCategory } = useContext(CategoryDetailsContext)
+  const [isOpened, setOpened] = useState(false)
   const [optionIdx, setOptionIdx] = useState(0)
 
   useEffect(() => {}, [subCategory])
@@ -52,16 +54,17 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }
         <div className="title-icon" />
       </div>
       <SubCategorySelector category={category} />
-      <div className="sort-by">
+      <div className="sort-by" onClick={() => setOpened(true)}>
         <div className="sort-by-icon"></div>
         {SORT_BY_TYPES[optionIdx]}
       </div>
-
-      <OptionSelector
-        options={SORT_BY_TYPES.slice()}
-        optionIdx={optionIdx}
-        setOptionIdx={setOptionIdx}
-      ></OptionSelector>
+      <Drawer isOpened={isOpened} setOpened={setOpened}>
+        <OptionSelector
+          options={SORT_BY_TYPES.slice()}
+          optionIdx={optionIdx}
+          setOptionIdx={setOptionIdx}
+        ></OptionSelector>
+      </Drawer>
     </div>
   )
 }

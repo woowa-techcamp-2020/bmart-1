@@ -1,14 +1,18 @@
 .drawer {
   .background {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: black;
     opacity: 0.2;
     z-index: 1;
+    transition-duration: 0.5s;
   }
   .body {
     position: fixed;
+    left: 0;
     z-index: 2;
     bottom: 0px;
     width: 100vw;
@@ -16,6 +20,7 @@
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(30px);
     border-radius: 20px 20px 0px 0px;
+    padding-bottom: 20px;
     &.hidden {
       bottom: -222px;
     }

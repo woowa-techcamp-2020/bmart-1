@@ -3,7 +3,7 @@
   font-weight: 600;
   font-size: 17px;
   ul {
-    padding: 0;
+    padding: 0 25px;
     margin: 0;
     li {
       display: flex;
@@ -13,14 +13,9 @@
       border-radius: 10px;
       list-style: none;
       line-height: 21px;
-      &:not(.active) {
-        opacity: 0.3;
-        mix-blend-mode: exclusion;
-      }
       &.active {
-        background-color: black;
+        background-color: rgb(65, 65, 65);
         color: white;
-        mix-blend-mode: exclusion;
       }
     }
   }
