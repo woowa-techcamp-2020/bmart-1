@@ -7,24 +7,6 @@ export type DrawerProps = {
   setOpened?: (number) => void
 }
 
-function getRefHeight(ref: RefObject<HTMLDivElement>): number {
-  if (!ref?.current) return 0
-
-  return ref.current.getBoundingClientRect().height
-}
-
-function moveRef(
-  ref: RefObject<HTMLDivElement>,
-  options: { position: number; smooth?: boolean }
-): void {
-  if (!ref?.current) return
-
-  const { position, smooth = false } = options
-
-  ref.current.style.bottom = `-${position}px`
-  ref.current.style.transitionDuration = smooth ? '0.5s' : null
-}
-
 export const DrawerContext = createContext<{
   isOpened: boolean
   setOpened: DispatchByType<boolean>
@@ -60,50 +42,29 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
     backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'
   }, [isOpened])
 
-  function onCursorMove(y) {
-    if (isHolding.current) {
-      moveRef(bodyRef, {
-        position: Math.max(y - startY.current, 0),
-      })
-    }
-  }
+  function handleCursorUp(y) {
+    if (!isHolding.current) return
 
-  function onCursorUp(y) {
-    const height = getRefHeight(bodyRef)
-
-    if (y - startY.current < height / 2) {
+    if (onCursorUp(y, isHolding, startY, getRefHeight(bodyRef))) {
       moveRef(bodyRef, {
         position: 0,
         smooth: true,
       })
-    } else {
-      setOpened(false)
+
+      return
     }
 
-    isHolding.current = false
-  }
-
-  function onCursorDown(y) {
-    startY.current = y
-    isHolding.current = true
-  }
-
-  function getFirstTouch(event: React.TouchEvent) {
-    return event.targetTouches[0] || event.changedTouches[0]
-  }
-
-  function getFirstTouchY(event: React.TouchEvent) {
-    return getFirstTouch(event).clientY
+    setOpened(false)
   }
 
   return (
     <>
       <div
         className="drawer"
-        onMouseMove={({ clientY }) => onCursorMove(clientY)}
-        onTouchMove={(event) => onCursorMove(getFirstTouchY(event))}
-        onMouseUp={({ clientY }) => onCursorUp(clientY)}
-        onTouchEnd={(event) => onCursorUp(getFirstTouchY(event))}
+        onMouseMove={({ clientY }) => onCursorMove(clientY, isHolding, startY, bodyRef)}
+        onTouchMove={(event) => onCursorMove(getFirstTouchY(event), isHolding, startY, bodyRef)}
+        onMouseUp={({ clientY }) => handleCursorUp(clientY)}
+        onTouchEnd={(event) => handleCursorUp(getFirstTouchY(event))}
       >
         <div
           className="background"
@@ -113,8 +74,8 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
         <div className={'body'} ref={bodyRef}>
           <div
             className="holder"
-            onTouchStart={(event) => onCursorDown(getFirstTouchY(event))}
-            onMouseDown={({ clientY }) => onCursorDown(clientY)}
+            onTouchStart={(event) => onCursorDown(getFirstTouchY(event), isHolding, startY)}
+            onMouseDown={({ clientY }) => onCursorDown(clientY, isHolding, startY)}
           >
             <div className="handle" />
           </div>
@@ -127,6 +88,55 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
       </div>
     </>
   )
+}
+
+function onCursorMove(y, isHolding, startY, bodyRef) {
+  if (!isHolding.current) return
+
+  moveRef(bodyRef, {
+    position: Math.max(y - startY.current, 0),
+  })
+}
+
+function onCursorUp(y, isHolding, startY, height) {
+  isHolding.current = false
+
+  if (y - startY.current < height / 2) {
+    return true
+  }
+
+  return false
+}
+
+function onCursorDown(y, isHolding, startY) {
+  startY.current = y
+  isHolding.current = true
+}
+
+function getFirstTouch(event: React.TouchEvent) {
+  return event.targetTouches[0] || event.changedTouches[0]
+}
+
+function getFirstTouchY(event: React.TouchEvent) {
+  return getFirstTouch(event).clientY
+}
+
+function getRefHeight(ref: RefObject<HTMLDivElement>): number {
+  if (!ref?.current) return 0
+
+  return ref.current.getBoundingClientRect().height
+}
+
+function moveRef(
+  ref: RefObject<HTMLDivElement>,
+  options: { position: number; smooth?: boolean }
+): void {
+  if (!ref?.current) return
+
+  const { position, smooth = false } = options
+
+  ref.current.style.bottom = `-${position}px`
+  ref.current.style.transitionDuration = smooth ? '0.5s' : null
 }
 
 export default Drawer
