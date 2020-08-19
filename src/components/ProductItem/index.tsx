@@ -41,31 +41,27 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
   useEffect(() => {
     const { current: productItemElem } = productItem
     const { current: productItemCoverElem } = productItemCover
-    const coverAnimationDuration = parseInt(
-      getComputedStyle(productItemElem)
-        .getPropertyValue('--cover-animation-duration')
-        .replace(/[^0-9]/g, '')
-    )
+
+    productItemCoverElem.addEventListener('animationend', () => {
+      productItemCoverElem.classList.add('hidden')
+      setTimeout(
+        () =>
+          setIsJjimmed((previousState) => {
+            return !previousState
+          }),
+        HEART_DELAY
+      )
+    })
 
     productItemElem.addEventListener('pointerdown', () => {
       timer = setTimeout(async () => {
         await toggleJjim({ productId: mockData.id })
         productItemCoverElem.classList.remove('hidden')
 
-        setTimeout(() => {
-          productItemCoverElem.classList.add('hidden')
-          setTimeout(
-            () =>
-              setIsJjimmed((previousState) => {
-                return !previousState
-              }),
-            HEART_DELAY
-          )
-        }, coverAnimationDuration)
-
         isLongPress = true
       }, CONSTRAINT.LONG_PRESS_DURATION)
     })
+
     productItemElem.addEventListener('pointerup', () => {
       if (isLongPress) {
         isLongPress = false
