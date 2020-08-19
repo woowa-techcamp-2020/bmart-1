@@ -9,7 +9,7 @@ export type OptionSelectorProps = {
 }
 
 export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorProps) => {
-  const drawerContext = useContext(DrawerContext)
+  const setOpened = useContext(DrawerContext)?.setOpened
 
   return (
     <div className="option-selector">
@@ -23,7 +23,7 @@ export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorPro
               setOptionIdx && setOptionIdx(idx)
             }}
             onPointerUp={() => {
-              if (idx === optionIdx) drawerContext?.setOpened(false)
+              if (idx === optionIdx) setOpened && setOpened(false)
             }}
           >
             {x}

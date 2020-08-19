@@ -1,6 +1,6 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Drawer, { DrawerProps } from 'src/components/Drawer'
 import { SORT_BY_TYPES } from 'src/constants'
 import OptionSelector from 'src/pages/CategoryDetails/OptionSelector'
@@ -13,13 +13,27 @@ export default {
   },
 } as Meta
 
-const Template: Story<DrawerProps> = (args) => <Drawer {...args} />
+const Template: Story<DrawerProps> = (args) => {
+  const [isOpened, setOpened] = useState(false)
+
+  useEffect(() => {
+    setOpened(args.isOpened)
+  }, [args.isOpened])
+
+  return <Drawer isOpened={isOpened} setOpened={setOpened} />
+}
 
 export const Main = Template.bind({})
 
 const ScrollableTemplate: Story<DrawerProps> = (args) => {
+  const [isOpened, setOpened] = useState(false)
+
+  useEffect(() => {
+    setOpened(args.isOpened)
+  }, [args.isOpened])
+
   return (
-    <Drawer {...args}>
+    <Drawer isOpened={isOpened} setOpened={setOpened}>
       <div
         style={{
           height: '2000px',
@@ -33,10 +47,15 @@ const ScrollableTemplate: Story<DrawerProps> = (args) => {
 export const Scrollable = ScrollableTemplate.bind({})
 
 const OptionsDrawerTemplate: Story<DrawerProps> = (args) => {
+  const [isOpened, setOpened] = useState(false)
+
+  useEffect(() => {
+    setOpened(args.isOpened)
+  }, [args.isOpened])
   const [optionIdx, setOptionIdx] = useState(0)
 
   return (
-    <Drawer {...args}>
+    <Drawer isOpened={isOpened} setOpened={setOpened}>
       <OptionSelector
         optionIdx={optionIdx}
         setOptionIdx={setOptionIdx}
@@ -50,9 +69,14 @@ export const withOptionSelectors = OptionsDrawerTemplate.bind({})
 
 const SortOptionsDrawerTemplate: Story<DrawerProps> = (args) => {
   const [optionIdx, setOptionIdx] = useState(0)
+  const [isOpened, setOpened] = useState(false)
+
+  useEffect(() => {
+    setOpened(args.isOpened)
+  }, [args.isOpened])
 
   return (
-    <Drawer {...args}>
+    <Drawer isOpened={isOpened} setOpened={setOpened}>
       <OptionSelector
         optionIdx={optionIdx}
         setOptionIdx={setOptionIdx}
