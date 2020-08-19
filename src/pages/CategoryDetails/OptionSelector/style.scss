@@ -2,12 +2,14 @@ body {
   overflow: hidden;
 }
 .option-selector {
+  $select-gap: 25px;
   font-style: PAYW Pro;
   user-select: none;
   font-weight: 600;
   font-size: 17px;
   ul {
-    padding: 0 25px;
+    position: relative;
+    padding: 0px;
     padding-bottom: 17px;
     margin: 0;
     li {
@@ -18,9 +20,18 @@ body {
       border-radius: 10px;
       list-style: none;
       line-height: 21px;
-      &.active {
-        background-color: rgb(65, 65, 65);
-        color: white;
+      color: white;
+      mix-blend-mode: difference;
+
+      &.select {
+        position: absolute;
+        width: calc(100% - #{$select-gap * 2});
+        left: $select-gap;
+        box-sizing: content-box;
+
+        background-color: #e2e2e2;
+        transition-duration: 0.2s;
+        transition-timing-function: ease-in-out;
       }
     }
   }
