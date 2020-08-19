@@ -8,7 +8,7 @@
   background-size: cover;
   position: relative;
   overflow: hidden;
-  --cover-animation-duration: 500ms;
+  --cover-animation-duration: 800ms;
   .heart-icon {
     position: absolute;
     top: 5px;
@@ -82,12 +82,24 @@
     opacity: 0;
     transform: scale(0.8);
   }
-  50% {
+  20% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: scale(1.2);
+    transform: scale(1);
   }
 }
 
