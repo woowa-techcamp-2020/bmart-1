@@ -8,6 +8,7 @@
   background-size: cover;
   position: relative;
   overflow: hidden;
+  user-select: none;
   --cover-animation-duration: 800ms;
   .heart-icon {
     position: absolute;
