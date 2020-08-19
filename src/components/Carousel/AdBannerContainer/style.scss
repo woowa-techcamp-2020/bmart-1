@@ -1,0 +1,29 @@
+$banner-gap: 14px;
+
+.ad-banner-container-scroll-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-top: calc(50.75% - 26px);
+  }
+
+  .ad-banner-container {
+    position: absolute;
+    height: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    padding-top: 3px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

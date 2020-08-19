@@ -23,6 +23,7 @@ export enum STATUS_CODE {
 export enum CONSTRAINT {
   MAX_ADDRESS_LENGTH = 300,
   MIN_QUANTITY = 1,
+  LONG_PRESS_DURATION = 400,
 }
 
 export enum PAGINATION {

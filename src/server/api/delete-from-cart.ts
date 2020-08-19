@@ -1,14 +1,11 @@
 import express, { Request } from 'express'
-import { prisma } from '../utils/prisma'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { body } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { DeleteFromCartBody } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
+import { prisma } from '../utils/prisma'
 
 const deleteFromCartRouter = express.Router()
-
-type DeleteFromCartBody = {
-  productIds: number[]
-}
 
 function productIdsValidator(ids: number[]) {
   return ids.every((id) => typeof id === 'number')

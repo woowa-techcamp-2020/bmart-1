@@ -1,18 +1,11 @@
 import express, { Request, Response } from 'express'
-import { prisma } from '../utils/prisma'
-import { Product } from '@prisma/client'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
-import { ErrorResponse } from '~/types/res'
 import { query } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { SearchApiRequestQuery, SearchApiResponse } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
+import { prisma } from '../utils/prisma'
 
 const searchRouter = express.Router()
-
-export type SearchApiRequestQuery = {
-  term: string
-}
-
-export type SearchApiResponse = Product[] | ErrorResponse
 
 function getInsertionCondition(field: string, term: string, index: number) {
   return `${field} LIKE '%${term.substring(0, index)}_${term.substring(index)}%'`

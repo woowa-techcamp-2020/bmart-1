@@ -3,7 +3,7 @@ import React from 'react'
 import HeartIcon, { HeartIconProps } from '../components/HeartIcon'
 
 export default {
-  title: 'HeartIconPage',
+  title: 'HeartIcon',
   component: HeartIcon,
 } as Meta
 

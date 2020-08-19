@@ -4,9 +4,9 @@ import './style.scss'
 export type HeartIconPropsSize = 'small' | 'big'
 
 export type HeartIconProps = {
-  size: HeartIconPropsSize
-  isBroken: boolean
-  isAttached: boolean
+  size?: HeartIconPropsSize
+  isBroken?: boolean
+  isAttached?: boolean
 }
 
 const HeartIcon: React.FC<HeartIconProps> = ({

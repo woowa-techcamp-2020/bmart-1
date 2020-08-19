@@ -1,0 +1,88 @@
+.ad-banner {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  background-color: red;
+  scroll-snap-align: center;
+  border-radius: 10px;
+  height: calc(100% - 5px);
+  width: calc(100% - 56px);
+  margin-right: 14px;
+  box-shadow: var(--bmart-shadow);
+  background: #fff;
+  background: linear-gradient(108.93deg, var(--grad-begin) -3.09%, var(--grad-end) 96.75%);
+  color: #fff;
+
+  &:first-child {
+    margin-left: 27px;
+  }
+
+  &:last-child {
+    margin-right: 27px;
+  }
+
+  &.violet {
+    --grad-begin: #5c63ff;
+    --grad-end: #3503c4;
+  }
+
+  &.purple {
+    --grad-begin: #f05ca3;
+    --grad-end: #c30331;
+  }
+
+  &.sky {
+    --grad-begin: #4ecaff;
+    --grad-end: #0398c7;
+  }
+
+  &.orange {
+    --grad-begin: #ff9838;
+    --grad-end: #ff5c00;
+  }
+
+  &.mint {
+    --grad-begin: #35dcc8;
+    --grad-end: #01b4b4;
+  }
+
+  &.grass {
+    --grad-begin: #6bdd62;
+    --grad-end: #468530;
+  }
+
+  &.dark {
+    --grad-begin: #615c51;
+    --grad-end: #1c1915;
+  }
+
+  &.blue {
+    --grad-begin: #6889ff;
+    --grad-end: #0353cb;
+  }
+
+  .text {
+    margin-top: 18px;
+    margin-left: 19px;
+
+    .subtitle {
+      font-size: 3.5vw;
+      font-weight: 500;
+    }
+
+    .title {
+      font-size: 7vw;
+      font-weight: 700;
+    }
+  }
+
+  .sentinel {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
