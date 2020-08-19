@@ -1,0 +1,49 @@
+@use '~src/styles/variables' as *;
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $header-logo-wrapper-height;
+
+    .logo-img {
+      width: 100px;
+    }
+  }
+
+  .slide-tabs {
+    position: relative;
+    width: 100%;
+    height: $slide-tabs-height;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    .tab-button {
+      font-size: 20px;
+      font-weight: $bold;
+      color: #fff;
+      mix-blend-mode: difference;
+      line-height: 1;
+    }
+
+    .indicator {
+      position: absolute;
+      left: 0;
+      width: 0;
+      background-color: var(--distinct);
+      height: 100%;
+      width: 100px;
+      border-radius: 9999px;
+    }
+  }
+}

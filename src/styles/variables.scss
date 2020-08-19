@@ -11,3 +11,8 @@ $circle: 9999px;
 $radius-large: 20px;
 $radius-medium: 15px;
 $radius-small: 10px;
+
+// Header & Slide tabs
+$header-logo-wrapper-height: 120px;
+$slide-tabs-height: 35px;
+$header-height: $header-logo-wrapper-height + $slide-tabs-height;
