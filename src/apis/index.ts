@@ -1,4 +1,5 @@
 import { ERROR_MSG } from 'src/constants'
+import type { GetJjimsApiResponse, ToggleJjimRequestBody } from 'src/types/api'
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
@@ -44,14 +45,14 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
   method,
   headers: {
     'Content-Type': 'application/json',
-    ...addBody(body),
     ...addToken(),
   },
+  ...addBody(body),
 })
 
-async function request(url, method) {
+async function request(url: string, method: Method, body?: Record<string, unknown>): Promise<any> {
   try {
-    const response = await fetch('/api/' + url, defaultOptions(method))
+    const response = await fetch(`/api${url}`, defaultOptions(method, body))
 
     if (!response.ok) {
       console.error(response.status)
@@ -67,8 +68,12 @@ async function request(url, method) {
   }
 }
 
-export async function getJjims() {
+export async function getJjims(): Promise<GetJjimsApiResponse> {
   return await request('/jjims', 'GET')
+}
+
+export async function toggleJjim(body: ToggleJjimRequestBody) {
+  return await request('/jjim', 'PUT', body)
 }
 
 export async function getSubCategories(category: string) {

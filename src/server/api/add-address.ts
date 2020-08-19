@@ -1,15 +1,11 @@
 import express, { Request, Response } from 'express'
-import { prisma } from '../utils/prisma'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { body } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { AddAddressApiRequestBody } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
+import { prisma } from '../utils/prisma'
 
 const addAddressRouter = express.Router()
-
-export type AddAddressApiRequestBody = {
-  address1: string
-  address2?: string
-}
 
 addAddressRouter.post(
   '/add-address',

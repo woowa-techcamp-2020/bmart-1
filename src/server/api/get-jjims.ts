@@ -1,12 +1,9 @@
-import { prisma } from '../utils/prisma'
 import express, { Request, Response } from 'express'
-import { Jjim } from '@prisma/client'
-import { ErrorResponse } from '~/types/res'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { GetJjimsApiResponse } from '~/../types/api'
+import { prisma } from '../utils/prisma'
 
 const getJjimsRouter = express.Router()
-
-export type GetJjimsApiResponse = Jjim[] | ErrorResponse
 
 getJjimsRouter.get('/jjims', async (req: Request, res: Response<GetJjimsApiResponse>) => {
   const userId = req.auth?.userId

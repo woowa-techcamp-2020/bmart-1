@@ -1,12 +1,10 @@
 import express, { Request, Response } from 'express'
 import { query } from 'express-validator'
 import { ERROR_MSG, STATUS_CODE } from '~/../constants'
-import { ErrorResponse } from '~/types/res'
+import { GetSubCategoriesApiResponse } from '~/../types/api'
 import { prisma } from '../utils/prisma'
 
 const getSubCategoriesRouter = express.Router()
-
-export type GetSubCategoriesApiResponse = string[] | ErrorResponse
 
 getSubCategoriesRouter.get(
   '/sub-categories',
