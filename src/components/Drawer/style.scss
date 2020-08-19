@@ -1,4 +1,5 @@
 .drawer {
+  $drawerHeight: 20px;
   .background {
     position: fixed;
     top: 0;
@@ -20,11 +21,9 @@
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(30px);
     border-radius: 20px 20px 0px 0px;
-    padding-bottom: 20px;
     &.hidden {
       bottom: -222px;
     }
-    max-height: 100vh;
     .holder {
       min-height: 40px;
       display: flex;
@@ -38,6 +37,11 @@
         height: 3px;
         width: 36px;
       }
+    }
+    .container {
+      max-height: 70vh;
+      overflow: scroll;
+      padding-bottom: $drawerHeight;
     }
   }
 }

@@ -69,9 +69,11 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
           <div className="holder">
             <div className="handle" />
           </div>
-          <DrawerContext.Provider value={{ isOpened, setOpened }}>
-            {children}
-          </DrawerContext.Provider>
+          <div className="container">
+            <DrawerContext.Provider value={{ isOpened, setOpened }}>
+              {children}
+            </DrawerContext.Provider>
+          </div>
         </div>
       </div>
     </>

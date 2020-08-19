@@ -1,13 +1,14 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0'
-import React from 'react'
+import React, { useState } from 'react'
 import Drawer, { DrawerProps } from 'src/components/Drawer'
+import OptionSelector from 'src/pages/CategoryDetails/OptionSelector'
 
 export default {
   title: 'Drawer',
   component: Drawer,
   args: {
-    isOpened: false,
+    isOpened: true,
   },
 } as Meta
 
@@ -29,3 +30,19 @@ const ScrollableTemplate: Story<DrawerProps> = (args) => {
 }
 
 export const Scrollable = ScrollableTemplate.bind({})
+
+const OptionsDrawerTemplate: Story<DrawerProps> = (args) => {
+  const [optionIdx, setOptionIdx] = useState(0)
+
+  return (
+    <Drawer {...args}>
+      <OptionSelector
+        optionIdx={optionIdx}
+        setOptionIdx={setOptionIdx}
+        options={Array.from({ length: 30 }, (_, i) => String(i))}
+      ></OptionSelector>
+    </Drawer>
+  )
+}
+
+export const withOptionSelectors = OptionsDrawerTemplate.bind({})
