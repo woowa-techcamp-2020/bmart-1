@@ -3,6 +3,8 @@ import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/DiscountLabel'
 import HeartIcon from 'src/components/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
+import ColorfulBrokenHeartIcon from '../ColorfulBrokenHeartIcon'
+import ColorfulHeartIcon from '../ColorfulHeartIcon'
 import './style.scss'
 
 export type ProductItemProps = {
@@ -27,22 +29,40 @@ const mockData = {
 
 let timer
 let isLongPress = false
+const HEART_DELAY = 100
 
 // TODO: scroll & pointermove conflict 해결
 const ProductItem: React.FC<ProductItemProps> = (props) => {
   const [isJjimmed, setIsJjimmed] = useState(mockData.isJjimmed)
 
   const productItem = useRef<HTMLDivElement>()
+  const productItemCover = useRef<HTMLDivElement>()
 
   useEffect(() => {
     const { current: productItemElem } = productItem
+    const { current: productItemCoverElem } = productItemCover
+    const coverAnimationDuration = parseInt(
+      getComputedStyle(productItemElem)
+        .getPropertyValue('--cover-animation-duration')
+        .replace(/[^0-9]/g, '')
+    )
 
     productItemElem.addEventListener('pointerdown', () => {
       timer = setTimeout(async () => {
         await toggleJjim({ productId: mockData.id })
-        setIsJjimmed((previousState) => {
-          return !previousState
-        })
+        productItemCoverElem.classList.remove('hidden')
+
+        setTimeout(() => {
+          productItemCoverElem.classList.add('hidden')
+          setTimeout(
+            () =>
+              setIsJjimmed((previousState) => {
+                return !previousState
+              }),
+            HEART_DELAY
+          )
+        }, coverAnimationDuration)
+
         isLongPress = true
       }, CONSTRAINT.LONG_PRESS_DURATION)
     })
@@ -79,6 +99,13 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
           )}
           <span className="product-item-info-price-current">{mockData.price}</span>
         </div>
+      </div>
+      <div ref={productItemCover} className="product-item-cover hidden">
+        {isJjimmed ? (
+          <ColorfulBrokenHeartIcon color="white" width="100%" />
+        ) : (
+          <ColorfulHeartIcon color="white" width="100%" />
+        )}
       </div>
     </div>
   )
