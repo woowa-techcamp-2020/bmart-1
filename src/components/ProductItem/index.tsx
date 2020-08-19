@@ -17,23 +17,13 @@ export type ProductItemProps = {
   isJjimmed: boolean
 }
 
-const mockData = {
-  id: 9529,
-  name: '[KF365] 애호박 1개',
-  defaultPrice: 4800,
-  price: 4580,
-  discount: 5,
-  imgV: 'https://img-cf.kurly.com/shop/data/goods/1539841569718l0.jpg',
-  isJjimmed: true,
-}
-
 let timer
 let isLongPress = false
 const HEART_DELAY = 100
 
 // TODO: scroll & pointermove conflict 해결
 const ProductItem: React.FC<ProductItemProps> = (props) => {
-  const [isJjimmed, setIsJjimmed] = useState(mockData.isJjimmed)
+  const [isJjimmed, setIsJjimmed] = useState(props.isJjimmed)
 
   const productItem = useRef<HTMLDivElement>()
   const productItemCover = useRef<HTMLDivElement>()
@@ -55,7 +45,7 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
 
     productItemElem.addEventListener('pointerdown', () => {
       timer = setTimeout(async () => {
-        await toggleJjim({ productId: mockData.id })
+        await toggleJjim({ productId: props.id })
         productItemCoverElem.classList.remove('hidden')
 
         isLongPress = true
@@ -80,20 +70,20 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
       ref={productItem}
       className="product-item"
       style={{
-        backgroundImage: `url(${mockData.imgV})`,
+        backgroundImage: `url(${props.imgV})`,
       }}
     >
       {isJjimmed ? <HeartIcon size="small" isBroken={false} isAttached={true} /> : ''}
-      {mockData.discount ? <DiscountLabel size="small" discount={mockData.discount} /> : ''}
+      {props.discount ? <DiscountLabel size="small" discount={props.discount} /> : ''}
       <div className="product-item-info">
-        <div className="product-item-info-name">{mockData.name}</div>
+        <div className="product-item-info-name">{props.name}</div>
         <div className="product-item-info-price">
-          {mockData.defaultPrice !== mockData.price ? (
-            <span className="product-item-info-price-default">{mockData.defaultPrice}</span>
+          {props.defaultPrice !== props.price ? (
+            <span className="product-item-info-price-default">{props.defaultPrice}</span>
           ) : (
             ''
           )}
-          <span className="product-item-info-price-current">{mockData.price}</span>
+          <span className="product-item-info-price-current">{props.price}</span>
         </div>
       </div>
       <div ref={productItemCover} className="product-item-cover hidden">
