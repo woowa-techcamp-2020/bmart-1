@@ -60,31 +60,50 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
     backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'
   }, [isOpened])
 
+  function onCursorMove(y) {
+    if (isHolding.current) {
+      moveRef(bodyRef, {
+        position: Math.max(y - startY.current, 0),
+      })
+    }
+  }
+
+  function onCursorUp(y) {
+    const height = getRefHeight(bodyRef)
+
+    if (y - startY.current < height / 2) {
+      moveRef(bodyRef, {
+        position: 0,
+        smooth: true,
+      })
+    } else {
+      setOpened(false)
+    }
+
+    isHolding.current = false
+  }
+
+  function onCursorDown(y) {
+    startY.current = y
+    isHolding.current = true
+  }
+
+  function getFirstTouch(event: React.TouchEvent) {
+    return event.targetTouches[0] || event.changedTouches[0]
+  }
+
+  function getFirstTouchY(event: React.TouchEvent) {
+    return getFirstTouch(event).clientY
+  }
+
   return (
     <>
       <div
         className="drawer"
-        onPointerMove={({ clientY }) => {
-          if (isHolding.current) {
-            moveRef(bodyRef, {
-              position: Math.max(clientY - startY.current, 0),
-            })
-          }
-        }}
-        onPointerUp={({ clientY }) => {
-          const height = getRefHeight(bodyRef)
-
-          if (clientY - startY.current < height / 2) {
-            moveRef(bodyRef, {
-              position: 0,
-              smooth: true,
-            })
-          } else {
-            setOpened(false)
-          }
-
-          isHolding.current = false
-        }}
+        onMouseMove={({ clientY }) => onCursorMove(clientY)}
+        onTouchMove={(event) => onCursorMove(getFirstTouchY(event))}
+        onMouseUp={({ clientY }) => onCursorUp(clientY)}
+        onTouchEnd={(event) => onCursorUp(getFirstTouchY(event))}
       >
         <div
           className="background"
@@ -94,10 +113,8 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
         <div className={'body'} ref={bodyRef}>
           <div
             className="holder"
-            onPointerDown={({ clientY }) => {
-              startY.current = clientY
-              isHolding.current = true
-            }}
+            onTouchStart={(event) => onCursorDown(getFirstTouchY(event))}
+            onMouseDown={({ clientY }) => onCursorDown(clientY)}
           >
             <div className="handle" />
           </div>
