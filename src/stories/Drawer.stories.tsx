@@ -2,6 +2,7 @@
 import { Meta, Story } from '@storybook/react/types-6-0'
 import React, { useState } from 'react'
 import Drawer, { DrawerProps } from 'src/components/Drawer'
+import { SORT_BY_TYPES } from 'src/constants'
 import OptionSelector from 'src/pages/CategoryDetails/OptionSelector'
 
 export default {
@@ -46,3 +47,19 @@ const OptionsDrawerTemplate: Story<DrawerProps> = (args) => {
 }
 
 export const withOptionSelectors = OptionsDrawerTemplate.bind({})
+
+const SortOptionsDrawerTemplate: Story<DrawerProps> = (args) => {
+  const [optionIdx, setOptionIdx] = useState(0)
+
+  return (
+    <Drawer {...args}>
+      <OptionSelector
+        optionIdx={optionIdx}
+        setOptionIdx={setOptionIdx}
+        options={SORT_BY_TYPES.slice()}
+      ></OptionSelector>
+    </Drawer>
+  )
+}
+
+export const withSortOptionSelectors = SortOptionsDrawerTemplate.bind({})
