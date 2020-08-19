@@ -1,4 +1,4 @@
-import React, { createContext, RefObject, useEffect, useRef } from 'react'
+import React, { createContext, RefObject, useEffect, useRef, useState } from 'react'
 import { DispatchByType } from 'src/pages/CategoryDetails'
 import './style.scss'
 
@@ -31,6 +31,7 @@ export const DrawerContext = createContext<{
 }>(undefined)
 
 const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened }) => {
+  const [isLocalOpened, setLocalOpened] = useState(isOpened)
   const bodyRef = useRef<HTMLDivElement>()
   const backgroundRef = useRef<HTMLDivElement>()
 
@@ -41,7 +42,9 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
   }, [])
 
   useEffect(() => {
-    if (isOpened) {
+    const flag = setOpened ? isOpened : isLocalOpened
+
+    if (flag) {
       moveRef(bodyRef, {
         position: 0,
         smooth: true,
@@ -53,9 +56,9 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
       })
     }
 
-    backgroundRef.current.style.pointerEvents = isOpened ? 'all' : 'none'
-    backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'
-  }, [isOpened])
+    backgroundRef.current.style.pointerEvents = flag ? 'all' : 'none'
+    backgroundRef.current.style.opacity = flag ? '0.3' : '0'
+  }, [isOpened, isLocalOpened])
 
   return (
     <>
@@ -63,14 +66,16 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
         <div
           className="background"
           ref={backgroundRef}
-          onClick={() => setOpened && setOpened(false)}
+          onClick={() => (setOpened ? setOpened(false) : setLocalOpened(false))}
         />
         <div className={'body'} ref={bodyRef}>
           <div className="holder">
             <div className="handle" />
           </div>
           <div className="container">
-            <DrawerContext.Provider value={{ isOpened, setOpened }}>
+            <DrawerContext.Provider
+              value={{ isOpened, setOpened: setOpened ? setOpened : setLocalOpened }}
+            >
               {children}
             </DrawerContext.Provider>
           </div>

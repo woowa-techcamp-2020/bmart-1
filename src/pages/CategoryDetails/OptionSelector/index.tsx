@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { DrawerContext } from 'src/components/Drawer'
 import './style.scss'
 
@@ -10,11 +10,6 @@ export type OptionSelectorProps = {
 
 export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorProps) => {
   const drawerContext = useContext(DrawerContext)
-  const [toggle, setToggle] = useState(false)
-
-  function selectItem(idx) {
-    setOptionIdx && setOptionIdx(idx)
-  }
 
   return (
     <div className="option-selector">
@@ -24,11 +19,11 @@ export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorPro
           <li
             key={x}
             className={idx === optionIdx ? 'active' : null}
-            onPointerDown={() => setToggle(true)}
-            onPointerEnter={() => toggle && selectItem(idx)}
+            onPointerDown={() => {
+              setOptionIdx && setOptionIdx(idx)
+            }}
             onPointerUp={() => {
-              setToggle(false)
-              drawerContext && drawerContext.setOpened(false)
+              if (idx === optionIdx) drawerContext?.setOpened(false)
             }}
           >
             {x}
