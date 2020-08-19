@@ -10,19 +10,24 @@
   // Theme
   --element-fill: var(--bmart-light-blue);
   --distinct: var(--black);
+  --inversion: var(--white);
 }
 
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
 }
 
 body {
   padding: 0;
   margin: 0;
-  font-family: 'PAYW Pro', 'PAYW Pro KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'PAYW Pro', 'PAYW Pro KR', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
+  height: 100%;
+  overflow: hidden;
 }
 
 * {
@@ -32,9 +37,16 @@ body {
   font-family: inherit;
   font-size: initial;
   font-weight: 600;
+  appearance: none;
 }
 
 input,
-textarea {
+textarea,
+button {
   font: inherit;
+}
+
+button {
+  border: none;
+  background: none;
 }
