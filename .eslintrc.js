@@ -3,6 +3,7 @@ module.exports = {
   extends: ['react-app', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/recommended'],
   plugins: ['@typescript-eslint'],
   rules: {
+    '@typescript-eslint/ban-types': [0],
     'react-hooks/exhaustive-deps': [0],
     'padding-line-between-statements': [
       'error',
