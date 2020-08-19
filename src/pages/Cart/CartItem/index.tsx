@@ -11,7 +11,7 @@ export type CartItemProps = {
   imgV: string
 }
 
-function shrinkCartItem(item) {
+function shrinkCartItem(item: HTMLElement) {
   const itemHeight = getComputedStyle(item).height
 
   item.style.height = itemHeight
@@ -28,11 +28,9 @@ const CartItem: React.FC<CartItemProps> = ({ id, name, defaultPrice, price, quan
     const { current: cartItemDeleteElem } = cartItemDelete
 
     cartItemDeleteElem.addEventListener('click', (e) => {
-      const selectedItem = (e.target as HTMLElement).closest('.cart-item')
+      const selectedItem = (e.target as HTMLElement).closest('.cart-item') as HTMLElement
 
       shrinkCartItem(selectedItem)
-      // TODO: 총계 새로 계산
-      // TODO: api call
     })
   }, [])
 
