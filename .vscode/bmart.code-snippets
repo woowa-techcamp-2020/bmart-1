@@ -31,5 +31,10 @@
     "scope": "typescriptreact",
     "prefix": "cnn",
     "body": "className={classNames($0)}"
+  },
+  "variables": {
+    "scope": "scss",
+    "prefix": "var",
+    "body": "@use '~src/styles/variables' as *;"
   }
 }
