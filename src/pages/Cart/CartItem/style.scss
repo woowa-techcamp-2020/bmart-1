@@ -1,5 +1,10 @@
 .cart-item {
   width: 100%;
+  transition: height 0.8s ease-in-out;
+  &.removed {
+    height: 0px !important;
+    overflow: hidden;
+  }
   &-name {
     font-weight: 600;
     font-size: 14px;
