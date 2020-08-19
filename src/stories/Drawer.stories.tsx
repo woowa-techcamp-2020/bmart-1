@@ -14,3 +14,18 @@ export default {
 const Template: Story<DrawerProps> = (args) => <Drawer {...args} />
 
 export const Main = Template.bind({})
+
+const ScrollableTemplate: Story<DrawerProps> = (args) => {
+  return (
+    <Drawer {...args}>
+      <div
+        style={{
+          height: '2000px',
+          background: 'linear-gradient( to bottom, yellow, red )',
+        }}
+      ></div>
+    </Drawer>
+  )
+}
+
+export const Scrollable = ScrollableTemplate.bind({})
