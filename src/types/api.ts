@@ -69,3 +69,9 @@ export type PatchProductQuantityInCartApiRequestBody = {
 }
 
 export type PatchProductQuantityInCartApiResponse = Cart | ErrorResponse
+
+export type GetProductApiRequestQuery = {
+  productId: string
+}
+
+export type GetProductApiResponse = Product | ErrorResponse
