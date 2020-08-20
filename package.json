@@ -25,7 +25,7 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "pm2:start": "if pm2 show bmart ; then npm run pm2:stop && npm run pm2:delete && npm run pm2:start ; else pm2 start build/src/main.js --name \"bmart\" ; fi",
+    "pm2:start": "if pm2 show bmart ; then npm run pm2:stop && npm run pm2:delete && npm run pm2:start ; else pm2 start src/server/build/server/main.js --name \"bmart\" ; fi",
     "pm2:restart": "if pm2 show bmart ; then pm2 restart bmart ; else echo 'No PM2 instance for bmart' ; fi",
     "pm2:stop": "if pm2 show bmart ; then pm2 stop bmart ; else echo 'No PM2 instance for bmart' ; fi",
     "pm2:delete": "if pm2 show bmart ; then pm2 delete bmart ; else echo 'No PM2 instance for bmart' ; fi",
