@@ -1,12 +1,9 @@
-import { prisma } from '../utils/prisma'
 import express, { Request, Response } from 'express'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { body } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { DeleteAddressRequestBody } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
-
-type DeleteAddressRequestBody = {
-  addressId: number
-}
+import { prisma } from '../utils/prisma'
 
 const deleteAddressRouter = express.Router()
 
@@ -32,7 +29,7 @@ deleteAddressRouter.delete(
       if (address.userId !== userId) throw new Error(ERROR_MSG.NOT_YOUR_ADDRESS)
 
       await prisma.address.delete({ where: { id: addressId, userId: userId } })
-      res.status(STATUS_CODE.OK)
+      res.sendStatus(STATUS_CODE.OK)
     } catch (e) {
       console.error(e)
       res.status(STATUS_CODE.BAD_REQUEST).send({ message: e.message })

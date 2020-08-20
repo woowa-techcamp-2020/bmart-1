@@ -1,14 +1,10 @@
 import { CartCreateInput, CartUpdateInput } from '@prisma/client'
 import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
-import { STATUS_CODE, ERROR_MSG, CONSTRAINT } from '~/../constants'
+import { CONSTRAINT, ERROR_MSG, STATUS_CODE } from '~/../constants'
+import { AddToCartRequestBody } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
 import { prisma } from '../utils/prisma'
-
-type AddToCartRequestBody = {
-  productId: number
-  quantity: number
-}
 
 const addToCartRouter = express.Router()
 
@@ -53,7 +49,7 @@ addToCartRouter.post(
           },
         },
       })
-      res.status(STATUS_CODE.OK)
+      res.sendStatus(STATUS_CODE.OK)
     } catch (e) {
       console.error(e)
       res.status(STATUS_CODE.BAD_REQUEST).send({ message: e.message })

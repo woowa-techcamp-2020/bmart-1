@@ -1,5 +1,5 @@
-import fetch from 'node-fetch'
 import { PrismaClient } from '@prisma/client'
+import fetch from 'node-fetch'
 
 const prisma = new PrismaClient()
 
@@ -11,11 +11,11 @@ async function seedCurly() {
     data: { categories },
   } = await result.json()
 
-  for await (let category of categories) {
+  for await (const category of categories) {
     const categoryName = category.name
     const subcategories = category.categories
 
-    for await (let subcategory of subcategories) {
+    for await (const subcategory of subcategories) {
       const subcategoryId = subcategory.no
       const subcategoryName = subcategory.name
       const subcategoryURL = `${baseURL + subcategoryId}?page_limit=500&page_no=1`
@@ -27,7 +27,7 @@ async function seedCurly() {
 
       console.log(`working on ${subcategoryId}: ${subcategoryName} (${products.length} items)`)
 
-      for await (let product of products) {
+      for await (const product of products) {
         const {
           name,
           original_price: defaultPrice,

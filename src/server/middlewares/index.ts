@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
+import { validationResult } from 'express-validator'
 import jwt, { TokenExpiredError } from 'jsonwebtoken'
 import { ERROR_MSG, STATUS_CODE } from '~/../constants'
-import { validationResult } from 'express-validator'
 
 type DecodedData = {
   userId: number
@@ -41,7 +41,7 @@ export function needToken() {
       return
     }
 
-    res.status(401).json({ message: req.authMessage }).end()
+    res.status(STATUS_CODE.NO_TOKEN).json({ message: req.authMessage }).end()
   }
 }
 

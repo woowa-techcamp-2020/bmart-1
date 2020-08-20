@@ -9,6 +9,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     'react/prop-types': [0],
+    '@typescript-eslint/ban-types': [0],
     'react-hooks/exhaustive-deps': [0],
     'padding-line-between-statements': [
       'error',

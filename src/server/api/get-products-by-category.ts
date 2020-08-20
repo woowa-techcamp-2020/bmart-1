@@ -1,21 +1,15 @@
+import { ProductOrderByInput } from '@prisma/client'
 import express, { Request, Response } from 'express'
-import { prisma } from '../utils/prisma'
-import { ProductOrderByInput, Product } from '@prisma/client'
-import { ErrorResponse } from '~/types/res'
-import { STATUS_CODE, ERROR_MSG } from '~/../constants'
 import { query } from 'express-validator'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
+import {
+  GetProductsByCategoryApiRequestQuery,
+  GetProductsByCategoryApiResponse,
+} from '~/../types/api'
 import { requestValidator } from '~/middlewares'
+import { prisma } from '../utils/prisma'
 
 const getProductsByCategoryRouter = express.Router()
-
-export type GetProductsByCategoryApiRequestQuery = {
-  category: string
-  page?: number
-  sortBy?: string
-  direction?: 'asc' | 'desc'
-}
-
-export type GetProductsByCategoryApiResponse = Product[] | ErrorResponse
 
 const amountOfPage = 30
 
@@ -23,7 +17,7 @@ getProductsByCategoryRouter.get(
   '/products-by-category',
   [
     query('category').exists({ checkFalsy: true }),
-    query('page').optional().isInt(),
+    query('page').optional().toInt().isInt(),
     query('sortBy').optional().isString(),
     query('direction').optional().isString(),
     requestValidator(),
@@ -32,7 +26,8 @@ getProductsByCategoryRouter.get(
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
   ) => {
-    const { category, page, sortBy, direction } = req.query
+    const { category, sortBy, direction, page } = req.query
+
 
     const orderByOptions = {
       orderBy: {
@@ -56,7 +51,9 @@ getProductsByCategoryRouter.get(
     } catch (e) {
       console.log(e)
 
-      res.status(STATUS_CODE.BAD_REQUEST).send({ message: ERROR_MSG.INTERNAL_ERROR })
+      res
+        .status(STATUS_CODE.BAD_REQUEST)
+        .send({ message: ERROR_MSG.INTERNAL_ERROR })
     }
   }
 )
