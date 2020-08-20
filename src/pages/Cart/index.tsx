@@ -1,13 +1,12 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
+import { getProductsInCart } from 'src/apis'
 import ResizableCartIcon from 'src/components/ResizableCartIcon'
 import { ProductsInCart } from 'src/types/api'
 import { addCommaToPrice } from 'src/utils'
 import CartItem from './CartItem'
 import './style.scss'
 
-export type CartProps = {
-  productsInCart: ProductsInCart
-}
+export type CartProps = unknown
 
 export const CartContext = createContext(
   {} as {
@@ -22,8 +21,22 @@ function getTotalAmount(products: ProductsInCart) {
   return totalAmount
 }
 
-const Cart: React.FC<CartProps> = ({ productsInCart: products }) => {
-  const [totalAmount, setTotalAmount] = useState(getTotalAmount(products))
+// TODO: 장바구니에 상품이 없을 때 핸들링
+
+const Cart: React.FC<CartProps> = (props) => {
+  const [productsInCart, setProductsInCart] = useState([])
+  const [totalAmount, setTotalAmount] = useState(0)
+
+  async function loadProductsInCart() {
+    const productsInCart = await getProductsInCart()
+
+    setProductsInCart(productsInCart)
+    setTotalAmount(getTotalAmount(productsInCart))
+  }
+
+  useEffect(() => {
+    loadProductsInCart()
+  }, [])
 
   return (
     <div className="cart">
@@ -38,14 +51,16 @@ const Cart: React.FC<CartProps> = ({ productsInCart: products }) => {
           <div className="cart-header-title">장바구니</div>
         </div>
         <div className="cart-items">
-          {products.map((product) => (
-            <CartItem key={product.productId} productInCart={product} />
+          {productsInCart.map((product) => (
+            <CartItem
+              key={product.productId}
+              productInCart={product}
+              onDelete={loadProductsInCart}
+            />
           ))}
         </div>
         <div className="cart-footer">
-          <div className="cart-footer-total-price">
-            {addCommaToPrice(getTotalAmount(products))}원
-          </div>
+          <div className="cart-footer-total-price">{addCommaToPrice(totalAmount)}원</div>
           <div className="cart-footer-confirm-button">결제하기</div>
         </div>
       </CartContext.Provider>

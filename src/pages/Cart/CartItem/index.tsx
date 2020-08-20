@@ -1,12 +1,16 @@
 import React, { useEffect, useRef } from 'react'
+import { deleteFromCart } from 'src/apis'
 import { ProductInCart } from 'src/types/api'
 import { addCommaToPrice } from 'src/utils'
 import './style.scss'
 
 export type CartItemProps = {
   productInCart: ProductInCart
+  onDelete: () => void
 }
 
+// TODO: 마진으로 인한 jumping 핸들링
+// TODO: 넓은 화면일 때 이동 핸들링
 function shrinkCartItem(item: HTMLElement) {
   const itemHeight = getComputedStyle(item).height
 
@@ -17,11 +21,14 @@ function shrinkCartItem(item: HTMLElement) {
   item.classList.add('removed')
 }
 
+// TODO: 할인 없을 때 가격 표시 핸들링
+
 const CartItem: React.FC<CartItemProps> = ({
   productInCart: {
     quantity,
     product: { id, name, defaultPrice, price, imgV },
   },
+  onDelete,
 }) => {
   const cartItemDelete = useRef<HTMLDivElement>()
 
@@ -31,6 +38,10 @@ const CartItem: React.FC<CartItemProps> = ({
     cartItemDeleteElem.addEventListener('click', (e) => {
       const selectedItem = (e.target as HTMLElement).closest('.cart-item') as HTMLElement
 
+      selectedItem.addEventListener('transitionend', async () => {
+        await deleteFromCart({ productIds: [id] })
+        onDelete()
+      })
       shrinkCartItem(selectedItem)
     })
   }, [])
