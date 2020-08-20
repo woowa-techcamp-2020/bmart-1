@@ -60,7 +60,9 @@ async function request(url: string, method: Method, body?: Record<string, unknow
       throw new Error(ERROR_MSG.BAD_REQUEST)
     }
 
-    const result = await response.json()
+    const result = await response.json().catch(() => {
+      console.log()
+    })
 
     return result
   } catch (e) {
