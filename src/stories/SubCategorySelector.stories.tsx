@@ -1,7 +1,7 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0'
 import React from 'react'
-import { CATEGORIES } from 'src/constants'
+import { DEFAULTS } from 'src/constants'
 import { CategoryDetailsContextProvider } from 'src/pages/CategoryDetails'
 import SubCategorySelector, {
   SubCategorySelectorProps,
@@ -11,13 +11,13 @@ export default {
   title: 'CategoryDetails/SubCategorySelector',
   component: SubCategorySelector,
   args: {
-    category: '채소',
+    category: DEFAULTS.CATEGORY,
   },
   argTypes: {
     category: {
       control: {
         type: 'select',
-        options: CATEGORIES,
+        options: DEFAULTS.CATEGORIES,
       },
     },
   },

@@ -2,7 +2,7 @@
 import { Meta, Story } from '@storybook/react/types-6-0'
 import React, { useEffect, useState } from 'react'
 import Drawer, { DrawerProps } from 'src/components/Drawer'
-import { SORT_BY_TYPES } from 'src/constants'
+import { DEFAULTS } from 'src/constants'
 import OptionSelector from 'src/pages/CategoryDetails/OptionSelector'
 
 export default {
@@ -80,7 +80,7 @@ const SortOptionsDrawerTemplate: Story<DrawerProps> = (args) => {
       <OptionSelector
         optionIdx={optionIdx}
         setOptionIdx={setOptionIdx}
-        options={SORT_BY_TYPES.slice()}
+        options={DEFAULTS.SORT_OPTIONS.slice()}
       ></OptionSelector>
     </Drawer>
   )

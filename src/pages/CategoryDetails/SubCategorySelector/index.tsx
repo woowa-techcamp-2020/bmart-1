@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { getSubCategories } from 'src/apis'
+import { DEFAULTS } from 'src/constants'
 import { CategoryType } from 'src/types'
 import { CategoryDetailsContext } from '..'
 import './style.scss'
@@ -8,10 +9,8 @@ export type SubCategorySelectorProps = {
   category: CategoryType
 }
 
-const DEFAULT_CATEGORY = '채소'
-
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
-  category = DEFAULT_CATEGORY,
+  category = DEFAULTS.CATEGORY,
 }) => {
   const [subCategories, setSubCategories] = useState([])
   const { subCategory, setSubCategory } = useContext(CategoryDetailsContext)
