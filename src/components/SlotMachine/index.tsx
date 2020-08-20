@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import './style.scss'
 
 export type SlotMachineProps = {
-  itemList: string[]
+  itemList?: string[]
 }
 const NO_ACTION = 0
 const PULLING = 1
@@ -20,12 +20,18 @@ const ITEM_LIST = [
   '삼겹살',
   '천엽',
   '엄마는외계인',
+  '살려주세요',
   '짬뽕',
   '고려국시',
+  '살짝만 땡기면 바로 돌아감',
   '오호오호호',
+  '아직 아무것도 못했음',
 ]
 
-const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, children }) => {
+const SlotMachine: React.FC<SlotMachineProps> = ({
+  itemList = ITEM_LIST,
+  children,
+}) => {
   const action = useRef<number>(NO_ACTION)
   const height = useRef<number>(0)
   const pullable = useRef<HTMLDivElement>()
@@ -111,11 +117,17 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
 
   function animateMenu(offset, N) {
     menu.current.style.transform = `translatey(${offset}px)`
-    menu.current.style.opacity = `${offset < 0 ? (N - offset) / N : 1 - offset / N}`
+    menu.current.style.opacity = `${
+      offset < 0 ? (N - offset) / N : 1 - offset / N
+    }`
   }
 
   function animate(t) {
-    if (action.current === PULLING || action.current === RELEASING || action.current === RESETING) {
+    if (
+      action.current === PULLING ||
+      action.current === RELEASING ||
+      action.current === RESETING
+    ) {
       const y = parseFloat(getComputedStyle(slot.current).marginTop)
       const targetY = parseFloat(slot.current.style.marginTop)
       const isActionDone = almostSame(y, targetY)
