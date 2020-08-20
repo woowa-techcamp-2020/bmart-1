@@ -15,7 +15,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
 }) => {
   const selectRef = useRef<HTMLLIElement>()
   const [optionIdx, setOptionIdx] = useState(0)
-  const setOpened = useContext(DrawerContext)?.setOpened
+  const closeDrawer = useContext(DrawerContext)?.close
 
   useEffect(() => {
     const idx = options.indexOf(option)
@@ -31,7 +31,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
 
   function selectOption() {
     setOption(options[optionIdx])
-    setOpened && setOpened(false)
+    closeDrawer()
   }
 
   return (

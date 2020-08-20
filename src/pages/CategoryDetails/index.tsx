@@ -19,7 +19,7 @@ export const CategoryDetailsContext = createContext<{
   setSubCategory: DispatchByType<string>
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
-type DrawerType = 'category' | 'sortBy' | null
+type DrawerType = 'sortBy' | 'category' | null
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({
   category = DEFAULTS.CATEGORY,
@@ -30,8 +30,8 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({
   const [subCategory, setSubCategory] = useState(null)
 
   return (
-    <div className="category-details" onClick={() => openDrawer('category')}>
-      <div className="title">
+    <div className="category-details">
+      <div className="title" onClick={() => openDrawer('category')}>
         {category}
         <div className="title-icon" />
       </div>
