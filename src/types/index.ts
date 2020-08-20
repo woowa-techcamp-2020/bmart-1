@@ -1,6 +1,5 @@
-import { CATEGORIES } from 'src/constants'
-import { SORT_BY_TYPES } from './../constants/index'
+import { DEFAULTS } from 'src/constants'
 
-export type CategoryType = typeof CATEGORIES[number]
+export type CategoryType = typeof DEFAULTS.CATEGORIES[number]
 
-export type SortByType = typeof SORT_BY_TYPES[number]
+export type SortByType = typeof DEFAULTS.SORT_OPTIONS[number]

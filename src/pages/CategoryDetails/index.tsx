@@ -22,7 +22,7 @@ export const CategoryDetailsContext = createContext<{
 type DrawerType = 'sortBy' | 'category' | null
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({
-  category = DEFAULTS.CATEGORY,
+  category = DEFAULTS.CATEGORY as CategoryType,
   setCategory,
 }) => {
   const [drawerType, openDrawer] = useState<DrawerType>(null)
