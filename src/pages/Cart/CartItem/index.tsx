@@ -21,8 +21,6 @@ function shrinkCartItem(item: HTMLElement) {
   item.classList.add('removed')
 }
 
-// TODO: 할인 없을 때 가격 표시 핸들링
-
 const CartItem: React.FC<CartItemProps> = ({
   productInCart: {
     quantity,
@@ -55,7 +53,11 @@ const CartItem: React.FC<CartItemProps> = ({
           <div className="minus-plus">MinusPlus</div>
           <div className="price">
             <div className="price-detail">
-              <span className="price-detail-default">{addCommaToPrice(defaultPrice)}원</span>
+              {defaultPrice !== price ? (
+                <span className="price-detail-default">{addCommaToPrice(defaultPrice)}원</span>
+              ) : (
+                ''
+              )}
               <span className="price-detail-current">{addCommaToPrice(price)}원 </span>
               <span className="price-detail-quantity">x {quantity}</span>
             </div>
