@@ -49,7 +49,7 @@ addToCartRouter.post(
           },
         },
       })
-      res.status(STATUS_CODE.OK)
+      res.sendStatus(STATUS_CODE.OK)
     } catch (e) {
       console.error(e)
       res.status(STATUS_CODE.BAD_REQUEST).send({ message: e.message })
