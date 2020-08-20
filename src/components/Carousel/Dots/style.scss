@@ -10,7 +10,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    // background-color: var(--element-fill);
+    // background-color: var(--element);
     // padding: 5px 9px;
     // border-radius: 9999px;
     // transition: transform 100ms ease;
@@ -22,6 +22,7 @@
     .dot {
       $dot-color: #b0b0b0;
       $dot-size: 3px;
+
       width: $dot-size;
       height: $dot-size;
       background-color: $dot-color;

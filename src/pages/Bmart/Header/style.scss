@@ -1,0 +1,53 @@
+@use '~src/styles/design-system' as *;
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+
+  @include foundation-translucent;
+
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $header-logo-wrapper-height;
+
+    .logo-img {
+      position: relative;
+      top: var(--ordinary-space);
+      width: 100px;
+    }
+  }
+
+  .slide-tabs {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    height: $slide-tabs-height;
+    padding: $ordinary-space 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    .tab-button {
+      font-size: 20px;
+      font-weight: $bold;
+      color: #fff;
+      mix-blend-mode: difference;
+      line-height: 1;
+    }
+
+    .indicator {
+      position: absolute;
+      left: 0;
+      background-color: var(--distinct);
+      height: $slide-tabs-height - $ordinary-space * 2;
+      width: 100px;
+      border-radius: 9999px;
+    }
+  }
+}

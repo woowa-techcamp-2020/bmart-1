@@ -1,14 +1,17 @@
-import React from 'react'
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
-import { Story, Meta } from '@storybook/react/types-6-0'
-
-import Logo, { LogoProps } from '../components/Logo'
+import { Meta, Story } from '@storybook/react/types-6-0'
+import React from 'react'
+import FullNameLogoAlt, {
+  FullNameLogoAltProps,
+} from '../components/FullNameLogoAlt'
 
 export default {
   title: 'Example/Logo',
-  component: Logo,
+  component: FullNameLogoAlt,
 } as Meta
 
-const Template: Story<LogoProps> = (args) => <Logo {...args} />
+const Template: Story<FullNameLogoAltProps> = (args) => (
+  <FullNameLogoAlt {...args} />
+)
 
 export const BaseLogo = Template.bind({})
