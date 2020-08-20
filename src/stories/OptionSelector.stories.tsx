@@ -13,16 +13,6 @@ export default {
     options: DEFAULTS.SORT_OPTIONS.slice(),
     option: null,
   },
-  argTypes: {
-    optionIdx: {
-      control: {
-        type: 'range',
-        min: 0,
-        max: DEFAULTS.SORT_OPTIONS.length - 1,
-        step: 1,
-      },
-    },
-  },
 } as Meta
 
 const Template: Story<OptionSelectorProps> = (args) => {
