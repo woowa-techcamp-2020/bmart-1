@@ -10,6 +10,7 @@
     "@types/jest": "^24.9.1",
     "@types/react": "^16.9.45",
     "@types/react-dom": "^16.9.8",
+    "app-root-path": "^3.0.0",
     "classnames": "^2.2.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -24,6 +25,12 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
+    "pm2:start": "if pm2 show bmart ; then npm run pm2:stop && npm run pm2:delete && npm run pm2:start ; else pm2 start build/src/main.js --name \"bmart\" ; fi",
+    "pm2:restart": "if pm2 show bmart ; then pm2 restart bmart ; else echo 'No PM2 instance for bmart' ; fi",
+    "pm2:stop": "if pm2 show bmart ; then pm2 stop bmart ; else echo 'No PM2 instance for bmart' ; fi",
+    "pm2:delete": "if pm2 show bmart ; then pm2 delete bmart ; else echo 'No PM2 instance for bmart' ; fi",
+    "pm2:reboot": "npm install && npm run build && npm run pm2:stop && npm run pm2:delete && npm run pm2:start",
+    "start": "node src/server/build/server/main.js",
     "dev": "npm run prisma:generate && npm-run-all --parallel dev:client dev:server",
     "build": "npm run build:client && npm run build:server",
     "dev:client": "cross-env PORT=4000 react-scripts start",
@@ -63,6 +70,7 @@
     "@storybook/node-logger": "^6.0.10",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.10",
+    "@types/app-root-path": "^1.2.4",
     "@types/classnames": "^2.2.10",
     "@types/express": "^4.17.7",
     "@types/jsonwebtoken": "^8.5.0",
