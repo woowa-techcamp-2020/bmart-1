@@ -9,19 +9,41 @@ import './style.scss'
 export type BmartProps = unknown
 
 const Bmart: React.FC<BmartProps> = (props) => {
-  const slidePages = useRef<HTMLDivElement>()
+  const slidePagesWrapper = useRef<HTMLDivElement>()
 
   useEffect(() => {
     const indicator = document.querySelector<HTMLElement>('.indicator')
+    const header = document.querySelector<HTMLElement>('.header')
+    const logoWrapper = header.querySelector<HTMLElement>('.logo-wrapper')
 
-    const tabButtonLeftsAndWidths = Array.from(
+    const slidePages = Array.from(
+      document.querySelectorAll<HTMLElement>('.slide-page')
+    )
+    const tabButtons = Array.from(
       document.querySelectorAll<HTMLElement>('.tab-button')
-    ).map((tabButton) => ({
+    )
+    const tabButtonLeftsAndWidths = tabButtons.map((tabButton) => ({
       left: tabButton.offsetLeft,
       width: tabButton.clientWidth,
     }))
 
     function interpolate(
+      prev: number,
+      next: number,
+      scrollLeft: number,
+      singlePageWidth: number,
+      index: number,
+      extra = 0
+    ): number {
+      return (
+        prev +
+        (scrollLeft - singlePageWidth * index) *
+          ((next - prev) / singlePageWidth) +
+        extra
+      )
+    }
+
+    function interpolateLeftsAndWidths(
       pagesCount: number,
       leftsAndWidths: {
         left: number
@@ -42,19 +64,43 @@ const Bmart: React.FC<BmartProps> = (props) => {
           ? calculatedIndex - 1
           : calculatedIndex
 
-      const interpolatedLeft =
-        leftsAndWidths[index].left +
-        (scrollLeft - singlePageWidth * index) *
-          ((leftsAndWidths[index + 1].left - leftsAndWidths[index].left) /
-            singlePageWidth) -
-        15
+      const interpolatedLeft = interpolate(
+        leftsAndWidths[index].left,
+        leftsAndWidths[index + 1].left,
+        scrollLeft,
+        singlePageWidth,
+        index,
+        -15
+      )
 
-      const interpolatedWidth =
-        leftsAndWidths[index].width +
-        (scrollLeft - singlePageWidth * index) *
-          ((leftsAndWidths[index + 1].width - leftsAndWidths[index].width) /
-            singlePageWidth) +
+      const interpolatedWidth = interpolate(
+        leftsAndWidths[index].width,
+        leftsAndWidths[index + 1].width,
+        scrollLeft,
+        singlePageWidth,
+        index,
         30
+      )
+
+      const interpolatedHeaderY = interpolate(
+        slidePages[index].querySelector('.sp-sentinel').getBoundingClientRect()
+          .top < 0
+          ? 0
+          : logoWrapper.clientHeight,
+        slidePages[index + 1]
+          .querySelector('.sp-sentinel')
+          .getBoundingClientRect().top < 0
+          ? 0
+          : logoWrapper.clientHeight,
+        scrollLeft,
+        singlePageWidth,
+        index
+      )
+
+      header.style.transition = ''
+      header.style.transform = `translate3d(0, ${
+        -logoWrapper.clientHeight + interpolatedHeaderY
+      }px, 0)`
 
       return {
         left: interpolatedLeft,
@@ -63,22 +109,18 @@ const Bmart: React.FC<BmartProps> = (props) => {
     }
 
     function processInterpolation() {
-      const interpolated = interpolate(
-        3,
+      const interpolated = interpolateLeftsAndWidths(
+        slidePages.length,
         tabButtonLeftsAndWidths,
-        slidePages.current.scrollWidth,
-        slidePages.current.scrollLeft
+        slidePagesWrapper.current.scrollWidth,
+        slidePagesWrapper.current.scrollLeft
       )
 
       indicator.style.left = `${interpolated.left}px`
       indicator.style.width = `${interpolated.width}px`
     }
 
-    function onScroll() {
-      processInterpolation()
-    }
-
-    slidePages.current.addEventListener('scroll', onScroll)
+    slidePagesWrapper.current.addEventListener('scroll', processInterpolation)
 
     // Init
     processInterpolation()
@@ -87,7 +129,7 @@ const Bmart: React.FC<BmartProps> = (props) => {
   return (
     <div className="bmart">
       <SlideTabs />
-      <div className="slide-pages" ref={slidePages}>
+      <div className="slide-pages" ref={slidePagesWrapper}>
         <SlidePage>
           <Home />
         </SlidePage>
