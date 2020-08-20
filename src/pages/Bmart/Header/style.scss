@@ -48,6 +48,15 @@
       height: $slide-tabs-height - $ordinary-space * 2;
       width: 100px;
       border-radius: 9999px;
+      transition: transform 500ms ease, opacity 500ms ease;
+      transition-delay: 200ms;
+      opacity: 0;
+      transform: scale(1.2);
+
+      &.ready {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
   }
 }

@@ -125,6 +125,7 @@ const Bmart: React.FC<BmartProps> = (props) => {
 
     // Init
     processInterpolation()
+    indicator.classList.add('ready')
   }, [])
 
   return (
