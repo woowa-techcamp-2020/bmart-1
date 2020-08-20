@@ -4,12 +4,12 @@ export const ERROR_MSG = {
   BAD_REQUEST: '잘못된 요청 데이터 입니다.',
   INTERNAL_ERROR: '저희의 잘못입니다.',
 
-  NO_PRODUCT = '존재하지 않는 상품입니다.',
-  NO_PRODUCT_IN_CART = '장바구니에 존재하지 않는 상품입니다.',
-  NO_ADDRESS = '존재하지 않는 주소입니다.',
-  EMPTY_ADDRESS = '빈 주소를 입력할 수 없습니다.',
-  NOT_YOUR_ADDRESS = '수정하거나 삭제할 수 없는 주소입니다.',
-  INVALID_TOPIC = '토픽이 유효하지 않거나 존재하지 않습니다.',
+  NO_PRODUCT: '존재하지 않는 상품입니다.',
+  NO_PRODUCT_IN_CART: '장바구니에 존재하지 않는 상품입니다.',
+  NO_ADDRESS: '존재하지 않는 주소입니다.',
+  EMPTY_ADDRESS: '빈 주소를 입력할 수 없습니다.',
+  NOT_YOUR_ADDRESS: '수정하거나 삭제할 수 없는 주소입니다.',
+  INVALID_TOPIC: '토픽이 유효하지 않거나 존재하지 않습니다.',
 }
 
 export const STATUS_CODE = {
@@ -24,7 +24,7 @@ export const STATUS_CODE = {
 export const CONSTRAINT = {
   MAX_ADDRESS_LENGTH: 300,
   MIN_QUANTITY: 1,
-  LONG_PRESS_DURATION = 400,
+  LONG_PRESS_DURATION: 400,
 }
 
 export const PAGINATION = {
