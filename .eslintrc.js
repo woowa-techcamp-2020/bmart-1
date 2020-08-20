@@ -1,14 +1,28 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: ['react-app', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: [
+    'plugin:prettier/recommended',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+  ],
   plugins: ['@typescript-eslint'],
   rules: {
+    'react/prop-types': [0],
     'react-hooks/exhaustive-deps': [0],
     'padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: '*', next: 'return' },
-      { blankLine: 'always', prev: ['const', 'let', 'var', 'function'], next: '*' },
-      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+      {
+        blankLine: 'always',
+        prev: ['const', 'let', 'var', 'function'],
+        next: '*',
+      },
+      {
+        blankLine: 'any',
+        prev: ['const', 'let', 'var'],
+        next: ['const', 'let', 'var'],
+      },
       { blankLine: 'always', prev: 'import', next: '*' },
       { blankLine: 'any', prev: 'import', next: 'import' },
       { blankLine: 'always', prev: 'directive', next: '*' },
