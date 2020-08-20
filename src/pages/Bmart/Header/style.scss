@@ -25,6 +25,8 @@
   .slide-tabs {
     position: relative;
     width: 100%;
+    max-width: 600px;
+    margin: auto;
     height: $slide-tabs-height;
     padding: $ordinary-space 0;
     display: flex;
