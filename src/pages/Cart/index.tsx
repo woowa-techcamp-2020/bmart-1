@@ -21,8 +21,6 @@ function getTotalAmount(products: ProductsInCart) {
   return totalAmount
 }
 
-// TODO: 장바구니에 상품이 없을 때 핸들링
-
 const Cart: React.FC<CartProps> = (props) => {
   const [productsInCart, setProductsInCart] = useState([])
   const [totalAmount, setTotalAmount] = useState(0)
@@ -50,19 +48,25 @@ const Cart: React.FC<CartProps> = (props) => {
           <div className="cart-header-icon">{<ResizableCartIcon />}</div>
           <div className="cart-header-title">장바구니</div>
         </div>
-        <div className="cart-items">
-          {productsInCart.map((product) => (
-            <CartItem
-              key={product.productId}
-              productInCart={product}
-              onDelete={loadProductsInCart}
-            />
-          ))}
-        </div>
-        <div className="cart-footer">
-          <div className="cart-footer-total-price">{addCommaToPrice(totalAmount)}원</div>
-          <div className="cart-footer-confirm-button">결제하기</div>
-        </div>
+        {productsInCart.length > 0 ? (
+          <>
+            <div className="cart-items">
+              {productsInCart.map((product) => (
+                <CartItem
+                  key={product.productId}
+                  productInCart={product}
+                  onDelete={loadProductsInCart}
+                />
+              ))}
+            </div>
+            <div className="cart-footer">
+              <div className="cart-footer-total-price">{addCommaToPrice(totalAmount)}원</div>
+              <div className="cart-footer-confirm-button">결제하기</div>
+            </div>
+          </>
+        ) : (
+          <div className="cart-empty">텅</div>
+        )}
       </CartContext.Provider>
     </div>
   )
