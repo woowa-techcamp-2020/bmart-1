@@ -62,3 +62,10 @@ export type ToggleJjimRequestBody = {
 }
 
 export type GetSubCategoriesApiResponse = string[] | ErrorResponse
+
+export type PatchProductQuantityInCartApiRequestBody = {
+  productId: number
+  quantity: number
+}
+
+export type PatchProductQuantityInCartApiResponse = Cart | ErrorResponse

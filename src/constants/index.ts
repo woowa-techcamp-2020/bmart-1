@@ -5,6 +5,7 @@ export enum ERROR_MSG {
   INTERNAL_ERROR = '저희의 잘못입니다.',
 
   NO_PRODUCT = '존재하지 않는 상품입니다.',
+  NO_PRODUCT_IN_CART = '장바구니에 존재하지 않는 상품입니다.',
   NO_ADDRESS = '존재하지 않는 주소입니다.',
   EMPTY_ADDRESS = '빈 주소를 입력할 수 없습니다.',
   NOT_YOUR_ADDRESS = '수정하거나 삭제할 수 없는 주소입니다.',
