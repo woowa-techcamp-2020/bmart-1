@@ -9,6 +9,7 @@ const PULLING = 1
 const RELEASING = 2
 const WAITING = 3
 const RESETING = 4
+const MIN_PULL_LENGTH = 50
 const MAX_PULL_LENGTH = 600
 const SHOW_DURATION = 800
 const ITEM_LIST = [
@@ -34,12 +35,18 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
   const startY = useRef<number>(0)
   const resetAt = useRef<number>(0)
   const slotIdx = useRef<number>(0)
+  const animateRef = useRef<number>(null)
 
   useEffect(() => {
     height.current = slot.current.getBoundingClientRect().height
     slot.current.style.transform = `translatey(${-height.current}px)`
     content.current.style.marginTop = `${-height.current}px`
     menu.current.innerText = pickRandomItem()
+    animateRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      cancelAnimationFrame(animateRef.current)
+    }
   }, [])
 
   function pickRandomItem() {
@@ -47,7 +54,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
   }
 
   function onCursorDown(y) {
-    if (pullable.current.scrollTop !== 0) return
+    if (action.current !== NO_ACTION) return
 
     action.current = PULLING
     startY.current = y
@@ -57,8 +64,13 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
   function onCursorUp(y) {
     if (action.current !== PULLING) return
 
-    action.current = RELEASING
-    moveSlotDown(height.current)
+    if (Math.abs(y - startY.current) < MIN_PULL_LENGTH) {
+      action.current = RESETING
+      moveSlotDown(0)
+    } else {
+      action.current = RELEASING
+      moveSlotDown(height.current)
+    }
   }
 
   function onCursorMove(y) {
@@ -103,9 +115,10 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
   }
 
   function animate(t) {
-    if (action.current === PULLING || action.current === RELEASING) {
+    if (action.current === PULLING || action.current === RELEASING || action.current === RESETING) {
       const y = parseFloat(getComputedStyle(slot.current).marginTop)
       const targetY = parseFloat(slot.current.style.marginTop)
+      const isActionDone = almostSame(y, targetY)
       const NN = height.current,
         N = NN / 2
       const newIdx = Math.floor((y + N) / NN)
@@ -117,9 +130,15 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
 
       animateMenu(((y + N) % NN) - N, N)
 
-      if (action.current === RELEASING && almostSame(y, targetY)) {
-        action.current = WAITING
-        resetAt.current = t + SHOW_DURATION
+      if (isActionDone) {
+        if (action.current === RELEASING) {
+          action.current = WAITING
+          resetAt.current = t + SHOW_DURATION
+        }
+
+        if (action.current === RESETING) {
+          action.current = NO_ACTION
+        }
       }
     }
 
@@ -130,8 +149,6 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
 
     window.requestAnimationFrame(animate)
   }
-
-  window.requestAnimationFrame(animate)
 
   return (
     <div className="slot-machine">
@@ -146,8 +163,10 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, childre
         onMouseMove={({ clientY }) => onCursorMove(clientY)}
       >
         <div className="slot" ref={slot}>
-          <span className="menu" ref={menu} />
-          <span>땡겨요</span>
+          <div className="slot-body">
+            <span className="menu" ref={menu} />
+            <span>땡겨요</span>
+          </div>
         </div>
         <div className="content" ref={content}>
           {children}

@@ -1,10 +1,19 @@
 .slot-machine {
+  font-size: 22px;
+  font-weight: 600px;
   .pullable {
     overflow: scroll;
   }
-  .virtual {
+  .slot {
     display: inline-block;
+    width: 100%;
     margin-top: 0px;
+    .slot-body {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
   }
   .menu {
     display: inline-block;
