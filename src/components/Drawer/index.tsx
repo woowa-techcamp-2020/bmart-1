@@ -1,5 +1,4 @@
 import React, { createContext, RefObject, useEffect, useRef } from 'react'
-import { DispatchByType } from 'src/pages/CategoryDetails'
 import './style.scss'
 
 export type DrawerProps = {
@@ -8,11 +7,14 @@ export type DrawerProps = {
 }
 
 export const DrawerContext = createContext<{
-  isOpened: boolean
-  setOpened: DispatchByType<boolean>
+  close: () => void
 }>(undefined)
 
-const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened }) => {
+const Drawer: React.FC<DrawerProps> = ({
+  isOpened = true,
+  children,
+  setOpened,
+}) => {
   const bodyRef = useRef<HTMLDivElement>()
   const backgroundRef = useRef<HTMLDivElement>()
 
@@ -54,26 +56,34 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
     <>
       <div
         className="drawer"
-        onMouseMove={({ clientY }) => onCursorMove(clientY, isHolding, startY, bodyRef)}
-        onTouchMove={(event) => onCursorMove(getFirstTouchY(event), isHolding, startY, bodyRef)}
+        onMouseMove={({ clientY }) =>
+          onCursorMove(clientY, isHolding, startY, bodyRef)
+        }
+        onTouchMove={(event) =>
+          onCursorMove(getFirstTouchY(event), isHolding, startY, bodyRef)
+        }
         onMouseUp={({ clientY }) => handleCursorUp(clientY)}
         onTouchEnd={(event) => handleCursorUp(getFirstTouchY(event))}
       >
         <div
           className="background"
           ref={backgroundRef}
-          onClick={() => setOpened && setOpened(false)}
+          onClick={() => setOpened(false)}
         />
         <div className={'body'} ref={bodyRef}>
           <div
             className="holder"
-            onTouchStart={(event) => onCursorDown(getFirstTouchY(event), isHolding, startY)}
-            onMouseDown={({ clientY }) => onCursorDown(clientY, isHolding, startY)}
+            onTouchStart={(event) =>
+              onCursorDown(getFirstTouchY(event), isHolding, startY)
+            }
+            onMouseDown={({ clientY }) =>
+              onCursorDown(clientY, isHolding, startY)
+            }
           >
             <div className="handle" />
           </div>
           <div className="container">
-            <DrawerContext.Provider value={{ isOpened, setOpened }}>
+            <DrawerContext.Provider value={{ close: setOpened.bind({}, null) }}>
               {children}
             </DrawerContext.Provider>
           </div>

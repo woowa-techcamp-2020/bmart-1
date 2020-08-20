@@ -7,6 +7,8 @@ export default {
   component: DiscountLabel,
 } as Meta
 
-const Template: Story<DiscountLabelProps> = (args) => <DiscountLabel {...args} />
+const Template: Story<DiscountLabelProps> = (args) => (
+  <DiscountLabel {...args} />
+)
 
 export const DiscountLabelTest = Template.bind({})

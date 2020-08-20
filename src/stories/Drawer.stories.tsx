@@ -52,13 +52,13 @@ const OptionsDrawerTemplate: Story<DrawerProps> = (args) => {
   useEffect(() => {
     setOpened(args.isOpened)
   }, [args.isOpened])
-  const [optionIdx, setOptionIdx] = useState(0)
+  const [option, setOption] = useState(null)
 
   return (
     <Drawer isOpened={isOpened} setOpened={setOpened}>
       <OptionSelector
-        optionIdx={optionIdx}
-        setOptionIdx={setOptionIdx}
+        option={option}
+        setOption={setOption}
         options={Array.from({ length: 30 }, (_, i) => String(i))}
       ></OptionSelector>
     </Drawer>
@@ -68,7 +68,7 @@ const OptionsDrawerTemplate: Story<DrawerProps> = (args) => {
 export const withOptionSelectors = OptionsDrawerTemplate.bind({})
 
 const SortOptionsDrawerTemplate: Story<DrawerProps> = (args) => {
-  const [optionIdx, setOptionIdx] = useState(0)
+  const [option, setOption] = useState(null)
   const [isOpened, setOpened] = useState(false)
 
   useEffect(() => {
@@ -78,8 +78,8 @@ const SortOptionsDrawerTemplate: Story<DrawerProps> = (args) => {
   return (
     <Drawer isOpened={isOpened} setOpened={setOpened}>
       <OptionSelector
-        optionIdx={optionIdx}
-        setOptionIdx={setOptionIdx}
+        option={option}
+        setOption={setOption}
         options={DEFAULTS.SORT_OPTIONS.slice()}
       ></OptionSelector>
     </Drawer>

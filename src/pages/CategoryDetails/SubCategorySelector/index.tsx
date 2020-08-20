@@ -1,29 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react'
+import $ from 'classnames'
+import React, { useEffect, useState } from 'react'
 import { getSubCategories } from 'src/apis'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType } from 'src/types'
-import { CategoryDetailsContext } from '..'
 import './style.scss'
 
 export type SubCategorySelectorProps = {
   category: CategoryType
+  subCategory?: string
+  setSubCategory: (subCategory: string) => void
 }
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
   category = DEFAULTS.CATEGORY,
+  subCategory = null,
+  setSubCategory,
 }) => {
   const [subCategories, setSubCategories] = useState([])
-  const { subCategory, setSubCategory } = useContext(CategoryDetailsContext)
 
   useEffect(() => {
-    loadSubCategories(category)
+    setSubCategory(null)
+    setSubCategories([])
   }, [category])
 
-  async function loadSubCategories(category: string) {
+  useEffect(() => {
+    loadSubCategories()
+  }, [subCategory])
+
+  async function loadSubCategories() {
     const newSubCategories = await getSubCategories(category)
 
     setSubCategories(newSubCategories)
-    setSubCategory(newSubCategories[0])
+
+    if (subCategory === null) setSubCategory(newSubCategories[0])
   }
 
   return (
@@ -31,7 +40,7 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
       {subCategories.map((x) => (
         <span
           key={x}
-          className={x === subCategory ? 'active' : null}
+          className={$({ active: x === subCategory })}
           onClick={() => setSubCategory(x)}
         >
           {x}&nbsp;

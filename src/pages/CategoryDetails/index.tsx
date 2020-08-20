@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import Drawer from 'src/components/Drawer'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
@@ -26,54 +19,43 @@ export const CategoryDetailsContext = createContext<{
   setSubCategory: DispatchByType<string>
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
+type DrawerType = 'sortBy' | 'category' | null
 
-export const CategoryDetailsContextProvider: React.FC = ({ children }) => {
-  const [subCategory, setSubCategory] = useState<CategoryType>(DEFAULTS.CATEGORY)
-  const [sortBy, setSortBy] = useState<SortByType>(DEFAULTS.OPTION)
-
-  return (
-    <CategoryDetailsContext.Provider value={{ subCategory, setSubCategory, sortBy, setSortBy }}>
-      {children}
-    </CategoryDetailsContext.Provider>
-  )
-}
-
-export const CombineProvider = (...Providers: React.FC[]) => (App: React.FC) =>
-  Providers.reduce((acc, Provider) => <Provider>{acc}</Provider>, <App />)
-
-const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = DEFAULTS.CATEGORY }) => {
-  const { subCategory } = useContext(CategoryDetailsContext)
-  const [isOpened, setOpened] = useState(false)
-  const [optionIdx, setOptionIdx] = useState(0)
-
-  useEffect(() => {}, [subCategory])
+const CategoryDetails: React.FC<CategoryDetailsProps> = ({
+  category = DEFAULTS.CATEGORY,
+  setCategory,
+}) => {
+  const [drawerType, openDrawer] = useState<DrawerType>(null)
+  const [sortBy, setSortBy] = useState<string>(DEFAULTS.OPTION)
+  const [subCategory, setSubCategory] = useState(null)
 
   return (
     <div className="category-details">
-      <div className="title">
+      <div className="title" onClick={() => openDrawer('category')}>
         {category}
         <div className="title-icon" />
       </div>
-      <SubCategorySelector category={category} />
-      <div className="sort-by" onClick={() => setOpened(true)}>
+      <SubCategorySelector
+        category={category}
+        subCategory={subCategory}
+        setSubCategory={setSubCategory}
+      />
+      <div className="sort-by" onClick={() => openDrawer('sortBy')}>
         <div className="sort-by-icon"></div>
-        {DEFAULTS.SORT_OPTIONS[optionIdx]}
+        {sortBy}
       </div>
-      <Drawer isOpened={isOpened} setOpened={setOpened}>
+      <Drawer isOpened={drawerType !== null} setOpened={() => openDrawer(null)}>
         <OptionSelector
-          options={DEFAULTS.SORT_OPTIONS.slice()}
-          optionIdx={optionIdx}
-          setOptionIdx={setOptionIdx}
+          options={
+            drawerType === 'category'
+              ? DEFAULTS.CATEGORIES.slice()
+              : DEFAULTS.SORT_OPTIONS.slice()
+          }
+          setOption={drawerType === 'category' ? setCategory : setSortBy}
         ></OptionSelector>
       </Drawer>
     </div>
   )
 }
 
-export default (props: CategoryDetailsProps) => {
-  return (
-    <CategoryDetailsContextProvider>
-      <CategoryDetails {...props}></CategoryDetails>
-    </CategoryDetailsContextProvider>
-  )
-}
+export default CategoryDetails
