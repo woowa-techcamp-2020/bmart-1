@@ -6,11 +6,26 @@
   --bmart-light-blue: #f3f3f5;
   --white: #fff;
   --black: #000;
+  --soft-black: #333;
+
+  // Spaces
+  --ordinary-space: 15px;
 
   // Theme
   --element-fill: var(--bmart-light-blue);
+  --element-translucent: rgba(255, 255, 255, 0.5);
   --distinct: var(--black);
   --inversion: var(--white);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Theme
+    --element-fill: var(--soft-black);
+    --element-translucent: rgba(0, 0, 0, 0.3);
+    --distinct: var(--white);
+    --inversion: var(--black);
+  }
 }
 
 html {
@@ -28,6 +43,8 @@ body {
     sans-serif;
   height: 100%;
   overflow: hidden;
+  background-color: var(--inversion);
+  color: var(--distinct);
 }
 
 * {
