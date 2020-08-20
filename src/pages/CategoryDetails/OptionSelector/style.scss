@@ -1,0 +1,37 @@
+body {
+  overflow: hidden;
+}
+.option-selector {
+  $select-gap: 25px;
+  font-style: PAYW Pro;
+  user-select: none;
+  font-weight: 600;
+  font-size: 17px;
+  ul {
+    position: relative;
+    padding: 0px;
+    padding-bottom: 17px;
+    margin: 0;
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 35px;
+      border-radius: 10px;
+      list-style: none;
+      line-height: 21px;
+      color: white;
+      mix-blend-mode: difference;
+
+      &.select {
+        position: absolute;
+        width: calc(100% - #{$select-gap * 2});
+        left: $select-gap;
+
+        background-color: #e2e2e2;
+        transition-duration: 0.35s;
+        transition-timing-function: ease-in-out;
+      }
+    }
+  }
+}
