@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Header from './Header'
 import Home from './Home'
@@ -133,17 +133,102 @@ const Bmart: React.FC<BmartProps> = () => {
       indicator.style.width = `${interpolated.width}px`
     }
 
-    slidePagesWrapper.current.addEventListener('scroll', processInterpolation)
+    // slidePagesWrapper.current.addEventListener('scroll', processInterpolation)
 
     // Init
     processInterpolation()
     indicator.classList.add('ready')
   }, [])
 
+  const [currentPageIndex, setCurrentPageIndex] = useState(0)
+
+  useEffect(() => {
+    slidePagesWrapper.current.addEventListener('touchstart', (e) => {
+      if (
+        e.target instanceof HTMLElement &&
+        !e.target.classList.contains('slide-page')
+      ) {
+        return
+      }
+
+      let isVerticalScrollLocked = false
+
+      const touch = e.touches[0]
+
+      const initTime = new Date().getTime()
+
+      const initX = touch.pageX
+      const initY = touch.pageY
+
+      let diffX = 0
+      let diffY = 0
+
+      function onTouchMove(e: TouchEvent) {
+        const touch = e.touches[0]
+
+        const newX = touch.pageX
+        const newY = touch.pageY
+
+        diffX = newX - initX
+        diffY = newY - initY
+
+        const slope = Math.abs(diffY / diffX)
+
+        if (slope < 0.7 || isVerticalScrollLocked) {
+          // Horizontal scroll
+          isVerticalScrollLocked = true
+
+          slidePagesWrapper.current.style.transition = ``
+          slidePagesWrapper.current.style.transform = `translateX(${diffX}px)`
+
+          e.preventDefault()
+
+          return
+        } else {
+          // Vertical scroll
+          slidePagesWrapper.current.removeEventListener(
+            'touchmove',
+            onTouchMove
+          )
+        }
+      }
+
+      slidePagesWrapper.current.addEventListener('touchmove', onTouchMove)
+
+      function onTouchEnd() {
+        const diffTime = new Date().getTime() - initTime
+
+        const velocity = Math.abs(diffX / diffTime)
+
+        slidePagesWrapper.current.removeEventListener('touchmove', onTouchMove)
+        window.removeEventListener('touchend', onTouchEnd)
+
+        const transitionTime = 120 / velocity
+
+        slidePagesWrapper.current.style.transition = `transform ${transitionTime}ms cubic-bezier(0, 0, 0.23, 1)`
+
+        if (diffX < 0) {
+          setCurrentPageIndex((index) => index + 1)
+        } else if (diffX > 0) {
+          console.log('here')
+          setCurrentPageIndex((index) => index - 1)
+        }
+      }
+
+      window.addEventListener('touchend', onTouchEnd)
+    })
+  }, [])
+
   return (
     <div className="bmart">
       <Header />
-      <div className="slide-pages" ref={slidePagesWrapper}>
+      <div
+        className="slide-pages"
+        ref={slidePagesWrapper}
+        style={{
+          transform: `translateX(-${100 * currentPageIndex}%)`,
+        }}
+      >
         <SlidePage pageName="home">
           <Home />
         </SlidePage>
