@@ -30,7 +30,12 @@ export type SlidePageProps = {
       }
     })
 
-    observer.observe(spSentinel.current)
+    function observeAll() {
+      observer.observe(spVerticalScrollSentinel.current)
+      observer.observe(spHorizontalScrollSentinel.current)
+    }
+
+    observeAll()
   }, [])
 
   return (
