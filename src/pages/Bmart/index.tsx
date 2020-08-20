@@ -1,15 +1,27 @@
 import React, { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
 import Sale from './Sale'
-import SlidePage from './SlidePage'
+import SlidePage, { spVerticalScrollSentinelClassName } from './SlidePage'
 import './style.scss'
 
 export type BmartProps = unknown
 
-const Bmart: React.FC<BmartProps> = (props) => {
+const Bmart: React.FC<BmartProps> = () => {
   const slidePagesWrapper = useRef<HTMLDivElement>()
+
+  const location = useLocation()
+
+  useEffect(() => {
+    const path = location.pathname.replace('/', '')
+    const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+
+    slidePagesWrapper.current.scrollTo({
+      left: (slidePagesWrapper.current.scrollWidth / 3) * index,
+    })
+  }, [location])
 
   useEffect(() => {
     const indicator = document.querySelector<HTMLElement>('.indicator')
@@ -83,12 +95,13 @@ const Bmart: React.FC<BmartProps> = (props) => {
       )
 
       const interpolatedHeaderY = interpolate(
-        slidePages[index].querySelector('.sp-sentinel').getBoundingClientRect()
-          .top < 0
+        slidePages[index]
+          .querySelector(`.${spVerticalScrollSentinelClassName}`)
+          .getBoundingClientRect().top < 0
           ? 0
           : logoWrapper.clientHeight,
         slidePages[index + 1]
-          .querySelector('.sp-sentinel')
+          .querySelector(`.${spVerticalScrollSentinelClassName}`)
           .getBoundingClientRect().top < 0
           ? 0
           : logoWrapper.clientHeight,
@@ -124,19 +137,20 @@ const Bmart: React.FC<BmartProps> = (props) => {
 
     // Init
     processInterpolation()
+    indicator.classList.add('ready')
   }, [])
 
   return (
     <div className="bmart">
       <Header />
       <div className="slide-pages" ref={slidePagesWrapper}>
-        <SlidePage>
+        <SlidePage pageName="home">
           <Home />
         </SlidePage>
-        <SlidePage>
+        <SlidePage pageName="sale">
           <Sale />
         </SlidePage>
-        <SlidePage>
+        <SlidePage pageName="me">
           <Me />
         </SlidePage>
       </div>
