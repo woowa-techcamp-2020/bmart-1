@@ -17,7 +17,7 @@ getProductsByCategoryRouter.get(
   '/products-by-category',
   [
     query('category').exists({ checkFalsy: true }),
-    query('page').optional().isInt(),
+    query('page').optional().isString(),
     query('sortBy').optional().isString(),
     query('direction').optional().isString(),
     requestValidator(),
@@ -26,7 +26,8 @@ getProductsByCategoryRouter.get(
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
   ) => {
-    const { category, page, sortBy, direction } = req.query
+    const { category, sortBy, direction } = req.query
+    const page = req.query.page ? parseInt(req.query.page) : null
 
     const orderByOptions = {
       orderBy: {
