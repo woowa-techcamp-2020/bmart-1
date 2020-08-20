@@ -23,6 +23,7 @@ export const STATUS_CODE = {
 export const CONSTRAINT = {
   MAX_ADDRESS_LENGTH: 300,
   MIN_QUANTITY: 1,
+  LONG_PRESS_DURATION = 400,
 }
 
 export const PAGINATION = {
