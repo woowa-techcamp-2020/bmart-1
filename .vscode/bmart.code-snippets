@@ -31,5 +31,10 @@
     "scope": "typescriptreact",
     "prefix": "cnn",
     "body": "className={classNames($0)}"
+  },
+  "design system": {
+    "scope": "scss",
+    "prefix": "sys",
+    "body": "@use '~src/styles/design-system' as *;"
   }
 }

@@ -1,4 +1,4 @@
-<h1 align="center">⚡️ 𝑩 𝒎𝒂𝒓𝒕 ⚡</h1>
+![GitHub Banner (3)](https://user-images.githubusercontent.com/19797697/90615358-fab55f80-e246-11ea-8a33-1d7495c7ec55.png)
 
 ## Resources
 
@@ -28,7 +28,7 @@ This variable will be used during prisma cli is running.
 
 > For more information, checkout sample `.env.sample` files in each directory.
 
-## npm Scripts
+## npm scripts
 
 ### Install dependencies
 
@@ -52,6 +52,12 @@ npm run build
 
 ```zsh
 npm run typecheck
+```
+
+### Lint
+
+```zsh
+npm run lint
 ```
 
 ### Prisma

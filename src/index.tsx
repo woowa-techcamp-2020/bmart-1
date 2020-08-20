@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import smoothscroll from 'smoothscroll-polyfill'
 import App from './App'
-import './index.css'
 import * as serviceWorker from './serviceWorker'
 import './styles/base.scss'
 

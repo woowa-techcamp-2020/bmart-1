@@ -1,18 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Logo from './components/Logo'
-import SlideTabs from './components/SlideTabs'
+import './app.style.scss'
 import Bmart from './pages/Bmart'
 import Jjims from './pages/Jjims'
 
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
-      <div className="App">
-        <div>
-          <Logo />
-          <SlideTabs />
-        </div>
+      <div className="app">
         <Switch>
           <Route path="/" exact>
             <Bmart />
