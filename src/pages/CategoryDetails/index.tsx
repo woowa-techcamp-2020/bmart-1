@@ -20,21 +20,6 @@ export const CategoryDetailsContext = createContext<{
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
 
-export const CategoryDetailsContextProvider: React.FC = ({ children }) => {
-  const [subCategory, setSubCategory] = useState<CategoryType>(
-    DEFAULTS.CATEGORY
-  )
-  const [sortBy, setSortBy] = useState<SortByType>(DEFAULTS.OPTION)
-
-  return (
-    <CategoryDetailsContext.Provider
-      value={{ subCategory, setSubCategory, sortBy, setSortBy }}
-    >
-      {children}
-    </CategoryDetailsContext.Provider>
-  )
-}
-
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({
   category = DEFAULTS.CATEGORY,
 }) => {
