@@ -26,7 +26,7 @@ export type GetJjimsApiResponse = Jjim[] | ErrorResponse
 
 export type GetProductsByCategoryApiRequestQuery = {
   category: string
-  page?: number
+  page?: string
   sortBy?: string
   direction?: 'asc' | 'desc'
 }
@@ -62,3 +62,16 @@ export type ToggleJjimRequestBody = {
 }
 
 export type GetSubCategoriesApiResponse = string[] | ErrorResponse
+
+export type PatchProductQuantityInCartApiRequestBody = {
+  productId: number
+  quantity: number
+}
+
+export type PatchProductQuantityInCartApiResponse = Cart | ErrorResponse
+
+export type GetProductApiRequestQuery = {
+  productId: string
+}
+
+export type GetProductApiResponse = Product | ErrorResponse

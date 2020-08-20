@@ -17,7 +17,7 @@ getProductsByCategoryRouter.get(
   '/products-by-category',
   [
     query('category').exists({ checkFalsy: true }),
-    query('page').optional().isInt(),
+    query('page').optional().toInt().isInt(),
     query('sortBy').optional().isString(),
     query('direction').optional().isString(),
     requestValidator(),
@@ -26,7 +26,8 @@ getProductsByCategoryRouter.get(
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
   ) => {
-    const { category, page, sortBy, direction } = req.query
+    const { category, sortBy, direction, page } = req.query
+
 
     const orderByOptions = {
       orderBy: {
@@ -50,7 +51,9 @@ getProductsByCategoryRouter.get(
     } catch (e) {
       console.log(e)
 
-      res.status(STATUS_CODE.BAD_REQUEST).send({ message: ERROR_MSG.INTERNAL_ERROR })
+      res
+        .status(STATUS_CODE.BAD_REQUEST)
+        .send({ message: ERROR_MSG.INTERNAL_ERROR })
     }
   }
 )
