@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
 import ResizableCartIcon from 'src/components/ResizableCartIcon'
 import { ProductsInCart } from 'src/types/api'
@@ -7,13 +7,6 @@ import CartItem from './CartItem'
 import './style.scss'
 
 export type CartProps = unknown
-
-export const CartContext = createContext(
-  {} as {
-    totalAmount: number
-    setTotalAmount: React.Dispatch<React.SetStateAction<number>>
-  }
-)
 
 function getTotalAmount(products: ProductsInCart) {
   const totalAmount = products.reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0)
@@ -38,36 +31,29 @@ const Cart: React.FC<CartProps> = (props) => {
 
   return (
     <div className="cart">
-      <CartContext.Provider
-        value={{
-          totalAmount,
-          setTotalAmount,
-        }}
-      >
-        <div className="cart-header">
-          <div className="cart-header-icon">{<ResizableCartIcon />}</div>
-          <div className="cart-header-title">장바구니</div>
-        </div>
-        {productsInCart.length > 0 ? (
-          <>
-            <div className="cart-items">
-              {productsInCart.map((product) => (
-                <CartItem
-                  key={product.productId}
-                  productInCart={product}
-                  onDelete={loadProductsInCart}
-                />
-              ))}
-            </div>
-            <div className="cart-footer">
-              <div className="cart-footer-total-price">{addCommaToPrice(totalAmount)}원</div>
-              <div className="cart-footer-confirm-button">결제하기</div>
-            </div>
-          </>
-        ) : (
-          <div className="cart-empty">텅</div>
-        )}
-      </CartContext.Provider>
+      <div className="cart-header">
+        <div className="cart-header-icon">{<ResizableCartIcon />}</div>
+        <div className="cart-header-title">장바구니</div>
+      </div>
+      {productsInCart.length > 0 ? (
+        <>
+          <div className="cart-items">
+            {productsInCart.map((product) => (
+              <CartItem
+                key={product.productId}
+                productInCart={product}
+                onChange={loadProductsInCart}
+              />
+            ))}
+          </div>
+          <div className="cart-footer">
+            <div className="cart-footer-total-price">{addCommaToPrice(totalAmount)}원</div>
+            <div className="cart-footer-confirm-button">결제하기</div>
+          </div>
+        </>
+      ) : (
+        <div className="cart-empty">텅</div>
+      )}
     </div>
   )
 }

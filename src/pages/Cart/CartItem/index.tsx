@@ -6,7 +6,7 @@ import './style.scss'
 
 export type CartItemProps = {
   productInCart: ProductInCart
-  onDelete: () => void
+  onChange: () => void
 }
 
 // TODO: 넓은 화면일 때 이동 핸들링
@@ -25,7 +25,7 @@ const CartItem: React.FC<CartItemProps> = ({
     quantity,
     product: { id, name, defaultPrice, price, imgV },
   },
-  onDelete,
+  onChange,
 }) => {
   const cartItemDelete = useRef<HTMLDivElement>()
 
@@ -37,7 +37,7 @@ const CartItem: React.FC<CartItemProps> = ({
 
       selectedItem.addEventListener('transitionend', async () => {
         await deleteFromCart({ productIds: [id] })
-        onDelete()
+        onChange()
       })
       shrinkCartItem(selectedItem)
     })
@@ -60,7 +60,7 @@ const CartItem: React.FC<CartItemProps> = ({
               <span className="price-detail-current">{addCommaToPrice(price)}원 </span>
               <span className="price-detail-quantity">x {quantity}</span>
             </div>
-            <div className="price-total">{addCommaToPrice(price)}원</div>
+            <div className="price-total">{addCommaToPrice(price * quantity)}원</div>
           </div>
           <div className="delete" ref={cartItemDelete}>
             <div className="delete-icon"></div>
