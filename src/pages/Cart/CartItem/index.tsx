@@ -9,7 +9,6 @@ export type CartItemProps = {
   onDelete: () => void
 }
 
-// TODO: 마진으로 인한 jumping 핸들링
 // TODO: 넓은 화면일 때 이동 핸들링
 function shrinkCartItem(item: HTMLElement) {
   const itemHeight = getComputedStyle(item).height
