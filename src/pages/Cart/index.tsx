@@ -1,11 +1,12 @@
 import React, { createContext, useState } from 'react'
 import ResizableCartIcon from 'src/components/ResizableCartIcon'
+import { ProductsInCart } from 'src/types/api'
 import { addCommaToPrice } from 'src/utils'
-import CartItem, { CartItemProps } from './CartItem'
+import CartItem from './CartItem'
 import './style.scss'
 
 export type CartProps = {
-  products: CartItemProps[]
+  productsInCart: ProductsInCart
 }
 
 export const CartContext = createContext(
@@ -15,13 +16,13 @@ export const CartContext = createContext(
   }
 )
 
-function getTotalAmount(products: CartItemProps[]) {
-  const totalAmount = products.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
+function getTotalAmount(products: ProductsInCart) {
+  const totalAmount = products.reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0)
 
   return totalAmount
 }
 
-const Cart: React.FC<CartProps> = ({ products }) => {
+const Cart: React.FC<CartProps> = ({ productsInCart: products }) => {
   const [totalAmount, setTotalAmount] = useState(getTotalAmount(products))
 
   return (
@@ -38,7 +39,7 @@ const Cart: React.FC<CartProps> = ({ products }) => {
         </div>
         <div className="cart-items">
           {products.map((product) => (
-            <CartItem key={product.id} {...product} />
+            <CartItem key={product.productId} productInCart={product} />
           ))}
         </div>
         <div className="cart-footer">

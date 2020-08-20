@@ -1,14 +1,10 @@
 import React, { useEffect, useRef } from 'react'
+import { ProductInCart } from 'src/types/api'
 import { addCommaToPrice } from 'src/utils'
 import './style.scss'
 
 export type CartItemProps = {
-  id: number
-  name: string
-  defaultPrice: number
-  price: number
-  quantity: number
-  imgV: string
+  productInCart: ProductInCart
 }
 
 function shrinkCartItem(item: HTMLElement) {
@@ -21,7 +17,12 @@ function shrinkCartItem(item: HTMLElement) {
   item.classList.add('removed')
 }
 
-const CartItem: React.FC<CartItemProps> = ({ id, name, defaultPrice, price, quantity, imgV }) => {
+const CartItem: React.FC<CartItemProps> = ({
+  productInCart: {
+    quantity,
+    product: { id, name, defaultPrice, price, imgV },
+  },
+}) => {
   const cartItemDelete = useRef<HTMLDivElement>()
 
   useEffect(() => {
