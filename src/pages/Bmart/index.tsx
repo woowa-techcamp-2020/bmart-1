@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import SlideTabs from 'src/pages/Bmart/SlideTabs'
+import Header from './Header'
 import Home from './Home'
 import Me from './Me'
 import Sale from './Sale'
@@ -128,7 +128,7 @@ const Bmart: React.FC<BmartProps> = (props) => {
 
   return (
     <div className="bmart">
-      <SlideTabs />
+      <Header />
       <div className="slide-pages" ref={slidePagesWrapper}>
         <SlidePage>
           <Home />

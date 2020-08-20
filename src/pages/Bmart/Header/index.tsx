@@ -4,7 +4,7 @@ import './style.scss'
 
 export type SlideTabsProps = unknown
 
-const SlideTabs: React.FC<SlideTabsProps> = (props) => {
+const Header: React.FC<SlideTabsProps> = (props) => {
   return (
     <div className="header">
       <div className="logo-wrapper">
@@ -21,4 +21,4 @@ const SlideTabs: React.FC<SlideTabsProps> = (props) => {
   )
 }
 
-export default SlideTabs
+export default Header
