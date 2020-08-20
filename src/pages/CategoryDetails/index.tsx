@@ -17,6 +17,7 @@ export type DispatchByType<T> = Dispatch<SetStateAction<T>>
 
 export type CategoryDetailsProps = {
   category: CategoryType
+  setCategory: (category: CategoryType) => void
 }
 
 export const CategoryDetailsContext = createContext<{
@@ -25,10 +26,12 @@ export const CategoryDetailsContext = createContext<{
   setSubCategory: DispatchByType<string>
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
+const DEFAULT_CATEGORY = '채소'
+const DEFAULT_SORT_OPTION = '기본 정렬'
 
 export const CategoryDetailsContextProvider: React.FC = ({ children }) => {
-  const [subCategory, setSubCategory] = useState<CategoryType>('채소')
-  const [sortBy, setSortBy] = useState<SortByType>('기본 정렬')
+  const [subCategory, setSubCategory] = useState<CategoryType>(DEFAULT_CATEGORY)
+  const [sortBy, setSortBy] = useState<SortByType>(DEFAULT_SORT_OPTION)
 
   return (
     <CategoryDetailsContext.Provider value={{ subCategory, setSubCategory, sortBy, setSortBy }}>
@@ -40,7 +43,7 @@ export const CategoryDetailsContextProvider: React.FC = ({ children }) => {
 export const CombineProvider = (...Providers: React.FC[]) => (App: React.FC) =>
   Providers.reduce((acc, Provider) => <Provider>{acc}</Provider>, <App />)
 
-const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = '채소' }) => {
+const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = DEFAULT_CATEGORY }) => {
   const { subCategory } = useContext(CategoryDetailsContext)
   const [isOpened, setOpened] = useState(false)
   const [optionIdx, setOptionIdx] = useState(0)

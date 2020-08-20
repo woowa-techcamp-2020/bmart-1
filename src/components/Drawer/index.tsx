@@ -4,7 +4,7 @@ import './style.scss'
 
 export type DrawerProps = {
   isOpened: boolean
-  setOpened?: (number) => void
+  setOpened: (number) => void
 }
 
 export const DrawerContext = createContext<{

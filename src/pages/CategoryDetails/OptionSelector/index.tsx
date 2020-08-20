@@ -4,8 +4,8 @@ import './style.scss'
 
 export type OptionSelectorProps = {
   options: string[]
-  optionIdx?: number
-  setOptionIdx?: (idx: number) => void
+  optionIdx: number
+  setOptionIdx: (idx: number) => void
 }
 
 export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorProps) => {
