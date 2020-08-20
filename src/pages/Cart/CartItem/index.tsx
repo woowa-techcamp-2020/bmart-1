@@ -42,7 +42,14 @@ const CartItem: React.FC<CartItemProps> = ({
         <div className="cart-item-info-left" style={{ backgroundImage: `url(${imgV})` }}></div>
         <div className="cart-item-info-right">
           <div className="minus-plus">MinusPlus</div>
-          <div className="price">{addCommaToPrice(price)}</div>
+          <div className="price">
+            <div className="price-detail">
+              <span className="price-detail-default">{addCommaToPrice(defaultPrice)}원</span>
+              <span className="price-detail-current">{addCommaToPrice(price)}원 </span>
+              <span className="price-detail-quantity">x {quantity}</span>
+            </div>
+            <div className="price-total">{addCommaToPrice(price)}원</div>
+          </div>
           <div className="delete" ref={cartItemDelete}>
             <div className="delete-icon"></div>
             <span className="delete-description">삭제</span>

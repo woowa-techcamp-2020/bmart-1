@@ -36,18 +36,36 @@
         text-align: center;
       }
       .price {
-        width: 92px;
-        height: 40px;
-        border: 1px solid black;
-        border-radius: 10px;
-        color: black;
-        line-height: 40px;
-        text-align: end;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        &-detail {
+          color: #808080;
+          &-default {
+            font-size: 10px;
+            text-decoration-line: line-through;
+            margin-right: 4px;
+          }
+          &-current {
+            font-size: 12px;
+          }
+          &-quantity {
+            font-size: 12px;
+          }
+        }
+        &-total {
+          font-size: 20px;
+          font-weight: 700;
+        }
+        // width: 92px;
+        // height: 40px;
+        // border: 1px solid black;
+        // border-radius: 10px;
+        // color: black;
+        // line-height: 40px;
+        // text-align: end;
       }
       .delete {
-        text-align: right;
-        width: 54px;
-        height: 18px;
         color: #f54243;
         display: flex;
         &-icon {
