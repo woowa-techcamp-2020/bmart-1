@@ -32,9 +32,7 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
         <span
           key={x}
           className={x === subCategory ? 'active' : null}
-          onClick={() => {
-            return setSubCategory(x)
-          }}
+          onClick={() => setSubCategory(x)}
         >
           {x}&nbsp;
         </span>
