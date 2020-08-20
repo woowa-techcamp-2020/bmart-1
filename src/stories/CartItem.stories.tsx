@@ -1,6 +1,6 @@
-import { Meta } from '@storybook/react/types-6-0'
+import { Meta, Story } from '@storybook/react/types-6-0'
 import React from 'react'
-import CartItem from 'src/pages/Cart/CartItem'
+import CartItem, { CartItemProps } from 'src/pages/Cart/CartItem'
 
 export default {
   title: 'CartItem',
