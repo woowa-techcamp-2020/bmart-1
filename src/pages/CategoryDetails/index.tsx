@@ -19,16 +19,18 @@ export const CategoryDetailsContext = createContext<{
   setSubCategory: DispatchByType<string>
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
+type DrawerType = 'category' | 'sortBy' | null
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({
   category = DEFAULTS.CATEGORY,
+  setCategory,
 }) => {
-  const [isOpened, setOpened] = useState(false)
+  const [drawerType, openDrawer] = useState<DrawerType>(null)
   const [sortBy, setSortBy] = useState<string>(DEFAULTS.OPTION)
   const [subCategory, setSubCategory] = useState(null)
 
   return (
-    <div className="category-details">
+    <div className="category-details" onClick={() => openDrawer('category')}>
       <div className="title">
         {category}
         <div className="title-icon" />
@@ -38,14 +40,18 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({
         subCategory={subCategory}
         setSubCategory={setSubCategory}
       />
-      <div className="sort-by" onClick={() => setOpened(true)}>
+      <div className="sort-by" onClick={() => openDrawer('sortBy')}>
         <div className="sort-by-icon"></div>
         {sortBy}
       </div>
-      <Drawer isOpened={isOpened} setOpened={setOpened}>
+      <Drawer isOpened={drawerType !== null} setOpened={() => openDrawer(null)}>
         <OptionSelector
-          options={DEFAULTS.SORT_OPTIONS.slice()}
-          setOption={setSortBy}
+          options={
+            drawerType === 'category'
+              ? DEFAULTS.CATEGORIES.slice()
+              : DEFAULTS.SORT_OPTIONS.slice()
+          }
+          setOption={drawerType === 'category' ? setCategory : setSortBy}
         ></OptionSelector>
       </Drawer>
     </div>

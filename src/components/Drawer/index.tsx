@@ -12,7 +12,11 @@ export const DrawerContext = createContext<{
   setOpened: DispatchByType<boolean>
 }>(undefined)
 
-const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened }) => {
+const Drawer: React.FC<DrawerProps> = ({
+  isOpened = true,
+  children,
+  setOpened,
+}) => {
   const bodyRef = useRef<HTMLDivElement>()
   const backgroundRef = useRef<HTMLDivElement>()
 
@@ -54,21 +58,29 @@ const Drawer: React.FC<DrawerProps> = ({ isOpened = true, children, setOpened })
     <>
       <div
         className="drawer"
-        onMouseMove={({ clientY }) => onCursorMove(clientY, isHolding, startY, bodyRef)}
-        onTouchMove={(event) => onCursorMove(getFirstTouchY(event), isHolding, startY, bodyRef)}
+        onMouseMove={({ clientY }) =>
+          onCursorMove(clientY, isHolding, startY, bodyRef)
+        }
+        onTouchMove={(event) =>
+          onCursorMove(getFirstTouchY(event), isHolding, startY, bodyRef)
+        }
         onMouseUp={({ clientY }) => handleCursorUp(clientY)}
         onTouchEnd={(event) => handleCursorUp(getFirstTouchY(event))}
       >
         <div
           className="background"
           ref={backgroundRef}
-          onClick={() => setOpened && setOpened(false)}
+          onClick={() => setOpened(false)}
         />
         <div className={'body'} ref={bodyRef}>
           <div
             className="holder"
-            onTouchStart={(event) => onCursorDown(getFirstTouchY(event), isHolding, startY)}
-            onMouseDown={({ clientY }) => onCursorDown(clientY, isHolding, startY)}
+            onTouchStart={(event) =>
+              onCursorDown(getFirstTouchY(event), isHolding, startY)
+            }
+            onMouseDown={({ clientY }) =>
+              onCursorDown(clientY, isHolding, startY)
+            }
           >
             <div className="handle" />
           </div>
