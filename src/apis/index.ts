@@ -1,5 +1,10 @@
 import { ERROR_MSG } from 'src/constants'
-import type { GetJjimsApiResponse, ToggleJjimRequestBody } from 'src/types/api'
+import type {
+  DeleteFromCartBody,
+  GetJjimsApiResponse,
+  GetProductsInCartResponse,
+  ToggleJjimRequestBody,
+} from 'src/types/api'
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
@@ -78,4 +83,12 @@ export async function toggleJjim(body: ToggleJjimRequestBody) {
 
 export async function getSubCategories(category: string) {
   return await request(`/sub-categories${createQuery({ category })}`, 'GET')
+}
+
+export async function deleteFromCart(body: DeleteFromCartBody) {
+  return await request('/delete-from-cart', 'DELETE', body)
+}
+
+export async function getProductsInCart(): Promise<GetProductsInCartResponse> {
+  return await request('/products-in-cart', 'GET')
 }
