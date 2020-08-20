@@ -57,6 +57,8 @@ body {
   font-size: initial;
   font-weight: 600;
   appearance: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 input,
