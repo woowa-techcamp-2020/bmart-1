@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
-import { STATUS_CODE } from '~/../constants'
+import { ERROR_MSG, STATUS_CODE } from '~/../constants'
 import {
   PatchProductQuantityInCartApiRequestBody,
   PatchProductQuantityInCartApiResponse,
