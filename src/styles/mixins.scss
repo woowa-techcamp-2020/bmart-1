@@ -1,5 +1,5 @@
 @mixin backdrop-blur {
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px) saturate(1.7);
 }
 
 @mixin translucent($background-color, $blur-amount: 20px) {
