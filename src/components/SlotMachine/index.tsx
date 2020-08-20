@@ -11,7 +11,6 @@ const WAITING = 3
 const RESETING = 4
 const MAX_PULL_LENGTH = 600
 const SHOW_DURATION = 800
-const ITEM_LENGTH = MAX_PULL_LENGTH / 8
 const ITEM_LIST = [
   '김치찌개',
   '샐러드',
@@ -25,8 +24,8 @@ const ITEM_LIST = [
   '오호오호호',
 ]
 
-const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST }) => {
-  const action = useRef<number>(null)
+const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST, children }) => {
+  const action = useRef<number>(NO_ACTION)
   const height = useRef<number>(0)
   const pullable = useRef<HTMLDivElement>()
   const slot = useRef<HTMLDivElement>()
@@ -34,6 +33,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST }) => {
   const menu = useRef<HTMLSpanElement>()
   const startY = useRef<number>(0)
   const resetAt = useRef<number>(0)
+  const slotIdx = useRef<number>(0)
   const [item, setItem] = useState('')
 
   useEffect(() => {
@@ -110,7 +110,28 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST }) => {
     return Math.abs(a * 10e5 - b * 10e5) < 10
   }
 
-  let idx = null
+  return (
+    <div className="slot-machine">
+      <div
+        className="pullable"
+        ref={pullable}
+        onTouchStart={(event) => onCursorDown(getFirstTouchY(event))}
+        onTouchEnd={(event) => onCursorUp(getFirstTouchY(event))}
+        onTouchMove={(event) => onCursorMove(getFirstTouchY(event))}
+        onMouseDown={({ clientY }) => onCursorDown(clientY)}
+        onMouseUp={({ clientY }) => onCursorUp(clientY)}
+        onMouseMove={({ clientY }) => onCursorMove(clientY)}
+      >
+        <div className="slot" ref={slot}>
+          <span className="menu">{item}</span>
+          <span>땡겨요</span>
+        </div>
+        <div className="content" ref={content}>
+          {children}
+        </div>
+      </div>
+    </div>
+  )
 
   function animate(t) {
     if (action.current === PULLING || action.current === RELEASING) {
@@ -120,9 +141,9 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST }) => {
         N = NN / 2
       const newIdx = Math.floor((y + N) / NN)
 
-      if (idx === null || newIdx !== idx) {
+      if (slotIdx.current === null || newIdx !== slotIdx.current) {
         setItem(pickRandomItem())
-        idx = newIdx
+        slotIdx.current = newIdx
       }
 
       moveMenu(((y + N) % NN) - N, N)
@@ -142,29 +163,6 @@ const SlotMachine: React.FC<SlotMachineProps> = ({ itemList = ITEM_LIST }) => {
   }
 
   window.requestAnimationFrame(animate)
-
-  return (
-    <div className="slot-machine">
-      <div
-        className="pullable"
-        ref={pullable}
-        onTouchStart={(event) => onCursorDown(getFirstTouchY(event))}
-        onTouchEnd={(event) => onCursorUp(getFirstTouchY(event))}
-        onTouchMove={(event) => onCursorMove(getFirstTouchY(event))}
-        onMouseDown={({ clientY }) => onCursorDown(clientY)}
-        onMouseUp={({ clientY }) => onCursorUp(clientY)}
-        onMouseMove={({ clientY }) => onCursorMove(clientY)}
-      >
-        <div className="slot" ref={slot}>
-          <span className="menu">{item}</span>
-          <span>땡겨요</span>
-        </div>
-        <div className="content" ref={content}>
-          pull to refresh
-        </div>
-      </div>
-    </div>
-  )
 }
 
 function getFirstTouch(touchEvent: React.TouchEvent) {

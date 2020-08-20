@@ -1,18 +1,15 @@
 .slot-machine {
   .pullable {
     overflow: scroll;
-    height: 400px;
-    border: 1px solid black;
   }
   .virtual {
     display: inline-block;
     margin-top: 0px;
   }
-  .content {
-    display: block;
-    height: 2000px;
-  }
   .menu {
     display: inline-block;
+  }
+  .content {
+    min-height: 100vh;
   }
 }
