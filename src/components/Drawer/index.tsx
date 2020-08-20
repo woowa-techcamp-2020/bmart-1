@@ -1,3 +1,4 @@
+import $ from 'classnames'
 import React, { createContext, RefObject, useEffect, useRef } from 'react'
 import './style.scss'
 
@@ -70,7 +71,7 @@ const Drawer: React.FC<DrawerProps> = ({
           ref={backgroundRef}
           onClick={() => setOpened(false)}
         />
-        <div className={'body'} ref={bodyRef}>
+        <div className={$('body', { active: isOpened })} ref={bodyRef}>
           <div
             className="holder"
             onTouchStart={(event) =>

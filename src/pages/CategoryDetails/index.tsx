@@ -19,19 +19,19 @@ export const CategoryDetailsContext = createContext<{
   setSubCategory: DispatchByType<string>
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
-type DrawerType = 'sortBy' | 'category' | null
 
 const CategoryDetails: React.FC<CategoryDetailsProps> = ({
   category = DEFAULTS.CATEGORY as CategoryType,
   setCategory,
 }) => {
-  const [drawerType, openDrawer] = useState<DrawerType>(null)
   const [sortBy, setSortBy] = useState<string>(DEFAULTS.OPTION)
   const [subCategory, setSubCategory] = useState(null)
+  const [isCategoryOpened, setCategoryOpened] = useState<boolean>(false)
+  const [isSortByOpened, setSortByOpened] = useState(false)
 
   return (
     <div className="category-details">
-      <div className="title" onClick={() => openDrawer('category')}>
+      <div className="title" onClick={() => setCategoryOpened(true)}>
         {category}
         <div className="title-icon" />
       </div>
@@ -40,18 +40,21 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({
         subCategory={subCategory}
         setSubCategory={setSubCategory}
       />
-      <div className="sort-by" onClick={() => openDrawer('sortBy')}>
+      <div className="sort-by" onClick={() => setSortByOpened(true)}>
         <div className="sort-by-icon"></div>
         {sortBy}
       </div>
-      <Drawer isOpened={drawerType !== null} setOpened={() => openDrawer(null)}>
+      <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>
         <OptionSelector
-          options={
-            drawerType === 'category'
-              ? DEFAULTS.CATEGORIES.slice()
-              : DEFAULTS.SORT_OPTIONS.slice()
-          }
-          setOption={drawerType === 'category' ? setCategory : setSortBy}
+          options={DEFAULTS.CATEGORIES.slice()}
+          option={category}
+          setOption={setCategory}
+        ></OptionSelector>
+      </Drawer>
+      <Drawer isOpened={isSortByOpened} setOpened={setSortByOpened}>
+        <OptionSelector
+          options={DEFAULTS.SORT_OPTIONS.slice()}
+          setOption={setSortBy}
         ></OptionSelector>
       </Drawer>
     </div>
