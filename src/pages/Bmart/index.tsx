@@ -132,13 +132,13 @@ const Bmart: React.FC<BmartProps> = (props) => {
     <div className="bmart">
       <Header />
       <div className="slide-pages" ref={slidePagesWrapper}>
-        <SlidePage>
+        <SlidePage pageName="home">
           <Home />
         </SlidePage>
-        <SlidePage>
+        <SlidePage pageName="sale">
           <Sale />
         </SlidePage>
-        <SlidePage>
+        <SlidePage pageName="me">
           <Me />
         </SlidePage>
       </div>

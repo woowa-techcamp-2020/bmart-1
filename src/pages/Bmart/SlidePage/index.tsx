@@ -5,6 +5,10 @@ export const spVerticalScrollSentinelClassName = 'sp-vertical-scroll-sentinel'
 export const spHorizontalScrollSentinelClassName =
   'sp-horizontal-scroll-sentinel'
 
+export type SlidePageProps = {
+  pageName: 'home' | 'sale' | 'me'
+}
+
   const spVerticalScrollSentinel = useRef<HTMLDivElement>()
   const spHorizontalScrollSentinel = useRef<HTMLDivElement>()
 
