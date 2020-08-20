@@ -37,9 +37,9 @@ export type GetProductsByTopicRequestQuery = {
   topic: string
 }
 
-type ProductsInCart = (Cart & {
-  product: Product
-})[]
+export type ProductInCart = Cart & { product: Product }
+
+export type ProductsInCart = ProductInCart[]
 
 export type GetProductsInCartResponse = ProductsInCart | ErrorResponse
 

@@ -14,6 +14,7 @@ getProductsInCartRouter.get(
       const productsInCart = await prisma.cart.findMany({
         where: { userId },
         include: { product: true },
+        orderBy: { addedAt: 'desc' },
       })
 
       res.json(productsInCart)

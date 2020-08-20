@@ -1,5 +1,6 @@
+import { Jjim } from '@prisma/client'
 import { ERROR_MSG } from 'src/constants'
-import type { GetJjimsApiResponse, ToggleJjimRequestBody } from 'src/types/api'
+import type { DeleteFromCartBody, ProductsInCart, ToggleJjimRequestBody } from 'src/types/api'
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
@@ -59,7 +60,9 @@ async function request(url: string, method: Method, body?: Record<string, unknow
       throw new Error(ERROR_MSG.BAD_REQUEST)
     }
 
-    const result = await response.json()
+    const result = await response.json().catch(() => {
+      console.log()
+    })
 
     return result
   } catch (e) {
@@ -68,7 +71,7 @@ async function request(url: string, method: Method, body?: Record<string, unknow
   }
 }
 
-export async function getJjims(): Promise<GetJjimsApiResponse> {
+export async function getJjims(): Promise<Jjim[]> {
   return await request('/jjims', 'GET')
 }
 
@@ -78,4 +81,12 @@ export async function toggleJjim(body: ToggleJjimRequestBody) {
 
 export async function getSubCategories(category: string) {
   return await request(`/sub-categories${createQuery({ category })}`, 'GET')
+}
+
+export async function deleteFromCart(body: DeleteFromCartBody) {
+  return await request('/delete-from-cart', 'DELETE', body)
+}
+
+export async function getProductsInCart(): Promise<ProductsInCart> {
+  return await request('/products-in-cart', 'GET')
 }

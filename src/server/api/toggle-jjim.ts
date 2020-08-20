@@ -30,7 +30,7 @@ toggleJjimRouter.put(
         })
       }
 
-      res.json(true)
+      res.sendStatus(STATUS_CODE.OK)
     } catch (e) {
       console.error(e)
 
