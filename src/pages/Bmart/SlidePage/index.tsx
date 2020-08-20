@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import './style.scss'
 
-export type SlidePageProps = unknown
+export const spVerticalScrollSentinelClassName = 'sp-vertical-scroll-sentinel'
+export const spHorizontalScrollSentinelClassName =
+  'sp-horizontal-scroll-sentinel'
 
-const SlidePage: React.FC<SlidePageProps> = ({ children }) => {
-  const spSentinel = useRef<HTMLDivElement>()
+  const spVerticalScrollSentinel = useRef<HTMLDivElement>()
+  const spHorizontalScrollSentinel = useRef<HTMLDivElement>()
+
 
   useEffect(() => {
     const header = document.querySelector<HTMLElement>('.header')
@@ -28,7 +31,14 @@ const SlidePage: React.FC<SlidePageProps> = ({ children }) => {
 
   return (
     <div className="slide-page">
-      <div className="sp-sentinel" ref={spSentinel} />
+      <div
+        className={spHorizontalScrollSentinelClassName}
+        ref={spHorizontalScrollSentinel}
+      />
+      <div
+        className={spVerticalScrollSentinelClassName}
+        ref={spVerticalScrollSentinel}
+      />
       {children}
     </div>
   )

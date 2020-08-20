@@ -83,12 +83,13 @@ const Bmart: React.FC<BmartProps> = (props) => {
       )
 
       const interpolatedHeaderY = interpolate(
-        slidePages[index].querySelector('.sp-sentinel').getBoundingClientRect()
-          .top < 0
+        slidePages[index]
+          .querySelector(`.${spVerticalScrollSentinelClassName}`)
+          .getBoundingClientRect().top < 0
           ? 0
           : logoWrapper.clientHeight,
         slidePages[index + 1]
-          .querySelector('.sp-sentinel')
+          .querySelector(`.${spVerticalScrollSentinelClassName}`)
           .getBoundingClientRect().top < 0
           ? 0
           : logoWrapper.clientHeight,
