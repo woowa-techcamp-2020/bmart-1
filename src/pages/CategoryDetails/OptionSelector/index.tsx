@@ -1,22 +1,38 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { DrawerContext } from 'src/components/Drawer'
 import './style.scss'
 
 export type OptionSelectorProps = {
   options: string[]
-  optionIdx: number
-  setOptionIdx: (idx: number) => void
+  option?: string
+  setOption: (option: string) => void
 }
 
-export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorProps) => {
-  const setOpened = useContext(DrawerContext)?.setOpened
+const OptionSelector: React.FC<OptionSelectorProps> = ({
+  options = [],
+  option,
+  setOption,
+}) => {
   const selectRef = useRef<HTMLLIElement>()
+  const [optionIdx, setOptionIdx] = useState(0)
+  const setOpened = useContext(DrawerContext)?.setOpened
 
   useEffect(() => {
-    const height = selectRef.current.getBoundingClientRect().height
+    const idx = options.indexOf(option)
+
+    if (idx !== -1) setOptionIdx(idx)
+  }, [option])
+
+  useEffect(() => {
+    const height = selectRef.current.clientHeight
 
     selectRef.current.style.top = `${height * optionIdx}px`
   }, [optionIdx])
+
+  function selectOption() {
+    setOption(options[optionIdx])
+    setOpened && setOpened(false)
+  }
 
   return (
     <div className="option-selector">
@@ -31,7 +47,7 @@ export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorPro
               setOptionIdx && setOptionIdx(idx)
             }}
             onPointerUp={() => {
-              if (idx === optionIdx) setOpened && setOpened(false)
+              if (idx === optionIdx) selectOption()
             }}
           >
             {x}
@@ -41,3 +57,5 @@ export default ({ options = [], optionIdx = 0, setOptionIdx }: OptionSelectorPro
     </div>
   )
 }
+
+export default OptionSelector

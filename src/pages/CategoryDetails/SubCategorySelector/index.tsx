@@ -1,29 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getSubCategories } from 'src/apis'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType } from 'src/types'
-import { CategoryDetailsContext } from '..'
 import './style.scss'
 
 export type SubCategorySelectorProps = {
   category: CategoryType
+  subCategory: string
+  setSubCategory: (subCategory: string) => void
 }
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
   category = DEFAULTS.CATEGORY,
+  subCategory,
+  setSubCategory,
 }) => {
   const [subCategories, setSubCategories] = useState([])
-  const { subCategory, setSubCategory } = useContext(CategoryDetailsContext)
 
   useEffect(() => {
     loadSubCategories(category)
   }, [category])
 
-  async function loadSubCategories(category: string) {
-    const newSubCategories = await getSubCategories(category)
+  async function loadSubCategories(newCategory: string) {
+    const newSubCategories = await getSubCategories(newCategory)
 
     setSubCategories(newSubCategories)
-    setSubCategory(newSubCategories[0])
+
+    if (newCategory !== category || !subCategory)
+      setSubCategory(newSubCategories[0])
   }
 
   return (

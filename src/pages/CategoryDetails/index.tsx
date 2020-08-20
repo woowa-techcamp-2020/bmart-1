@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import Drawer from 'src/components/Drawer'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
@@ -28,25 +21,26 @@ export const CategoryDetailsContext = createContext<{
 }>(undefined)
 
 export const CategoryDetailsContextProvider: React.FC = ({ children }) => {
-  const [subCategory, setSubCategory] = useState<CategoryType>(DEFAULTS.CATEGORY)
+  const [subCategory, setSubCategory] = useState<CategoryType>(
+    DEFAULTS.CATEGORY
+  )
   const [sortBy, setSortBy] = useState<SortByType>(DEFAULTS.OPTION)
 
   return (
-    <CategoryDetailsContext.Provider value={{ subCategory, setSubCategory, sortBy, setSortBy }}>
+    <CategoryDetailsContext.Provider
+      value={{ subCategory, setSubCategory, sortBy, setSortBy }}
+    >
       {children}
     </CategoryDetailsContext.Provider>
   )
 }
 
-export const CombineProvider = (...Providers: React.FC[]) => (App: React.FC) =>
-  Providers.reduce((acc, Provider) => <Provider>{acc}</Provider>, <App />)
-
-const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = DEFAULTS.CATEGORY }) => {
-  const { subCategory } = useContext(CategoryDetailsContext)
+const CategoryDetails: React.FC<CategoryDetailsProps> = ({
+  category = DEFAULTS.CATEGORY,
+}) => {
   const [isOpened, setOpened] = useState(false)
-  const [optionIdx, setOptionIdx] = useState(0)
-
-  useEffect(() => {}, [subCategory])
+  const [sortBy, setSortBy] = useState<string>(DEFAULTS.OPTION)
+  const [subCategory, setSubCategory] = useState(null)
 
   return (
     <div className="category-details">
@@ -54,26 +48,23 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({ category = DEFAULTS.C
         {category}
         <div className="title-icon" />
       </div>
-      <SubCategorySelector category={category} />
+      <SubCategorySelector
+        category={category}
+        subCategory={subCategory}
+        setSubCategory={setSubCategory}
+      />
       <div className="sort-by" onClick={() => setOpened(true)}>
         <div className="sort-by-icon"></div>
-        {DEFAULTS.SORT_OPTIONS[optionIdx]}
+        {sortBy}
       </div>
       <Drawer isOpened={isOpened} setOpened={setOpened}>
         <OptionSelector
           options={DEFAULTS.SORT_OPTIONS.slice()}
-          optionIdx={optionIdx}
-          setOptionIdx={setOptionIdx}
+          setOption={setSortBy}
         ></OptionSelector>
       </Drawer>
     </div>
   )
 }
 
-export default (props: CategoryDetailsProps) => {
-  return (
-    <CategoryDetailsContextProvider>
-      <CategoryDetails {...props}></CategoryDetails>
-    </CategoryDetailsContextProvider>
-  )
-}
+export default CategoryDetails
