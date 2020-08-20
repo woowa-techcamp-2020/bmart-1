@@ -1,7 +1,7 @@
+import { PrismaClient } from '@prisma/client'
+import csv from 'csv-parser'
 import fs from 'fs'
 import path from 'path'
-import csv from 'csv-parser'
-import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -32,7 +32,9 @@ function seed(filename: string) {
   results = []
 
   return new Promise((resolve) => {
-    fs.createReadStream(path.join(__dirname, `../../../resource/${filename}.csv`))
+    fs.createReadStream(
+      path.join(__dirname, `../../../resource/${filename}.csv`)
+    )
       .pipe(csv())
       .on('data', (data) => {
         results.push(data)
@@ -43,18 +45,20 @@ function seed(filename: string) {
         for (const item of results) {
           const price = parseInt(item.price.replace(/,/g, ''))
           const basePrice = parseInt(item.base_price.replace(/,/g, '')) || price
-          const discount = parseInt(item.discount_percentage.replace(/%/g, '')) || 0
+          const discount =
+            parseInt(item.discount_percentage.replace(/%/g, '')) || 0
 
-          await prisma.product.create({
-            data: {
-              name: item.name,
-              defaultPrice: basePrice,
-              discount,
-              price,
-              category: item.category.replace(/\//g, '·'),
-              img: item.img_src,
-            },
-          })
+          // await prisma.product.create({
+          //   data: {
+          //     name: item.name,
+          //     defaultPrice: basePrice,
+          //     discount,
+          //     price,
+          //     category: item.category.replace(/\//g, '·'),
+          //     imgV: item.img_src,
+          //     imgH: item.img_src,
+          //   },
+          // })
         }
 
         console.log(`🏃🏻‍♂️ ${filename} 다 넣음ㅎ`)

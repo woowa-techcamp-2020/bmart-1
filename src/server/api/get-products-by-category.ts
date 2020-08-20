@@ -28,7 +28,6 @@ getProductsByCategoryRouter.get(
   ) => {
     const { category, sortBy, direction, page } = req.query
 
-
     const orderByOptions = {
       orderBy: {
         [sortBy || 'createdAt']: direction || 'desc',
