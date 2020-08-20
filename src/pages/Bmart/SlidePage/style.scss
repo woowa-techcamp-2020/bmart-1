@@ -18,9 +18,9 @@
 
   .sp-sentinel {
     position: absolute;
-    left: 0;
+    left: 20px;
     top: $ordinary-space * 2;
-    width: 100%;
+    width: calc(100% - 20px);
     height: 1px;
     pointer-events: none;
     opacity: 0;
