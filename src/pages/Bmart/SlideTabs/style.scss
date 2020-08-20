@@ -16,6 +16,8 @@
     height: $header-logo-wrapper-height;
 
     .logo-img {
+      position: relative;
+      top: var(--ordinary-space);
       width: 100px;
     }
   }
