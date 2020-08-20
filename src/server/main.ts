@@ -18,4 +18,6 @@ app.use(express.static(appRoot.resolve('/build')))
 
 app.use('/api', apiRouter)
 
+app.get('*', (req, res) => res.sendFile(appRoot.resolve('/build/index.html')))
+
 app.listen(port, () => console.log(`Listening on port ${port}`))
