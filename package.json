@@ -83,6 +83,10 @@
     "prettier": "^2.0.5",
     "react-is": "^16.13.1",
     "sass": "^1.26.10",
+    "stylelint": "^13.6.1",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0",
     "ts-node-dev": "^1.0.0-pre.56",
     "tsconfig-paths": "^3.9.0",
     "ttypescript": "^1.5.10"
