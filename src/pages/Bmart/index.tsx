@@ -1,15 +1,27 @@
 import React, { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
 import Sale from './Sale'
-import SlidePage from './SlidePage'
+import SlidePage, { spVerticalScrollSentinelClassName } from './SlidePage'
 import './style.scss'
 
 export type BmartProps = unknown
 
-const Bmart: React.FC<BmartProps> = (props) => {
+const Bmart: React.FC<BmartProps> = () => {
   const slidePagesWrapper = useRef<HTMLDivElement>()
+
+  const location = useLocation()
+
+  useEffect(() => {
+    const path = location.pathname.replace('/', '')
+    const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+
+    slidePagesWrapper.current.scrollTo({
+      left: (slidePagesWrapper.current.scrollWidth / 3) * index,
+    })
+  }, [location])
 
   useEffect(() => {
     const indicator = document.querySelector<HTMLElement>('.indicator')
