@@ -1,17 +1,21 @@
 body {
   overflow: hidden;
 }
+
 .option-selector {
   $select-gap: 25px;
-  font-style: PAYW Pro;
+
+  font-style: payw pro;
   user-select: none;
   font-weight: 600;
   font-size: 17px;
+
   ul {
     position: relative;
-    padding: 0px;
+    padding: 0;
     padding-bottom: 17px;
     margin: 0;
+
     li {
       display: flex;
       justify-content: center;
@@ -27,7 +31,6 @@ body {
         position: absolute;
         width: calc(100% - #{$select-gap * 2});
         left: $select-gap;
-
         background-color: #e2e2e2;
         transition-duration: 0.35s;
         transition-timing-function: ease-in-out;
