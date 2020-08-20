@@ -16,12 +16,22 @@
     white-space: initial;
   }
 
-  .sp-sentinel {
+  .sp-vertical-scroll-sentinel {
     position: absolute;
     left: 20px;
     top: $ordinary-space * 2;
     width: calc(100% - 40px);
     height: 1px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .sp-horizontal-scroll-sentinel {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100vh;
     pointer-events: none;
     opacity: 0;
   }
