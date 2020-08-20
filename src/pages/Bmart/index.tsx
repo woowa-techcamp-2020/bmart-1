@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import getState from 'src/utils'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
@@ -143,7 +144,7 @@ const Bmart: React.FC<BmartProps> = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0)
 
   useEffect(() => {
-    slidePagesWrapper.current.addEventListener('touchstart', (e) => {
+    slidePagesWrapper.current.addEventListener('touchstart', async (e) => {
       if (
         e.target instanceof HTMLElement &&
         !e.target.classList.contains('slide-page')
@@ -163,6 +164,8 @@ const Bmart: React.FC<BmartProps> = () => {
       let diffX = 0
       let diffY = 0
 
+      const currentPageIndex = await getState(setCurrentPageIndex)
+
       function onTouchMove(e: TouchEvent) {
         const touch = e.touches[0]
 
@@ -179,7 +182,9 @@ const Bmart: React.FC<BmartProps> = () => {
           isVerticalScrollLocked = true
 
           slidePagesWrapper.current.style.transition = ``
-          slidePagesWrapper.current.style.transform = `translateX(${diffX}px)`
+          slidePagesWrapper.current.style.transform = `translateX(calc(${
+            currentPageIndex * -100
+          }% + ${diffX}px))`
 
           e.preventDefault()
 
@@ -190,12 +195,13 @@ const Bmart: React.FC<BmartProps> = () => {
             'touchmove',
             onTouchMove
           )
+          window.removeEventListener('touchend', onTouchEnd)
         }
       }
 
       slidePagesWrapper.current.addEventListener('touchmove', onTouchMove)
 
-      function onTouchEnd() {
+      async function onTouchEnd() {
         const diffTime = new Date().getTime() - initTime
 
         const velocity = Math.abs(diffX / diffTime)
@@ -203,15 +209,25 @@ const Bmart: React.FC<BmartProps> = () => {
         slidePagesWrapper.current.removeEventListener('touchmove', onTouchMove)
         window.removeEventListener('touchend', onTouchEnd)
 
-        const transitionTime = 120 / velocity
+        const transitionTime = Math.max(Math.min(150 / velocity, 500), 200)
 
-        slidePagesWrapper.current.style.transition = `transform ${transitionTime}ms cubic-bezier(0, 0, 0.23, 1)`
+        slidePagesWrapper.current.style.transition = `transform ${transitionTime}ms ease-out`
 
-        if (diffX < 0) {
-          setCurrentPageIndex((index) => index + 1)
-        } else if (diffX > 0) {
-          console.log('here')
-          setCurrentPageIndex((index) => index - 1)
+        const currentPageIndex = await getState(setCurrentPageIndex)
+
+        const newIndex =
+          diffX < 0
+            ? currentPageIndex + 1
+            : diffX > 0
+            ? currentPageIndex - 1
+            : currentPageIndex
+
+        if (newIndex < 0) {
+          slidePagesWrapper.current.style.transform = `translateX(0%)`
+        } else if (newIndex > 2) {
+          slidePagesWrapper.current.style.transform = `translateX(-200%)`
+        } else {
+          setCurrentPageIndex(newIndex)
         }
       }
 
@@ -223,7 +239,7 @@ const Bmart: React.FC<BmartProps> = () => {
     <div className="bmart">
       <Header />
       <div
-        className="slide-pages"
+        className="slide-pages-scroll-wrapper"
         ref={slidePagesWrapper}
         style={{
           transform: `translateX(-${100 * currentPageIndex}%)`,

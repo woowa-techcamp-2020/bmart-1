@@ -3,7 +3,9 @@ import FullNameLogoAlt from 'src/components/FullNameLogoAlt'
 import './style.scss'
 
 const onClickTab = (index: number): void => {
-  const slidePagesElm = document.querySelector<HTMLDivElement>('.slide-pages')
+  const slidePagesElm = document.querySelector<HTMLDivElement>(
+    '.slide-pages-scroll-wrapper'
+  )
   const scrollWidth = slidePagesElm.scrollWidth
 
   slidePagesElm.scrollTo({
