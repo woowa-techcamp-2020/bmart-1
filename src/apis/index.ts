@@ -1,6 +1,10 @@
 import { Jjim } from '@prisma/client'
 import { ERROR_MSG } from 'src/constants'
-import type { DeleteFromCartBody, ProductsInCart, ToggleJjimRequestBody } from 'src/types/api'
+import type {
+  DeleteFromCartBody,
+  ProductsInCart,
+  ToggleJjimRequestBody,
+} from 'src/types/api'
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
@@ -51,7 +55,11 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
   ...addBody(body),
 })
 
-async function request(url: string, method: Method, body?: Record<string, unknown>): Promise<any> {
+async function request(
+  url: string,
+  method: Method,
+  body?: Record<string, unknown>
+): Promise<any> {
   try {
     const response = await fetch(`/api${url}`, defaultOptions(method, body))
 
