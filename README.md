@@ -76,14 +76,6 @@ npm run prisma:generate
 
 > You can run both scripts by run `prisma:all`
 
-## Design Systems
-
-### `--element-fill`
-
-### `--distinct`
-
-### `--inversion`
-
 ## License
 
 MIT 2020 © [agrajak](https://github.com/agrajak), [jenny](https://github.com/eunjung-jenny), [jhaemin](https://github.com/jhaemin)

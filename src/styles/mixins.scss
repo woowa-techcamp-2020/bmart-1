@@ -1,0 +1,16 @@
+@mixin backdrop-blur {
+  backdrop-filter: blur(20px);
+}
+
+@mixin translucent($background-color, $blur-amount: 20px) {
+  background-color: $background-color;
+  backdrop-filter: blur($blur-amount);
+}
+
+@mixin foundation-translucent {
+  @include translucent(var(--foundation-opaque));
+}
+
+@mixin element-translucent {
+  @include translucent(var(--element-opaque));
+}

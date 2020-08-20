@@ -32,9 +32,9 @@
     "prefix": "cnn",
     "body": "className={classNames($0)}"
   },
-  "variables": {
+  "design system": {
     "scope": "scss",
-    "prefix": "var",
-    "body": "@use '~src/styles/variables' as *;"
+    "prefix": "sys",
+    "body": "@use '~src/styles/design-system' as *;"
   }
 }

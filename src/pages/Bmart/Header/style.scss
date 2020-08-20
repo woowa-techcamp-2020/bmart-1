@@ -1,4 +1,4 @@
-@use '~src/styles/variables' as *;
+@use '~src/styles/design-system' as *;
 
 .header {
   position: absolute;
@@ -6,8 +6,8 @@
   left: 0;
   width: 100%;
   z-index: 1;
-  background-color: var(--element-translucent);
-  backdrop-filter: blur(20px);
+
+  @include foundation-translucent;
 
   .logo-wrapper {
     display: flex;

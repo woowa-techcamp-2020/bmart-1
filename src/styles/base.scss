@@ -1,30 +1,31 @@
 @use './fonts';
 
 :root {
-  // Colors
+  /* Colors */
   --bmart-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   --bmart-light-blue: #f3f3f5;
   --white: #fff;
   --black: #000;
   --soft-black: #333;
 
-  // Spaces
+  /* Spaces */
   --ordinary-space: 15px;
 
-  // Theme
-  --element-fill: var(--bmart-light-blue);
-  --element-translucent: rgba(255, 255, 255, 0.5);
+  /* Theme */
+  --foundation: var(--white);
+  --element: var(--bmart-light-blue);
   --distinct: var(--black);
-  --inversion: var(--white);
+  --foundation-opaque: rgba(255, 255, 255, 0.5);
+  --element-opaque: rgba(243, 243, 245, 0.8);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     // Theme
-    --element-fill: var(--soft-black);
+    --element: var(--soft-black);
     --element-translucent: rgba(0, 0, 0, 0.3);
     --distinct: var(--white);
-    --inversion: var(--black);
+    --foundation: var(--black);
   }
 }
 
@@ -43,7 +44,7 @@ body {
     sans-serif;
   height: 100%;
   overflow: hidden;
-  background-color: var(--inversion);
+  background-color: var(--foundation);
   color: var(--distinct);
 }
 
