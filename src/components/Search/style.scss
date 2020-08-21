@@ -34,7 +34,13 @@
     }
   }
 
-  &-result {
+  &-results {
     @include grid-template();
+
+    &-result {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
