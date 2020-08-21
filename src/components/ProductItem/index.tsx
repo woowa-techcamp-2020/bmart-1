@@ -73,13 +73,23 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
         backgroundImage: `url(${props.imgV})`,
       }}
     >
-      {isJjimmed ? <HeartIcon size="small" isBroken={false} isAttached={true} /> : ''}
-      {props.discount ? <DiscountLabel size="small" discount={props.discount} /> : ''}
+      {isJjimmed ? (
+        <HeartIcon size="small" isBroken={false} isAttached={true} />
+      ) : (
+        ''
+      )}
+      {props.discount ? (
+        <DiscountLabel size="small" discount={props.discount} />
+      ) : (
+        ''
+      )}
       <div className="product-item-info">
         <div className="product-item-info-name">{props.name}</div>
         <div className="product-item-info-price">
           {props.defaultPrice !== props.price ? (
-            <span className="product-item-info-price-default">{props.defaultPrice}</span>
+            <span className="product-item-info-price-default">
+              {props.defaultPrice}
+            </span>
           ) : (
             ''
           )}
