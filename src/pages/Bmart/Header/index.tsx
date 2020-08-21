@@ -1,18 +1,7 @@
 import React from 'react'
 import FullNameLogoAlt from 'src/components/FullNameLogoAlt'
+import { navigateSlidePageTo } from '..'
 import './style.scss'
-
-const onClickTab = (index: number): void => {
-  const slidePagesElm = document.querySelector<HTMLDivElement>(
-    '.slide-pages-scroll-wrapper'
-  )
-  const scrollWidth = slidePagesElm.scrollWidth
-
-  slidePagesElm.scrollTo({
-    left: (scrollWidth / 3) * index,
-    behavior: 'smooth',
-  })
-}
 
 const tabTitles = ['홈', '번쩍세일', '마이 페이지']
 
@@ -31,7 +20,7 @@ const Header: React.FC<SlideTabsProps> = () => {
           <button
             key={title}
             className="tab-button"
-            onClick={() => onClickTab(i)}
+            onClick={() => navigateSlidePageTo(i)}
           >
             {title}
           </button>

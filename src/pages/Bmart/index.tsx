@@ -1,12 +1,72 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
-import getState from 'src/utils'
+import { $$sel, $sel } from 'src/utils'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
 import Sale from './Sale'
-import SlidePage, { spVerticalScrollSentinelClassName } from './SlidePage'
+import SlidePage from './SlidePage'
 import './style.scss'
+
+export const navigateSlidePageTo = (
+  index: number,
+  time = '400ms',
+  cubicBezier = 'cubic-bezier(0.59, 0.04, 0.31, 1)',
+  pushState = true
+): void => {
+  const slidePagesScrollWrapper = $sel('.slide-pages-scroll-wrapper')
+  const slidePages = $$sel('.slide-page')
+  const slideTabs = $$sel('.slide-tabs .tab-button')
+  const indicator = $sel('.indicator')
+  const header = $sel('.header')
+  const logoWrapper = $sel('.logo-wrapper')
+
+  slidePages.forEach((slidePage) => {
+    slidePage.style.transition = `transform ${time} ${cubicBezier}`
+  })
+
+  const correctIndex = Math.min(Math.max(index, 0), slidePages.length - 1)
+
+  indicator.style.transition = `width ${time} ${cubicBezier}, left ${time} ${cubicBezier}`
+  indicator.style.left = `${slideTabs[correctIndex].offsetLeft - 15}px`
+  indicator.style.width = `${slideTabs[correctIndex].clientWidth + 30}px`
+  indicator.classList.add('ready')
+
+  slidePages.forEach((slidePage, i) => {
+    slidePage.style.transform =
+      i - correctIndex === 0 ? '' : `translateX(${(i - correctIndex) * 100}%)`
+  })
+
+  header.style.transition = `transform ${time} ${cubicBezier}`
+  header.style.transform = `translateY(${-Math.min(
+    slidePages[correctIndex].scrollTop,
+    logoWrapper.clientHeight
+  )}px)`
+
+  slidePagesScrollWrapper.setAttribute(
+    'data-current-page-index',
+    correctIndex.toString()
+  )
+
+  if (pushState) {
+    window.history.pushState(
+      null,
+      null,
+      `/${index === 0 ? '' : index === 1 ? 'sale' : index === 2 ? 'me' : ''}`
+    )
+  }
+}
+
+export function interpolate(
+  prev: number,
+  next: number,
+  scrollLeft: number,
+  singlePageWidth: number,
+  index: number,
+  extra = 0
+): number {
+  return prev + scrollLeft * ((next - prev) / singlePageWidth) + extra
+}
 
 export type BmartProps = unknown
 
@@ -16,235 +76,201 @@ const Bmart: React.FC<BmartProps> = () => {
   const location = useLocation()
 
   useEffect(() => {
+    console.log('location change')
     const path = location.pathname.replace('/', '')
     const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 
-    slidePagesWrapper.current.scrollTo({
-      left: (slidePagesWrapper.current.scrollWidth / 3) * index,
-    })
+    navigateSlidePageTo(index, '0', undefined, false)
   }, [location])
 
   useEffect(() => {
-    const indicator = document.querySelector<HTMLElement>('.indicator')
-    const header = document.querySelector<HTMLElement>('.header')
-    const logoWrapper = header.querySelector<HTMLElement>('.logo-wrapper')
+    const logoWrapper = $sel('.logo-wrapper')
+    const slidePagesScrollWrapper = $sel('.slide-pages-scroll-wrapper')
+    const slidePages = $$sel('.slide-page')
+    const indicator = $sel('.indicator')
+    const slideTabs = $$sel('.slide-tabs .tab-button')
+    const header = $sel('.header')
 
-    const slidePages = Array.from(
-      document.querySelectorAll<HTMLElement>('.slide-page')
-    )
-    const tabButtons = Array.from(
-      document.querySelectorAll<HTMLElement>('.tab-button')
-    )
-    const tabButtonLeftsAndWidths = tabButtons.map((tabButton) => ({
-      left: tabButton.offsetLeft,
-      width: tabButton.clientWidth,
-    }))
+    slidePagesWrapper.current.addEventListener(
+      'touchstart',
+      async (touchStartEvent) => {
+        // if (
+        //   e.target instanceof HTMLElement &&
+        //   !e.target.classList.contains('slide-page') &&
+        //   !e.target.classList.contains('slide-pages-scroll-wrapper')
+        // ) {
+        //   return
+        // }
 
-    function interpolate(
-      prev: number,
-      next: number,
-      scrollLeft: number,
-      singlePageWidth: number,
-      index: number,
-      extra = 0
-    ): number {
-      return (
-        prev +
-        (scrollLeft - singlePageWidth * index) *
-          ((next - prev) / singlePageWidth) +
-        extra
-      )
-    }
+        let isVerticalScrollLocked = false
 
-    function interpolateLeftsAndWidths(
-      pagesCount: number,
-      leftsAndWidths: {
-        left: number
-        width: number
-      }[],
-      scrollWidth: number,
-      scrollLeft: number
-    ): {
-      left: number
-      width: number
-    } {
-      const singlePageWidth = scrollWidth / pagesCount
-      const calculatedIndex = Math.floor(scrollLeft / singlePageWidth)
-      const index =
-        calculatedIndex < 0
-          ? 0
-          : calculatedIndex >= pagesCount - 1
-          ? calculatedIndex - 1
-          : calculatedIndex
+        const touch = touchStartEvent.touches[0]
 
-      const interpolatedLeft = interpolate(
-        leftsAndWidths[index].left,
-        leftsAndWidths[index + 1].left,
-        scrollLeft,
-        singlePageWidth,
-        index,
-        -15
-      )
+        const initTime = new Date().getTime()
 
-      const interpolatedWidth = interpolate(
-        leftsAndWidths[index].width,
-        leftsAndWidths[index + 1].width,
-        scrollLeft,
-        singlePageWidth,
-        index,
-        30
-      )
+        const initX = touch.pageX
+        const initY = touch.pageY
 
-      const interpolatedHeaderY = interpolate(
-        slidePages[index]
-          .querySelector(`.${spVerticalScrollSentinelClassName}`)
-          .getBoundingClientRect().top < 0
-          ? 0
-          : logoWrapper.clientHeight,
-        slidePages[index + 1]
-          .querySelector(`.${spVerticalScrollSentinelClassName}`)
-          .getBoundingClientRect().top < 0
-          ? 0
-          : logoWrapper.clientHeight,
-        scrollLeft,
-        singlePageWidth,
-        index
-      )
+        let diffX = 0
+        let diffY = 0
 
-      header.style.transition = ''
-      header.style.transform = `translate3d(0, ${
-        -logoWrapper.clientHeight + interpolatedHeaderY
-      }px, 0)`
+        const currentPageIndex =
+          parseInt(
+            slidePagesScrollWrapper.getAttribute('data-current-page-index')
+          ) || 0
 
-      return {
-        left: interpolatedLeft,
-        width: interpolatedWidth,
-      }
-    }
+        slidePages.forEach((slidePage) => {
+          slidePage.style.transition = ''
+        })
 
-    function processInterpolation() {
-      const interpolated = interpolateLeftsAndWidths(
-        slidePages.length,
-        tabButtonLeftsAndWidths,
-        slidePagesWrapper.current.scrollWidth,
-        slidePagesWrapper.current.scrollLeft
-      )
+        function onTouchMove(e: TouchEvent) {
+          const touch = e.touches[0]
 
-      indicator.style.left = `${interpolated.left}px`
-      indicator.style.width = `${interpolated.width}px`
-    }
+          const newX = touch.pageX
+          const newY = touch.pageY
 
-    // slidePagesWrapper.current.addEventListener('scroll', processInterpolation)
+          diffX = newX - initX
+          diffY = newY - initY
 
-    // Init
-    processInterpolation()
-    indicator.classList.add('ready')
-  }, [])
+          const sanitizeNan = (value: number) => (isNaN(value) ? 0 : value)
 
-  const [currentPageIndex, setCurrentPageIndex] = useState(0)
+          const slope = sanitizeNan(Math.abs(diffY / diffX))
 
-  useEffect(() => {
-    slidePagesWrapper.current.addEventListener('touchstart', async (e) => {
-      if (
-        e.target instanceof HTMLElement &&
-        !e.target.classList.contains('slide-page')
-      ) {
-        return
-      }
+          if (slope < 1 || isVerticalScrollLocked) {
+            // Horizontal scroll
+            isVerticalScrollLocked = true
 
-      let isVerticalScrollLocked = false
+            const movementX =
+              diffX *
+              ((diffX > 0 && currentPageIndex === 0) ||
+              (diffX < 0 && currentPageIndex === 2)
+                ? 1 / 2
+                : 1)
 
-      const touch = e.touches[0]
+            slidePages.forEach((slidePage, i) => {
+              slidePage.style.transform = `translateX(calc(${
+                (i - currentPageIndex) * 100
+              }% + ${movementX}px))`
+            })
 
-      const initTime = new Date().getTime()
+            const snapAmount = 50
 
-      const initX = touch.pageX
-      const initY = touch.pageY
+            const interpolatedIndicatorWidth = interpolate(
+              slideTabs[currentPageIndex].clientWidth,
+              movementX < 0
+                ? currentPageIndex === slidePages.length - 1
+                  ? slideTabs[slideTabs.length - 1].clientWidth - snapAmount
+                  : slideTabs[currentPageIndex + 1].clientWidth
+                : currentPageIndex === 0
+                ? slideTabs[0].clientWidth - snapAmount
+                : slideTabs[currentPageIndex - 1].clientWidth,
+              Math.abs(movementX),
+              slidePagesWrapper.current.clientWidth,
+              currentPageIndex,
+              30
+            )
 
-      let diffX = 0
-      let diffY = 0
+            const interpolatedIndicatorLeft = interpolate(
+              slideTabs[currentPageIndex].offsetLeft,
+              movementX < 0
+                ? currentPageIndex === slidePages.length - 1
+                  ? slideTabs[slidePages.length - 1].offsetLeft + snapAmount
+                  : slideTabs[currentPageIndex + 1].offsetLeft
+                : currentPageIndex === 0
+                ? slideTabs[0].offsetLeft
+                : slideTabs[currentPageIndex - 1].offsetLeft,
+              Math.abs(movementX),
+              slidePagesWrapper.current.clientWidth,
+              currentPageIndex,
+              -15
+            )
 
-      const currentPageIndex = await getState(setCurrentPageIndex)
+            indicator.style.cssText = `left: ${interpolatedIndicatorLeft}px; width: ${interpolatedIndicatorWidth}px;`
 
-      function onTouchMove(e: TouchEvent) {
-        const touch = e.touches[0]
+            const interpolcatedHeaderTransformY = interpolate(
+              Math.min(
+                slidePages[currentPageIndex].scrollTop,
+                logoWrapper.clientHeight
+              ),
+              movementX < 0
+                ? currentPageIndex === slidePages.length - 1 // move to right
+                  ? Math.min(
+                      slidePages[currentPageIndex].scrollTop,
+                      logoWrapper.clientHeight
+                    ) // from last page to right
+                  : Math.min(
+                      slidePages[currentPageIndex + 1].scrollTop,
+                      logoWrapper.clientHeight
+                    )
+                : currentPageIndex === 0 // move to left
+                ? Math.min(
+                    slidePages[currentPageIndex].scrollTop,
+                    logoWrapper.clientHeight
+                  ) // from the first page to left
+                : Math.min(
+                    slidePages[currentPageIndex - 1].scrollTop,
+                    logoWrapper.clientHeight
+                  ),
+              Math.abs(movementX),
+              slidePagesWrapper.current.clientWidth,
+              currentPageIndex
+            )
 
-        const newX = touch.pageX
-        const newY = touch.pageY
+            header.style.transition = ''
+            header.style.transform = `translateY(${-interpolcatedHeaderTransformY}px)`
 
-        diffX = newX - initX
-        diffY = newY - initY
+            touchStartEvent.preventDefault()
+            e.preventDefault()
 
-        const slope = Math.abs(diffY / diffX)
+            return
+          } else {
+            // Vertical scroll
+            slidePagesWrapper.current.removeEventListener(
+              'touchmove',
+              onTouchMove
+            )
+            window.removeEventListener('touchend', onTouchEnd)
+          }
+        }
 
-        if (slope < 0.7 || isVerticalScrollLocked) {
-          // Horizontal scroll
-          isVerticalScrollLocked = true
+        slidePagesWrapper.current.addEventListener('touchmove', onTouchMove)
 
-          slidePagesWrapper.current.style.transition = ``
-          slidePagesWrapper.current.style.transform = `translateX(calc(${
-            currentPageIndex * -100
-          }% + ${diffX}px))`
+        async function onTouchEnd(e) {
+          const diffTime = new Date().getTime() - initTime
 
-          e.preventDefault()
+          const velocity = Math.abs(diffX / diffTime)
 
-          return
-        } else {
-          // Vertical scroll
           slidePagesWrapper.current.removeEventListener(
             'touchmove',
             onTouchMove
           )
           window.removeEventListener('touchend', onTouchEnd)
+
+          const transitionTime = Math.max(Math.min(150 / velocity, 800), 200)
+
+          const newIndex =
+            diffX < 0
+              ? Math.min(currentPageIndex + 1, 2)
+              : diffX > 0
+              ? Math.max(currentPageIndex - 1, 0)
+              : currentPageIndex
+
+          navigateSlidePageTo(
+            newIndex,
+            `${transitionTime}ms`,
+            'cubic-bezier(0, 0.05, 0.38, 1)'
+          )
         }
+
+        window.addEventListener('touchend', onTouchEnd)
       }
-
-      slidePagesWrapper.current.addEventListener('touchmove', onTouchMove)
-
-      async function onTouchEnd() {
-        const diffTime = new Date().getTime() - initTime
-
-        const velocity = Math.abs(diffX / diffTime)
-
-        slidePagesWrapper.current.removeEventListener('touchmove', onTouchMove)
-        window.removeEventListener('touchend', onTouchEnd)
-
-        const transitionTime = Math.max(Math.min(150 / velocity, 500), 200)
-
-        slidePagesWrapper.current.style.transition = `transform ${transitionTime}ms ease-out`
-
-        const currentPageIndex = await getState(setCurrentPageIndex)
-
-        const newIndex =
-          diffX < 0
-            ? currentPageIndex + 1
-            : diffX > 0
-            ? currentPageIndex - 1
-            : currentPageIndex
-
-        if (newIndex < 0) {
-          slidePagesWrapper.current.style.transform = `translateX(0%)`
-        } else if (newIndex > 2) {
-          slidePagesWrapper.current.style.transform = `translateX(-200%)`
-        } else {
-          setCurrentPageIndex(newIndex)
-        }
-      }
-
-      window.addEventListener('touchend', onTouchEnd)
-    })
+    )
   }, [])
 
   return (
     <div className="bmart">
       <Header />
-      <div
-        className="slide-pages-scroll-wrapper"
-        ref={slidePagesWrapper}
-        style={{
-          transform: `translateX(-${100 * currentPageIndex}%)`,
-        }}
-      >
+      <div className="slide-pages-scroll-wrapper" ref={slidePagesWrapper}>
         <SlidePage pageName="home">
           <Home />
         </SlidePage>
