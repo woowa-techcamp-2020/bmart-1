@@ -1,5 +1,12 @@
 import $ from 'classnames'
-import React, { createContext, RefObject, useEffect, useRef } from 'react'
+import React, {
+  createContext,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { Dispatcher } from 'src/types/react-helper'
 import './style.scss'
 
 export type DrawerProps = {
@@ -8,7 +15,9 @@ export type DrawerProps = {
 }
 
 export const DrawerContext = createContext<{
-  close: () => void
+  isOpened: boolean
+  closeDrawer: () => void
+  setFocusPosition: Dispatcher<number>
 }>(undefined)
 
 const Drawer: React.FC<DrawerProps> = ({
@@ -17,10 +26,13 @@ const Drawer: React.FC<DrawerProps> = ({
   setOpened,
 }) => {
   const bodyRef = useRef<HTMLDivElement>()
+  const containerRef = useRef<HTMLDivElement>()
   const backgroundRef = useRef<HTMLDivElement>()
 
   const isHolding = useRef<boolean>(false)
   const startY = useRef<number>(0)
+  const [focusPosition, setFocusPosition] = useState<number>(0)
+  const needInit = useRef<boolean>(false)
 
   useEffect(() => {
     moveRef(bodyRef, {
@@ -33,10 +45,28 @@ const Drawer: React.FC<DrawerProps> = ({
       position: isOpened ? 0 : getRefHeight(bodyRef),
       smooth: true,
     })
+    focus()
+
+    if (isOpened) {
+      needInit.current = true
+    }
 
     backgroundRef.current.style.pointerEvents = isOpened ? 'all' : 'none'
     backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'
   }, [isOpened])
+
+  useEffect(() => {
+    focus()
+  }, [focusPosition])
+
+  function focus() {
+    if (focusPosition === 0) return
+
+    containerRef.current.scrollTo({
+      top: focusPosition,
+      behavior: 'smooth',
+    })
+  }
 
   function handleCursorUp(y) {
     if (!isHolding.current) return
@@ -50,6 +80,10 @@ const Drawer: React.FC<DrawerProps> = ({
       return
     }
 
+    setOpened(false)
+  }
+
+  function closeDrawer() {
     setOpened(false)
   }
 
@@ -83,8 +117,10 @@ const Drawer: React.FC<DrawerProps> = ({
           >
             <div className="handle" />
           </div>
-          <div className="container">
-            <DrawerContext.Provider value={{ close: setOpened.bind({}, null) }}>
+          <div className="container" ref={containerRef}>
+            <DrawerContext.Provider
+              value={{ isOpened, closeDrawer, setFocusPosition }}
+            >
               {children}
             </DrawerContext.Provider>
           </div>
@@ -139,7 +175,7 @@ function moveRef(
 
   const { position, smooth = false } = options
 
-  ref.current.style.bottom = `-${position}px`
+  ref.current.style.transform = `translateY(${position}px)`
   ref.current.style.transitionDuration = smooth ? '0.5s' : null
 }
 
