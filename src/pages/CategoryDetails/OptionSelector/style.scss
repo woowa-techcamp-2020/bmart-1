@@ -8,6 +8,9 @@ body {
   user-select: none;
   font-weight: 600;
   font-size: 17px;
+  background-color: var(
+    --element
+  ); // fix safari mix-blend-mode in scrollable area
 
   ul {
     position: relative;
