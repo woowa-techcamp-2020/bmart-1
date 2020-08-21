@@ -1,3 +1,4 @@
+import { Product } from '@prisma/client'
 import express, { Request, Response } from 'express'
 import { ERROR_MSG, PAGINATION, STATUS_CODE } from '~/../constants'
 import {
@@ -62,7 +63,19 @@ getProductsByTopicRouter.get(
           else
             queryStr = `SELECT product.* FROM product LEFT JOIN jjim ON product.id = jjim.productId ORDER BY rand() LIMIT ${PAGINATION.PRODUCTS_NUM_IN_NOW};`
 
-          products = await prisma.$queryRaw(queryStr)
+          products = (await prisma.$queryRaw(queryStr)) as (Product & {
+            isJjimmed: number
+          })[]
+
+          if (userId) {
+            const productsWithJjimmed = products.map((product) => {
+              const { isJjimmed, ...productInfo } = product
+
+              return { ...productInfo, isJjimmed: Boolean(isJjimmed) }
+            })
+
+            return res.json(productsWithJjimmed)
+          }
 
           return res.json(products)
 

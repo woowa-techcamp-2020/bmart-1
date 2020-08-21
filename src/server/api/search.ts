@@ -1,3 +1,4 @@
+import { Product } from '@prisma/client'
 import express, { Request, Response } from 'express'
 import { query } from 'express-validator'
 import { ERROR_MSG, STATUS_CODE } from '~/../constants'
@@ -59,7 +60,19 @@ searchRouter.get(
         queryStr = `SELECT product.*, CASE WHEN jjim.userId IS NOT NULL THEN true ELSE false END AS isJjimmed FROM product LEFT JOIN jjim ON product.id = jjim.productId WHERE ${queryCondition} and (jjim.userId is null OR jjim.userId = ${userId})`
       else queryStr = `SELECT * FROM product WHERE ${queryCondition}`
 
-      const products = await prisma.$queryRaw(queryStr)
+      const products = (await prisma.$queryRaw(queryStr)) as (Product & {
+        isJjimmed: number
+      })[]
+
+      if (userId) {
+        const productsWithJjimmed = products.map((product) => {
+          const { isJjimmed, ...productInfo } = product
+
+          return { ...productInfo, isJjimmed: Boolean(isJjimmed) }
+        })
+
+        res.json(productsWithJjimmed)
+      }
 
       res.json(products)
     } catch (e) {
