@@ -1,6 +1,4 @@
 .drawer {
-  $drawerHeight: 20px;
-
   .background {
     position: fixed;
     top: 0;
@@ -46,6 +44,7 @@
     .container {
       max-height: 70vh;
       overflow: scroll;
+      will-change: scroll-position;
     }
   }
 }
