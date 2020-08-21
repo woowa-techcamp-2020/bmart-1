@@ -4,10 +4,11 @@
   overflow: hidden;
 
   .slide-pages-scroll-wrapper {
+    position: relative;
     width: 100%;
     height: 100%;
     white-space: nowrap;
-    overflow: visible;
+    overflow: hidden;
 
     &::-webkit-scrollbar {
       display: none;
