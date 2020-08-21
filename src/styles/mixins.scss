@@ -14,3 +14,17 @@
 @mixin element-translucent {
   @include translucent(var(--element-opaque));
 }
+
+@mixin grid-template(
+  $item-min-width: 120px,
+  $item-max-width: 1fr,
+  $gap-vertical: 20px,
+  $gap-horizontal: 25px
+) {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax($item-min-width, $item-max-width)
+  );
+  gap: $gap-vertical $gap-horizontal;
+}
