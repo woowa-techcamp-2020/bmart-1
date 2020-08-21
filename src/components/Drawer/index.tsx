@@ -176,7 +176,8 @@ function moveRef(
   const { position, smooth = false } = options
 
   ref.current.style.transform = `translateY(${position}px)`
-  ref.current.style.transitionDuration = smooth ? '0.5s' : null
+  ref.current.style.transition = smooth ? `transform 500ms ease` : ``
+  // ref.current.style.transitionDuration = smooth ? '0.5s' : null
 }
 
 export default Drawer
