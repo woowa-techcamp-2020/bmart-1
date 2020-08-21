@@ -11,7 +11,7 @@ const Search: React.FC<SearchProps> = () => {
         <input className="search-input" type="text" placeholder="검색"></input>
       </div>
 
-      <div className="search-result">검색결과</div>
+      <div className="search-result"></div>
     </div>
   )
 }
