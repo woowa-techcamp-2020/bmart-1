@@ -1,36 +1,86 @@
+import { Product } from '@prisma/client'
 import express, { Request, Response } from 'express'
 import { ERROR_MSG, PAGINATION, STATUS_CODE } from '~/../constants'
-import { GetProductsByTopicRequestQuery } from '~/../types/api'
+import {
+  GetProductsByTopicRequestQuery,
+  GetProductsByTopicResponse,
+} from '~/../types/api'
 import { prisma } from '~/utils/prisma'
 
 const getProductsByTopicRouter = express.Router()
 
 getProductsByTopicRouter.get(
   '/products-by-topic',
-  async (req: Request<{}, GetProductsByTopicRequestQuery>, res: Response) => {
+  async (
+    req: Request<{}, {}, {}, GetProductsByTopicRequestQuery>,
+    res: Response<GetProductsByTopicResponse>
+  ) => {
     const topic = req.query.topic
+    const userId = req.auth?.userId
 
     try {
+      let products
+      let queryStr
+
       switch (topic) {
         case 'new':
-          const newProducts = await prisma.product.findMany({
+          products = await prisma.product.findMany({
             take: PAGINATION.PRODUCTS_NUM_IN_NEW,
             orderBy: {
               createdAt: 'desc',
             },
+            include: {
+              jjims: userId
+                ? {
+                    where: {
+                      userId,
+                    },
+                  }
+                : false,
+            },
           })
 
-          return res.send(newProducts).end()
+          if (userId) {
+            const productsWithJjimmed = products.map((product) => {
+              const { jjims, ...productInfo } = product
+
+              return { ...productInfo, isJjimmed: jjims.length > 0 }
+            })
+
+            res.json(productsWithJjimmed)
+          }
+
+          return res.json(products)
 
         case 'now':
-          const nowProducts = await prisma.$queryRaw(
-            `SELECT * from product order by rand() limit ${PAGINATION.PRODUCTS_NUM_IN_NOW}`
-          )
+          if (userId)
+            queryStr = `
+            SELECT product.*, CASE WHEN jjim.userId IS NOT NULL THEN true ELSE false END AS isJjimmed
+            FROM product LEFT JOIN jjim ON product.id = jjim.productId
+            WHERE jjim.userId is null OR jjim.userId = ${userId}
+            ORDER BY rand() LIMIT ${PAGINATION.PRODUCTS_NUM_IN_NOW};
+            `
+          else
+            queryStr = `SELECT product.* FROM product LEFT JOIN jjim ON product.id = jjim.productId ORDER BY rand() LIMIT ${PAGINATION.PRODUCTS_NUM_IN_NOW};`
 
-          return res.send(nowProducts)
+          products = (await prisma.$queryRaw(queryStr)) as (Product & {
+            isJjimmed: number
+          })[]
+
+          if (userId) {
+            const productsWithJjimmed = products.map((product) => {
+              const { isJjimmed, ...productInfo } = product
+
+              return { ...productInfo, isJjimmed: Boolean(isJjimmed) }
+            })
+
+            return res.json(productsWithJjimmed)
+          }
+
+          return res.json(products)
 
         default:
-          return res.status(STATUS_CODE.BAD_REQUEST).send({ message: ERROR_MSG.INVALID_TOPIC })
+          throw new Error(ERROR_MSG.NO_ADDRESS)
       }
     } catch (e) {
       console.error(e)
