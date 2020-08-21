@@ -15,23 +15,27 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
 }) => {
   const selectRef = useRef<HTMLLIElement>()
   const [optionIdx, setOptionIdx] = useState(0)
-  const closeDrawer = useContext(DrawerContext)?.close
+  const { isOpened, closeDrawer, setFocusPosition } =
+    useContext(DrawerContext) ?? {}
 
   useEffect(() => {
     const idx = options.indexOf(option)
 
-    if (idx !== -1) setOptionIdx(idx)
-  }, [option])
+    if (idx !== -1) {
+      setOptionIdx(idx)
+      setFocusPosition(selectRef.current.clientHeight * idx)
+    }
+  }, [option, isOpened])
 
   useEffect(() => {
-    const height = selectRef.current.clientHeight
+    const top = selectRef.current.clientHeight * optionIdx
 
-    selectRef.current.style.top = `${height * optionIdx}px`
+    selectRef.current.style.transform = `translatey(${top}px)`
   }, [optionIdx])
 
   function selectOption() {
     setOption(options[optionIdx])
-    closeDrawer()
+    closeDrawer && closeDrawer()
   }
 
   return (
