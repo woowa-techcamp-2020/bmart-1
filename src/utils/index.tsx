@@ -19,3 +19,17 @@ export default function getState<T = unknown>(
     })
   })
 }
+
+/**
+ * Returns a element matched with the given query
+ */
+export function $sel<T extends HTMLElement>(query: string): T {
+  return document.querySelector<T>(query)
+}
+
+/**
+ * Returns an array of elements matched with the given query
+ */
+export function $$sel<T extends HTMLElement>(query: string): T[] {
+  return Array.from(document.querySelectorAll<T>(query))
+}
