@@ -25,7 +25,7 @@ const Header: React.FC<SlideTabsProps> = () => {
         <FullNameLogoAlt className="logo-img" />
       </div>
       <div className="slide-tabs">
-        <div className="indicator"></div>
+        <div className="indicator" />
 
         {tabTitles.map((title, i) => (
           <button
