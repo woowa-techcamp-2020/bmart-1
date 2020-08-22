@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { search } from 'src/apis'
 import ProductItem from 'src/components/ProductItem'
 import './style.scss'
 
@@ -27,18 +28,28 @@ function hideButton({ target }) {
 }
 
 function focusInput({ target }) {
-  console.log('focus input')
   const input = target.closest('.search-input-wrapper').querySelector('input')
 
   input.focus()
 }
 
 const Search: React.FC<SearchProps> = () => {
+  const [page, setPage] = useState(0)
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
 
-  function submitSearchTerm(e) {
+  async function submitSearchTerm(e) {
     e.stopPropagation()
+
+    if (!inputValue) {
+      setPage(0)
+      setFoundProducts([])
+    } else {
+      const searchResults = await search({ term: inputValue, page: page })
+
+      setPage(page + 1)
+      setFoundProducts(searchResults)
+    }
   }
 
   return (
