@@ -12,6 +12,7 @@
     align-items: center;
     margin: 0 auto;
     margin-bottom: 20px;
+    position: relative;
 
     .search-input-icon {
       display: inline-block;
@@ -25,12 +26,30 @@
     }
 
     .search-input {
-      width: 100%;
+      flex: 1;
       height: 100%;
       color: #808080;
       font-weight: 500;
       background-color: transparent;
       border: none;
+      padding-right: 35px;
+    }
+
+    .search-input-button {
+      position: absolute;
+      right: 12px;
+      opacity: 0;
+      transition: opacity 0.1s ease-in-out;
+      pointer-events: none;
+      user-select: none;
+      color: #000;
+      font-weight: 600;
+      font-size: 15px;
+
+      &.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
   }
 
