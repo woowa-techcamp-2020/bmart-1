@@ -1,8 +1,10 @@
-import { Jjim } from '@prisma/client'
+import { Jjim, Product } from '@prisma/client'
 import { ERROR_MSG } from 'src/constants'
 import type {
   DeleteFromCartBody,
   ProductsInCart,
+  ProductWithJjimmed,
+  SearchApiRequestQuery,
   ToggleJjimRequestBody,
 } from 'src/types/api'
 
@@ -97,4 +99,10 @@ export async function deleteFromCart(body: DeleteFromCartBody) {
 
 export async function getProductsInCart(): Promise<ProductsInCart> {
   return await request('/products-in-cart', 'GET')
+}
+
+export async function search(
+  query: SearchApiRequestQuery
+): Promise<Product[] | ProductWithJjimmed[]> {
+  return await request(`/search?term=${query.term}&page=${query.page}`, 'GET')
 }
