@@ -7,6 +7,9 @@ import type {
   SearchApiRequestQuery,
   ToggleJjimRequestBody,
 } from 'src/types/api'
+import { isDev } from 'src/utils'
+
+const baseURL = isDev ? `http://${window.location.hostname}:13100/api` : `/api`
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
@@ -63,10 +66,7 @@ async function request(
   body?: Record<string, unknown>
 ): Promise<any> {
   try {
-    const response = await fetch(
-      `http://localhost:13100/api${url}`,
-      defaultOptions(method, body)
-    )
+    const response = await fetch(baseURL + url, defaultOptions(method, body))
 
     if (!response.ok) {
       console.error(response.status)
