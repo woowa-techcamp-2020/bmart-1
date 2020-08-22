@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { deleteFromCart } from 'src/apis'
 import { ProductInCart } from 'src/types/api'
-import { addCommaToPrice } from 'src/utils'
 import './style.scss'
 
 export type CartItemProps = {
@@ -33,7 +32,9 @@ const CartItem: React.FC<CartItemProps> = ({
     const { current: cartItemDeleteElem } = cartItemDelete
 
     cartItemDeleteElem.addEventListener('click', (e) => {
-      const selectedItem = (e.target as HTMLElement).closest('.cart-item') as HTMLElement
+      const selectedItem = (e.target as HTMLElement).closest(
+        '.cart-item'
+      ) as HTMLElement
 
       selectedItem.addEventListener('transitionend', async () => {
         await deleteFromCart({ productIds: [id] })
@@ -47,20 +48,29 @@ const CartItem: React.FC<CartItemProps> = ({
     <div className="cart-item" key={id}>
       <div className="cart-item-name">{name}</div>
       <div className="cart-item-info">
-        <div className="cart-item-info-left" style={{ backgroundImage: `url(${imgV})` }}></div>
+        <div
+          className="cart-item-info-left"
+          style={{ backgroundImage: `url(${imgV})` }}
+        ></div>
         <div className="cart-item-info-right">
           <div className="minus-plus">MinusPlus</div>
           <div className="price">
             <div className="price-detail">
               {defaultPrice !== price ? (
-                <span className="price-detail-default">{addCommaToPrice(defaultPrice)}원</span>
+                <span className="price-detail-default">
+                  {defaultPrice.toLocaleString()}원
+                </span>
               ) : (
                 ''
               )}
-              <span className="price-detail-current">{addCommaToPrice(price)}원 </span>
+              <span className="price-detail-current">
+                {price.toLocaleString()}원{' '}
+              </span>
               <span className="price-detail-quantity">x {quantity}</span>
             </div>
-            <div className="price-total">{addCommaToPrice(price * quantity)}원</div>
+            <div className="price-total">
+              {(price * quantity).toLocaleString()}원
+            </div>
           </div>
           <div className="delete" ref={cartItemDelete}>
             <div className="delete-icon"></div>
