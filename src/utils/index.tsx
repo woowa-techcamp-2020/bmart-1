@@ -9,7 +9,7 @@ export function addCommaToPrice(price: number): string {
  * @param setStateFunction React SetStateAction
  */
 export default function getState<T = unknown>(
-  setStateFunction: (value: React.SetStateAction<T>) => void
+  setStateFunction: React.Dispatch<React.SetStateAction<T>>
 ): Promise<T> {
   return new Promise((resolve) => {
     setStateFunction((prevState) => {
