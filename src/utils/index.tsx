@@ -41,7 +41,14 @@ declare global {
     $sel: typeof $sel
     $$sel: typeof $$sel
   }
+
+  interface Document {
+    $sel: typeof $sel
+    $$sel: typeof $$sel
+  }
 }
 
 HTMLElement.prototype.$sel = $sel
 HTMLElement.prototype.$$sel = $$sel
+Document.prototype.$sel = $sel
+Document.prototype.$$sel = $$sel
