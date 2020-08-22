@@ -63,7 +63,10 @@ async function request(
   body?: Record<string, unknown>
 ): Promise<any> {
   try {
-    const response = await fetch(`/api${url}`, defaultOptions(method, body))
+    const response = await fetch(
+      `http://localhost:13100/api${url}`,
+      defaultOptions(method, body)
+    )
 
     if (!response.ok) {
       console.error(response.status)
