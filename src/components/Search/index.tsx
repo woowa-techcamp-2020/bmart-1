@@ -38,9 +38,7 @@ const Search: React.FC<SearchProps> = () => {
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
 
-  async function submitSearchTerm(e) {
-    e.stopPropagation()
-
+  async function searchProducts() {
     if (!inputValue) {
       setPage(0)
       setFoundProducts([])
@@ -49,6 +47,20 @@ const Search: React.FC<SearchProps> = () => {
 
       setPage(page + 1)
       setFoundProducts(searchResults)
+    }
+  }
+
+  function onPointerDownOnButton(e) {
+    e.stopPropagation()
+    searchProducts()
+  }
+
+  function onKeyDownOnInput({ key }) {
+    if (key === 'Enter') {
+      const input = document.querySelector('.search').querySelector('input')
+
+      input.blur()
+      searchProducts()
     }
   }
 
@@ -64,8 +76,12 @@ const Search: React.FC<SearchProps> = () => {
           placeholder="검색"
           onFocus={showButton}
           onBlur={hideButton}
+          onKeyDown={onKeyDownOnInput}
         ></input>
-        <div className="search-input-button" onPointerDown={submitSearchTerm}>
+        <div
+          className="search-input-button"
+          onPointerDown={onPointerDownOnButton}
+        >
           완료
         </div>
       </div>
