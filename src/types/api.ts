@@ -59,6 +59,7 @@ export type GetUserInfoApiResponse = FoundUser | ErrorResponse
 
 export type SearchApiRequestQuery = {
   term: string
+  page?: number
 }
 
 export type SearchApiResponse = Product[] | ProductWithJjimmed[] | ErrorResponse

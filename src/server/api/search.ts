@@ -41,15 +41,21 @@ function getQueryCondition(field: string, term: string) {
   return conditions.join(' OR ')
 }
 
+const amountOfPage = 30
+
 searchRouter.get(
   '/search',
-  [query('term').notEmpty().isString()],
-  requestValidator(),
+  [
+    query('term').notEmpty().isString(),
+    query('page').optional().toInt().isInt(),
+    requestValidator(),
+  ],
   async (
     req: Request<{}, {}, {}, SearchApiRequestQuery>,
     res: Response<SearchApiResponse>
   ) => {
     const term = req.query.term.trim()
+    const page = req.query.page ?? 0
     const queryCondition = getQueryCondition('name', term)
     const userId = req.auth?.userId
 
@@ -57,8 +63,23 @@ searchRouter.get(
       let queryStr
 
       if (userId)
-        queryStr = `SELECT product.*, CASE WHEN jjim.userId IS NOT NULL THEN true ELSE false END AS isJjimmed FROM product LEFT JOIN jjim ON product.id = jjim.productId WHERE ${queryCondition} and (jjim.userId is null OR jjim.userId = ${userId})`
-      else queryStr = `SELECT * FROM product WHERE ${queryCondition}`
+        queryStr = `
+          SELECT product.*,
+            CASE WHEN jjim.userId IS NOT NULL THEN true ELSE false
+            END AS isJjimmed
+          FROM product LEFT JOIN jjim ON product.id = jjim.productId
+          WHERE ${queryCondition} 
+            AND (jjim.userId is null OR jjim.userId = ${userId})
+          LIMIT ${amountOfPage}
+          OFFSET ${amountOfPage * page}
+        `
+      else
+        queryStr = `
+          SELECT * FROM product
+          WHERE ${queryCondition}
+          LIMIT ${amountOfPage}
+          OFFSET ${amountOfPage * page}
+        `
 
       const products = (await prisma.$queryRaw(queryStr)) as (Product & {
         isJjimmed: number
@@ -72,6 +93,8 @@ searchRouter.get(
         })
 
         res.json(productsWithJjimmed)
+
+        return
       }
 
       res.json(products)
