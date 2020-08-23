@@ -4,7 +4,15 @@ import { CarouselContext } from '../..'
 import './style.scss'
 
 export type AdBannerProps = {
-  color: 'violet' | 'purple' | 'sky' | 'orange' | 'mint' | 'grass' | 'dark' | 'blue'
+  color:
+    | 'violet'
+    | 'purple'
+    | 'sky'
+    | 'orange'
+    | 'mint'
+    | 'grass'
+    | 'dark'
+    | 'blue'
   index: number
 }
 

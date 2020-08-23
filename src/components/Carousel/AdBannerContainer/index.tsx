@@ -26,10 +26,13 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = (props) => {
   useEffect(() => {
     const loop = () => {
       setCurrentIndex((currentIndex) => {
-        const firstAdBanner = container.current.querySelector<HTMLDivElement>('.ad-banner')
+        const firstAdBanner = container.current.querySelector<HTMLDivElement>(
+          '.ad-banner'
+        )
         const nextAdBanner =
-          container.current.querySelectorAll<HTMLDivElement>('.ad-banner')[currentIndex + 1] ||
-          firstAdBanner
+          container.current.querySelectorAll<HTMLDivElement>('.ad-banner')[
+            currentIndex + 1
+          ] || firstAdBanner
 
         isAutoTransitioning.current = true
 
