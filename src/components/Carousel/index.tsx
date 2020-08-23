@@ -13,7 +13,7 @@ export const CarouselContext = createContext(
 
 export type CarouselProps = unknown
 
-const Carousel: React.FC<CarouselProps> = (props) => {
+const Carousel: React.FC<CarouselProps> = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   return (

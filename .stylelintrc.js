@@ -6,6 +6,7 @@ module.exports = {
     'scss/at-rule-no-unknown': true,
     'no-empty-source': null,
     'value-list-comma-newline-after': null,
+    'value-keyword-case': null,
     'selector-list-comma-newline-after': null,
     'declaration-colon-newline-after': null,
   },
