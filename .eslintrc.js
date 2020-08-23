@@ -12,16 +12,19 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint'],
   rules: {
-    '@typescript-eslint/member-delimiter-style': {
-      multiline: {
-        delimiter: 'comma',
-        requireLast: false,
+    '@typescript-eslint/member-delimiter-style': [
+      0,
+      {
+        multiline: {
+          delimiter: 'comma',
+          requireLast: false,
+        },
+        singleline: {
+          delimiter: 'none',
+          requireLast: false,
+        },
       },
-      singleline: {
-        delimiter: 'none',
-        requireLast: false,
-      },
-    },
+    ],
     'no-undef': [0],
     'react/prop-types': [0],
     '@typescript-eslint/ban-types': [0],
