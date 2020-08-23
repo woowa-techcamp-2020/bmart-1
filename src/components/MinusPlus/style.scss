@@ -1,0 +1,14 @@
+.minus-plus {
+  $height: 44.79px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 #{$height / 2};
+  width: 142.28px;
+  height: $height;
+  left: 154.8px;
+  top: 30.02px;
+  background: #f3f3f5;
+  border-radius: 9581.37px;
+}
