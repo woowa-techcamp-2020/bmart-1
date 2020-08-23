@@ -1,12 +1,11 @@
-import { Product } from '@prisma/client'
-import React, { useState } from 'react'
-import { search } from 'src/apis'
-import { ProductWithJjimmed } from 'src/types/api'
+import React from 'react'
 import { Dispatcher } from 'src/types/react-helper'
 import './style.scss'
 
 export type SearchInputContainerProps = {
-  setFoundProducts: Dispatcher<Product[] | ProductWithJjimmed[]>
+  inputValue: string
+  onInputChange: Dispatcher<string>
+  onSearch: (term: string) => void
 }
 
 function onButtonClick(e) {
@@ -27,53 +26,11 @@ function onInputFocus({ currentTarget }) {
   button.classList.add('active')
 }
 
-function saveSearchTerm(term) {
-  if (!term.trim()) return
-
-  let previousTerms = getRecentTerms()
-
-  if (!previousTerms) {
-    previousTerms = []
-  } else {
-    previousTerms = previousTerms.filter(
-      (previousTerm) => previousTerm !== term
-    )
-  }
-
-  const updatedTerms = [term, ...previousTerms].slice(0, 5)
-
-  localStorage.setItem('recentTerms', JSON.stringify(updatedTerms))
-}
-
-function getRecentTerms() {
-  const recentTerms = localStorage.getItem('recentTerms')
-
-  return JSON.parse(recentTerms)
-}
-
-let lastSearchTerm = ''
-let page = 0
-let timer = null
-
 const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
-  setFoundProducts,
+  inputValue,
+  onInputChange,
+  onSearch,
 }) => {
-  const [inputValue, setInputValue] = useState('')
-
-  function onInputChange({ target: { value } }) {
-    setInputValue(value)
-
-    if (timer) {
-      clearTimeout(timer)
-      timer = null
-    } else {
-      timer = setTimeout(() => {
-        fetchSearch(value)
-        timer = null
-      }, 300)
-    }
-  }
-
   function onInputBlur({ currentTarget }) {
     const button = currentTarget
       .closest('.search-input-container')
@@ -81,20 +38,7 @@ const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
 
     button.classList.remove('active')
 
-    fetchSearch(currentTarget.value)
-  }
-
-  async function fetchSearch(value) {
-    if (value === lastSearchTerm) return
-
-    page = 0
-    const searchResults = await search({ term: value, page })
-
-    setFoundProducts(searchResults)
-
-    saveSearchTerm(value)
-    lastSearchTerm = value
-    page += 1
+    onSearch(currentTarget.value)
   }
 
   return (
@@ -103,7 +47,7 @@ const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
       <input
         value={inputValue}
         className="search-input"
-        onChange={onInputChange}
+        onChange={({ target: { value } }) => onInputChange(value)}
         type="text"
         placeholder="검색"
         onBlur={onInputBlur}
