@@ -56,6 +56,7 @@ function getRecentTerms() {
 }
 
 let page = 0
+let timer = null
 
 const Search: React.FC<SearchProps> = () => {
   const [foundProducts, setFoundProducts] = useState([])
@@ -111,6 +112,20 @@ const Search: React.FC<SearchProps> = () => {
     }
   }
 
+  function onInputChange({ target: { value } }) {
+    setInputValue(value)
+
+    if (timer) {
+      clearTimeout(timer)
+      timer = null
+    } else {
+      timer = setTimeout(() => {
+        searchProducts()
+        timer = null
+      }, 300)
+    }
+  }
+
   return (
     <div className="search">
       <div className="search-input-wrapper" onPointerDown={focusInput}>
@@ -118,7 +133,7 @@ const Search: React.FC<SearchProps> = () => {
         <input
           value={inputValue}
           className="search-input"
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={onInputChange}
           type="text"
           placeholder="검색"
           onFocus={showButton}
