@@ -31,11 +31,21 @@ export type GetProductsByCategoryApiRequestQuery = {
   direction?: 'asc' | 'desc'
 }
 
-export type GetProductsByCategoryApiResponse = Product[] | ErrorResponse
+export type ProductWithJjimmed = Product & { isJjimmed: boolean }
+
+export type GetProductsByCategoryApiResponse =
+  | Product[]
+  | ProductWithJjimmed[]
+  | ErrorResponse
 
 export type GetProductsByTopicRequestQuery = {
   topic: string
 }
+
+export type GetProductsByTopicResponse =
+  | Product[]
+  | ProductWithJjimmed[]
+  | ErrorResponse
 
 export type ProductInCart = Cart & { product: Product }
 
@@ -51,7 +61,7 @@ export type SearchApiRequestQuery = {
   term: string
 }
 
-export type SearchApiResponse = Product[] | ErrorResponse
+export type SearchApiResponse = Product[] | ProductWithJjimmed[] | ErrorResponse
 
 export type SetDefaultAddressApiRequestBody = {
   defaultAddressId: number
@@ -74,4 +84,4 @@ export type GetProductApiRequestQuery = {
   productId: string
 }
 
-export type GetProductApiResponse = Product | ErrorResponse
+export type GetProductApiResponse = Product | ProductWithJjimmed | ErrorResponse

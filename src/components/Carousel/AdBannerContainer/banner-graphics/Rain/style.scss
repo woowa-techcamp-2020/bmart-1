@@ -1,0 +1,42 @@
+.banner-graphic-rain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    transform: scale(0);
+    transition: transform 200ms ease;
+  }
+
+  .umbrella {
+    width: 100%;
+    height: auto;
+    z-index: 100;
+  }
+
+  .umbrella-bg {
+    position: absolute;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.banner.animate .banner-graphic-rain {
+  img {
+    transform: scale(1);
+    transition: transform 300ms ease;
+
+    &.umbrella {
+      transition-delay: 200ms;
+    }
+
+    &.umbrella-bg {
+      transition-delay: 100ms;
+    }
+  }
+}

@@ -27,6 +27,7 @@ getProductsByCategoryRouter.get(
     res: Response<GetProductsByCategoryApiResponse>
   ) => {
     const { category, sortBy, direction, page } = req.query
+    const userId = req.auth?.userId
 
     const orderByOptions = {
       orderBy: {
@@ -41,10 +42,29 @@ getProductsByCategoryRouter.get(
         where: {
           category,
         },
+        include: {
+          jjims: userId
+            ? {
+                where: {
+                  userId,
+                },
+              }
+            : false,
+        },
         skip: ((page ?? 1) - 1) * amountOfPage,
         take: amountOfPage,
         ...orderByOptions,
       })
+
+      if (userId) {
+        const productsWithJjimmed = products.map((product) => {
+          const { jjims, ...productInfo } = product
+
+          return { ...productInfo, isJjimmed: jjims.length > 0 }
+        })
+
+        res.json(productsWithJjimmed)
+      }
 
       res.json(products)
     } catch (e) {

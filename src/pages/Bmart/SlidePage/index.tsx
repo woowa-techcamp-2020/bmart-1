@@ -1,75 +1,30 @@
 import React, { useEffect, useRef } from 'react'
+import { $sel } from 'src/utils'
 import './style.scss'
-
-export const spVerticalScrollSentinelClassName = 'sp-vertical-scroll-sentinel'
-export const spHorizontalScrollSentinelClassName =
-  'sp-horizontal-scroll-sentinel'
 
 export type SlidePageProps = {
   pageName: 'home' | 'sale' | 'me'
 }
 
-const SlidePage: React.FC<SlidePageProps> = ({ children, pageName }) => {
-  const spVerticalScrollSentinel = useRef<HTMLDivElement>()
-  const spHorizontalScrollSentinel = useRef<HTMLDivElement>()
-
-  const isObserverInitted = useRef(true)
+const SlidePage: React.FC<SlidePageProps> = ({ children }) => {
+  const slidePageRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
-    const header = document.querySelector<HTMLElement>('.header')
+    const header = $sel('.header')
 
-    const observer = new IntersectionObserver((entries) => {
-      if (isObserverInitted.current) {
-        isObserverInitted.current = false
+    const logoWrapper = $sel('.logo-wrapper')
 
-        return
-      }
-
-      for (const entry of entries) {
-        if (entry.target === spVerticalScrollSentinel.current) {
-          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-            header.style.transition = 'transform 300ms ease'
-            header.style.transform = `translate3d(0, ${-header.querySelector(
-              '.logo-wrapper'
-            ).clientHeight}px, 0)`
-          } else {
-            header.style.transition = 'transform 300ms ease'
-            header.style.transform = `translate3d(0, 0, 0)`
-          }
-        } else if (entry.target === spHorizontalScrollSentinel.current) {
-          if (entry.isIntersecting) {
-            window.history.pushState(
-              null,
-              null,
-              `/${pageName === 'home' ? '' : pageName}`
-            )
-          }
-        }
-      }
-    })
-
-    function observeAll() {
-      observer.observe(spVerticalScrollSentinel.current)
-      observer.observe(spHorizontalScrollSentinel.current)
-    }
-
-    observeAll()
-
-    window.addEventListener('popstate', () => {
-      isObserverInitted.current = true
+    slidePageRef.current.addEventListener('scroll', () => {
+      header.style.transition = ''
+      header.style.transform = `translateY(${-Math.max(
+        Math.min(slidePageRef.current.scrollTop, logoWrapper.clientHeight),
+        0
+      )}px)`
     })
   }, [])
 
   return (
-    <div className="slide-page">
-      <div
-        className={spHorizontalScrollSentinelClassName}
-        ref={spHorizontalScrollSentinel}
-      />
-      <div
-        className={spVerticalScrollSentinelClassName}
-        ref={spVerticalScrollSentinel}
-      />
+    <div className="slide-page" ref={slidePageRef}>
       {children}
     </div>
   )

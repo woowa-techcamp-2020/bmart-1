@@ -1,26 +1,27 @@
 $banner-gap: 14px;
 
-.ad-banner-container-scroll-wrapper {
+.banner-container-scroll-wrapper {
   width: 100%;
   display: flex;
   position: relative;
   overflow: hidden;
+  transform: translate3d(0, 0, 0);
 
   &::before {
     content: '';
     display: block;
-    padding-top: calc(50.75% - 26px);
+    // padding-top: calc(50.75% - 26px);
+    padding-top: 200px;
   }
 
-  .ad-banner-container {
+  .banner-container {
     position: absolute;
     height: 100%;
-    display: inline-block;
-    white-space: nowrap;
-    overflow-x: auto;
-    width: 100%;
-    scroll-snap-type: x mandatory;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     padding-top: 3px;
+    transition: transform 400ms cubic-bezier(0.59, 0.04, 0.31, 1);
 
     &::-webkit-scrollbar {
       display: none;

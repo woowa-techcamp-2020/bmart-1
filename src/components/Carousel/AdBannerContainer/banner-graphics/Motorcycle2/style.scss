@@ -1,0 +1,19 @@
+.banner-graphic-motorcycle2 {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  height: 70%;
+
+  .driver {
+    height: 100%;
+    width: auto;
+    transform: translateX(100%);
+    transition: transform 200ms ease;
+  }
+}
+
+.banner.animate .banner-graphic-motorcycle2 .driver {
+  transform: translateX(0%);
+  transition: transform 300ms ease;
+  transition-delay: 200ms;
+}
