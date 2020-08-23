@@ -49,9 +49,10 @@ function getRecentTerms() {
   return JSON.parse(recentTerms)
 }
 
+let page = 0
+
 // TODO: 같은 단어 검색을 방지할까? 최근 검색어에는 중복 방지 처리할까?
 const Search: React.FC<SearchProps> = () => {
-  const [page, setPage] = useState(0)
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [recentTerms, setRecentTerms] = useState(getRecentTerms())
@@ -78,12 +79,12 @@ const Search: React.FC<SearchProps> = () => {
     const { current: searchResultsDiv } = searchResultsRef
 
     if (!inputValue) {
-      setPage(0)
+      page = 0
       setFoundProducts([])
     } else {
       const searchResults = await search({ term: inputValue, page: page })
 
-      setPage(page + 1)
+      page += 1
       setFoundProducts(searchResults)
       searchResultsDiv.classList.remove('hidden')
     }
