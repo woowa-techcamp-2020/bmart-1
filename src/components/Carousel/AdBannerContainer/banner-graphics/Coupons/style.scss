@@ -1,0 +1,42 @@
+.coupons {
+  position: absolute;
+  right: 15px;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .coupon {
+    transform: translateY(-100%) scale(1.5);
+    opacity: 0;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+
+  .upper {
+    width: 100%;
+    height: auto;
+  }
+
+  .lower {
+    position: absolute;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.banner.animate .coupons .coupon {
+  transform: translateY(0%);
+  transition: transform 300ms ease, opacity 300ms ease;
+  opacity: 1;
+
+  &.upper {
+    transition-delay: 300ms;
+  }
+
+  &.lower {
+    transition-delay: 200ms;
+  }
+}
