@@ -17,7 +17,7 @@ const MinusPlus: React.FC<MinusPlusProps> = ({ quantity = 1, onChange }) => {
     <div className="minus-plus">
       <div onClick={() => changeQuantity(quantity - 1)}>-</div>
       <div>{quantity}</div>
-      <div onClick={() => changeQuantity(quantity + 1)}>-</div>
+      <div onClick={() => changeQuantity(quantity + 1)}>+</div>
     </div>
   )
 }

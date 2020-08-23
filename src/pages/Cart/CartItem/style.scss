@@ -2,20 +2,24 @@
   width: 100%;
   padding-bottom: 29px;
   transition: height 0.6s ease-in-out;
+
   &.removed {
-    height: 0px !important;
-    padding-bottom: 0px;
+    height: 0 !important;
+    padding-bottom: 0;
     overflow: hidden;
   }
+
   &-name {
     font-weight: 600;
     font-size: 14px;
     line-height: 17px;
     margin-bottom: 8px;
   }
+
   &-info {
     display: flex;
     justify-content: space-between;
+
     &-left {
       width: 100px;
       height: 128px;
@@ -24,11 +28,13 @@
       background-size: cover;
       background-repeat: no-repeat;
     }
+
     &-right {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-end;
+
       .minus-plus {
         width: 142px;
         height: 45px;
@@ -37,24 +43,30 @@
         line-height: 45px;
         text-align: center;
       }
+
       .price {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+
         &-detail {
           color: #808080;
+
           &-default {
             font-size: 10px;
             text-decoration-line: line-through;
             margin-right: 4px;
           }
+
           &-current {
             font-size: 12px;
           }
+
           &-quantity {
             font-size: 12px;
           }
         }
+
         &-total {
           font-size: 20px;
           font-weight: 700;
@@ -67,9 +79,11 @@
         // line-height: 40px;
         // text-align: end;
       }
+
       .delete {
         color: #f54243;
         display: flex;
+
         &-icon {
           width: 20px;
           height: 18px;
@@ -79,6 +93,7 @@
           background-repeat: no-repeat;
           margin-right: 2px;
         }
+
         &-description {
           font-size: 15px;
           font-weight: 600;
