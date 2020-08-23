@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { search } from 'src/apis'
 import SearchInputContainer from './SearchInputContainer'
-import SearchKeywords from './SearchKeywords'
-import SearchResult from './SearchResult'
+import SearchResults from './SearchResults'
+import SearchTerms from './SearchTerms'
 import './style.scss'
 
 export type SearchProps = unknown
@@ -41,9 +41,6 @@ const Search: React.FC<SearchProps> = () => {
   const [isSkeletonOn, setIsSkeletonOn] = useState(true)
   const [recentTerms, setRecentTerms] = useState(getRecentTerms())
   const [isKeywordsOn, setIsKeywordsOn] = useState(true)
-
-  const searchTermsRef = useRef<HTMLDivElement>()
-  const searchResultsRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
     if (!inputValue) {
@@ -97,21 +94,11 @@ const Search: React.FC<SearchProps> = () => {
         onSearch={onSearch}
       />
 
-      {/* <div className="search-terms hidden" ref={searchTermsRef}> */}
-      {isKeywordsOn && <SearchKeywords />}
-      {/* <div className="search-terms-title">최근 검색어</div> */}
-      {/* {recentTerms.map((recentTerm: string, idx: number) => (
-          <div key={idx} className="search-terms-term">
-            {recentTerm}
-          </div>
-        ))} */}
-      {/* </div> */}
-      <SearchResult isSkeletonOn={isSkeletonOn} />
-      {/* <div className="search-results hidden" ref={searchResultsRef}>
-        검색결과
-        {isSkeletonOn ? '스켈레톤 보인다' : '스켈레톤 안 보인다'}
-        
-      </div> */}
+      {isKeywordsOn ? (
+        <SearchTerms terms={recentTerms} />
+      ) : (
+        <SearchResults isSkeletonOn={isSkeletonOn} results={foundProducts} />
+      )}
     </div>
   )
 }
