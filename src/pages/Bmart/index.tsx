@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
-import { $$sel, $sel } from 'src/utils'
+import { $$sel, $sel, sanitizeNan } from 'src/utils'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
@@ -91,16 +91,23 @@ const Bmart: React.FC<BmartProps> = () => {
     const slideTabs = $$sel('.slide-tabs .tab-button')
     const header = $sel('.header')
 
+    const bannedElementQueries = ['.carousel']
+
     slidePagesWrapper.current.addEventListener(
       'touchstart',
       async (touchStartEvent) => {
-        // if (
-        //   e.target instanceof HTMLElement &&
-        //   !e.target.classList.contains('slide-page') &&
-        //   !e.target.classList.contains('slide-pages-scroll-wrapper')
-        // ) {
-        //   return
-        // }
+        const target = touchStartEvent.target
+
+        // Banned list to prevent page move
+        if (!(target instanceof HTMLElement)) {
+          return
+        }
+
+        for (const banned of bannedElementQueries) {
+          if (target.closest(banned)) {
+            return
+          }
+        }
 
         let isVerticalScrollLocked = false
 
