@@ -4,13 +4,22 @@ import './style.scss'
 export type SlotMachineProps = {
   itemList?: string[]
 }
-const NO_CHANGE = -1
-const NO_ACTION = 0
-const PULLING = 1
-const RELEASING = 2
-const WAITING = 3
-const RESETING = 4
-const MIN_PULL_LENGTH = 50
+const NO_CHANGE = 'NO_CHANGE' as const
+const NO_ACTION = 'NO_ACTION' as const
+const PULLING = 'PUULING' as const
+const RELEASING = 'RELEASING' as const
+const WAITING = 'WAITING' as const
+const RESETING = 'RESETING' as const
+
+type ActionType =
+  | typeof NO_CHANGE
+  | typeof NO_ACTION
+  | typeof PULLING
+  | typeof RELEASING
+  | typeof WAITING
+  | typeof RESETING
+
+const MIN_PULL_LENGTH = 100
 const MAX_PULL_LENGTH = 600
 const RELEASING_DURATION = 1500
 const RESETING_DURATION = 300
@@ -32,7 +41,7 @@ const ITEM_LIST = [
 ]
 
 type ActionRequestType = {
-  type?: number
+  type?: ActionType
   y?: number
   startAt?: number
   done?: boolean
@@ -42,7 +51,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   itemList = ITEM_LIST,
   children,
 }) => {
-  let action = NO_ACTION
+  let action: ActionType = NO_ACTION
   let requestedActions: ActionRequestType[] = []
   let height = 0
   let startY,
@@ -132,9 +141,10 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
       .map((requestedAction) => {
         switch (requestedAction.type) {
           case PULLING:
+            if (action !== NO_ACTION) break
+
             action = PULLING
             startY = currentY
-            slot.current.style.transitionDuration = null
             break
 
           case WAITING:
@@ -154,6 +164,8 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
             break
 
           case RELEASING:
+            if (action !== PULLING) break
+
             if (Math.abs(currentY - startY) < MIN_PULL_LENGTH) {
               requestAction({ type: RESETING })
               break

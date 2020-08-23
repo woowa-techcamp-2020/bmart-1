@@ -1,3 +1,11 @@
+html {
+  overflow: hidden;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
 .slot-machine {
   font-size: 22px;
   font-weight: 600px;
@@ -7,6 +15,7 @@
   }
 
   .slot {
+    transition-property: transform;
     display: inline-block;
     width: 100%;
     margin-top: 0;
@@ -25,6 +34,7 @@
   }
 
   .content {
+    transition-property: transform;
     min-height: 100vh;
   }
 }
