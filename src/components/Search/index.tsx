@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { search } from 'src/apis'
 import SearchInputContainer from './SearchInputContainer'
 import './style.scss'
@@ -36,29 +36,30 @@ let timer = null
 const Search: React.FC<SearchProps> = () => {
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
+  const [isSkeletonOn, setIsSkeletonOn] = useState(true)
   // const [recentTerms, setRecentTerms] = useState(getRecentTerms())
 
   const searchTermsRef = useRef<HTMLDivElement>()
   const searchResultsRef = useRef<HTMLDivElement>()
 
-  /////////
-  // useEffect(() => {
-  //   const { current: searchTermsDiv } = searchTermsRef
-  //   const { current: searchResultsDiv } = searchResultsRef
+  useEffect(() => {
+    const { current: searchTermsDiv } = searchTermsRef
+    const { current: searchResultsDiv } = searchResultsRef
 
-  //   if (!inputValue) {
-  //     const loadedRecentTerms = getRecentTerms()
+    if (!inputValue) {
+      // const loadedRecentTerms = getRecentTerms()
 
-  //     setRecentTerms(loadedRecentTerms)
-  //     searchTermsDiv.classList.remove('hidden')
-  //     searchResultsDiv.classList.add('hidden')
-  //   } else {
-  //     searchTermsDiv.classList.add('hidden')
-  //   }
-  // }, [inputValue])
-  /////////
+      // setRecentTerms(loadedRecentTerms)
+      searchTermsDiv.classList.remove('hidden')
+      searchResultsDiv.classList.add('hidden')
+    } else {
+      searchTermsDiv.classList.add('hidden')
+      searchResultsDiv.classList.remove('hidden')
+    }
+  }, [inputValue])
 
   function onInputChange(value) {
+    setIsSkeletonOn(true)
     setInputValue(value)
     debounce(value)
   }
@@ -80,6 +81,8 @@ const Search: React.FC<SearchProps> = () => {
 
     page = 0
     const searchResults = await search({ term, page })
+
+    setIsSkeletonOn(false)
 
     setFoundProducts(searchResults)
 
@@ -105,6 +108,8 @@ const Search: React.FC<SearchProps> = () => {
         ))} */}
       </div>
       <div className="search-results hidden" ref={searchResultsRef}>
+        검색결과
+        {isSkeletonOn ? '스켈레톤 보인다' : '스켈레톤 안 보인다'}
         {/* {foundProducts.map((product) => (
           <div key={product.id} className="search-results-result">
             <ProductItem {...product} />
