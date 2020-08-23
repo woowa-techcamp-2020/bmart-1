@@ -11,6 +11,7 @@ const ChevronDownIcon: React.FC<ChevronDownIconProps> = ({
 }) => {
   return (
     <svg
+      className="icon chevron-down-icon"
       width="17"
       height="13"
       viewBox="0 0 17 13"

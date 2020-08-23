@@ -1,5 +1,7 @@
 import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import Drawer from 'src/components/Drawer'
+import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
+import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
 import OptionSelector from './OptionSelector'
@@ -33,7 +35,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({
     <div className="category-details">
       <div className="title" onClick={() => setCategoryOpened(true)}>
         {category}
-        <div className="title-icon" />
+        <ChevronDownIcon />
       </div>
       <SubCategorySelector
         category={category}
@@ -41,7 +43,7 @@ const CategoryDetails: React.FC<CategoryDetailsProps> = ({
         setSubCategory={setSubCategory}
       />
       <div className="sort-by" onClick={() => setSortByOpened(true)}>
-        <div className="sort-by-icon"></div>
+        <ArrowUpDownIcon></ArrowUpDownIcon>
         {sortBy}
       </div>
       <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>

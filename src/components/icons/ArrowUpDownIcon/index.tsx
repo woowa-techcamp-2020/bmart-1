@@ -11,6 +11,7 @@ const ArrowUpDownIcon: React.FC<ArrowUpDownIconProps> = ({
 }) => {
   return (
     <svg
+      className="icon arrow-up-down-icon"
       width="17"
       height="13"
       viewBox="0 0 17 13"
