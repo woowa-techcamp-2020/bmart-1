@@ -1,6 +1,5 @@
 import classNames from 'classnames'
-import React, { useContext, useEffect, useRef } from 'react'
-import { CarouselContext } from '../..'
+import React from 'react'
 import './style.scss'
 
 export type AdBannerProps = {
@@ -14,37 +13,29 @@ export type AdBannerProps = {
     | 'dark'
     | 'blue'
   index: number
+  subtitle: string
+  titleFirstLine: string
+  titleSecondLine: string
 }
 
-const AdBanner: React.FC<AdBannerProps> = ({ color, index }) => {
-  const { setCurrentIndex } = useContext(CarouselContext)
-
-  const sentinel = useRef<HTMLDivElement>()
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          setCurrentIndex(index)
-        }
-      }
-    })
-
-    observer.observe(sentinel.current)
-  }, [])
-
+const AdBanner: React.FC<AdBannerProps> = ({
+  color,
+  index,
+  subtitle,
+  titleFirstLine,
+  titleSecondLine,
+}) => {
   return (
     <div className="banner-wrapper">
       <div className={classNames('banner', color)}>
-      <div className="text">
-        <h2 className="subtitle">주문하면 바로 배달 오는</h2>
-        <h1 className="title">
-          누구나
-          <br />
-          4천원 할인
-        </h1>
+        <div className="text">
+          <h2 className="subtitle">{subtitle}</h2>
+          <h1 className="title">
+            <span dangerouslySetInnerHTML={{ __html: titleFirstLine }} />
+            <span dangerouslySetInnerHTML={{ __html: titleSecondLine }} />
+          </h1>
+        </div>
       </div>
-      <div className="sentinel" ref={sentinel} />
     </div>
   )
 }

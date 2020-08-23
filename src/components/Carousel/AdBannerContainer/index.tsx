@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react'
+import getState, { $$sel, $sel, sanitizeNan } from 'src/utils'
 import { CarouselContext } from '..'
 import AdBanner, { AdBannerProps } from './AdBanner'
 import './style.scss'
@@ -6,90 +7,194 @@ import './style.scss'
 const colors = [
   'violet',
   'purple',
+  'sky',
   'orange',
   'mint',
   'grass',
   'dark',
-  'sky',
   'blue',
 ] as AdBannerProps['color'][]
 
+const bannerInfo = [
+  {
+    subtitle: '주문하면 바로 배달 오는',
+    titleFirstLine: '누구나',
+    titleSecondLine: '<span>4천원</span> 할인',
+  },
+  {
+    subtitle: '친구를 초대하면',
+    titleFirstLine: '친구도 나도',
+    titleSecondLine: '<span>5천원</span> 할인',
+  },
+  {
+    subtitle: '지금 밖에 비와요!🌧',
+    titleFirstLine: '우산은',
+    titleSecondLine: '챙겼나요?',
+  },
+  {
+    subtitle: '주문하면 바로 배달 오는',
+    titleFirstLine: '누구나',
+    titleSecondLine: '<span>4천원</span> 할인',
+  },
+  {
+    subtitle: '언제든지',
+    titleFirstLine: '당일배송으로',
+    titleSecondLine: '달려갑니다',
+  },
+  {
+    subtitle: '배민페이로 주문하면',
+    titleFirstLine: '바로',
+    titleSecondLine: '<span>3천원</span> 할인',
+  },
+  {
+    subtitle: '반려동물 용품 할인 중!',
+    titleFirstLine: '집사야 간식이',
+    titleSecondLine: '먹고싶다옹',
+  },
+  {
+    subtitle: '이불 밖은 위험해',
+    titleFirstLine: '비 오는 날',
+    titleSecondLine: '배달팁 0원!',
+  },
+]
+
 export type AdBannerContainerProps = unknown
 
-const AdBannerContainer: React.FC<AdBannerContainerProps> = (props) => {
-  const { totalNumber, setCurrentIndex } = useContext(CarouselContext)
-  const isAutoTransitioning = useRef(false)
-  const intervalTimeout = useRef<number>(null)
+const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
+  const { totalNumber, currentIndex, setCurrentIndex } = useContext(
+    CarouselContext
+  )
 
-  const container = useRef<HTMLDivElement>()
+  const autoScrollInterval = useRef<number>(null)
 
+  function startAutoScroll() {
+    stopAutoScroll()
+
+    autoScrollInterval.current = window.setInterval(() => {
+      $sel('.banner-container').style.transition = ''
+      setCurrentIndex((prev) => (prev + 1) % totalNumber)
+    }, 2000)
+  }
+
+  function stopAutoScroll() {
+    window.clearInterval(autoScrollInterval.current)
+  }
+
+  // Init the page after mounted
   useEffect(() => {
-    const loop = () => {
-      setCurrentIndex((currentIndex) => {
-        const firstAdBanner = container.current.querySelector<HTMLDivElement>(
-          '.banner'
-        )
-        const nextAdBanner =
-          container.current.querySelectorAll<HTMLDivElement>('.banner')[
-            currentIndex + 1
-          ] || firstAdBanner
+    let isScrolling: number
 
-        isAutoTransitioning.current = true
-
-        container.current.scrollTo({
-          left: nextAdBanner.offsetLeft - firstAdBanner.offsetLeft,
-          behavior: 'smooth',
-        })
-
-        setTimeout(() => {
-          isAutoTransitioning.current = false
-        }, 500)
-
-        return currentIndex
-      })
-    }
-
-    const interval = 2000
-
-    intervalTimeout.current = window.setInterval(loop, interval)
-
-    const revertInterval = () => {
-      if (!intervalTimeout.current) {
-        loop()
-
-        intervalTimeout.current = window.setInterval(loop, interval)
-      }
-    }
-
-    const resetInterval = (e: MouseEvent | TouchEvent) => {
-      if (isAutoTransitioning.current) {
-        e.preventDefault()
-      }
-
-      clearInterval(intervalTimeout.current)
-      intervalTimeout.current = null
-    }
-
-    container.current.addEventListener('mouseenter', resetInterval)
-
-    container.current.addEventListener('touchstart', resetInterval)
-
-    container.current.addEventListener('mouseleave', revertInterval)
-
-    let isScrolling = null
-
-    container.current.addEventListener(
+    // Prevent banner auto scroll when scroll the page
+    container.current.closest('.slide-page').addEventListener(
       'scroll',
       () => {
+        stopAutoScroll()
+
         window.clearTimeout(isScrolling)
 
-        isScrolling = setTimeout(() => {
-          revertInterval()
-        }, 1000)
+        isScrolling = window.setTimeout(function () {
+          // When scroll finished
+          startAutoScroll()
+        }, 66)
       },
       false
     )
+
+    startAutoScroll()
   }, [])
+
+  useEffect(() => {
+    container.current.style.transform = `translateX(${-100 * currentIndex}%)`
+  }, [currentIndex])
+
+  useEffect(() => {
+    const scrollWrapper = $sel('.banner-container-scroll-wrapper')
+    const bannerContainer = $sel('.banner-container')
+
+    let diffX: number
+    let diffY: number
+    let initX: number
+    let initY: number
+
+    let isVerticalScrollLocked: boolean
+
+    scrollWrapper.addEventListener(
+      'touchstart',
+      (touchStartEvent: TouchEvent) => {
+        isVerticalScrollLocked = false
+
+        diffX = 0
+        diffY = 0
+
+        const touch = touchStartEvent.touches[0]
+
+        initX = touch.pageX
+        initY = touch.pageY
+
+        async function onTouchMove(e: TouchEvent) {
+          const touch = e.touches[0]
+
+          diffX = touch.pageX - initX
+          diffY = touch.pageY - initY
+
+          const slope = sanitizeNan(Math.abs(diffY / diffX))
+
+          if (slope < 1 || isVerticalScrollLocked) {
+            // Horizontal scroll
+            isVerticalScrollLocked = true
+
+            $$sel('.slide-page').forEach((sliedPage) => {
+              sliedPage.style.overflow = 'hidden'
+            })
+
+            container.current.closest<HTMLElement>(
+              '.slide-page'
+            ).style.overflow = 'hidden'
+
+            stopAutoScroll()
+
+            touchStartEvent.preventDefault()
+
+            const currentIndex = await getState(setCurrentIndex)
+
+            bannerContainer.style.transition = 'none'
+            bannerContainer.style.transform = `translateX(calc(${
+              -100 * currentIndex
+            }% + ${diffX}px))`
+          } else {
+            // Vertical scroll
+            scrollWrapper.removeEventListener('touchmove', onTouchMove)
+            window.removeEventListener('touchend', onTouchEnd)
+          }
+        }
+
+        function onTouchEnd() {
+          bannerContainer.style.transition = 'transform 250ms ease-out'
+
+          if (diffX < 0) {
+            setCurrentIndex((prev) => (prev + 1) % totalNumber)
+          } else {
+            setCurrentIndex((prev) =>
+              prev - 1 < 0 ? totalNumber - 1 : prev - 1
+            )
+          }
+
+          container.current.closest<HTMLElement>('.slide-page').style.overflow =
+            ''
+
+          startAutoScroll()
+
+          scrollWrapper.removeEventListener('touchmove', onTouchMove)
+          window.removeEventListener('touchend', onTouchEnd)
+        }
+
+        scrollWrapper.addEventListener('touchmove', onTouchMove)
+        window.addEventListener('touchend', onTouchEnd)
+      }
+    )
+  }, [])
+
+  const container = useRef<HTMLDivElement>()
 
   return (
     <div className="banner-container-scroll-wrapper">
@@ -97,7 +202,7 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = (props) => {
         {Array(totalNumber)
           .fill(undefined)
           .map((_, i) => (
-            <AdBanner key={i} index={i} color={colors[i]} />
+            <AdBanner key={i} index={i} color={colors[i]} {...bannerInfo[i]} />
           ))}
       </div>
     </div>
