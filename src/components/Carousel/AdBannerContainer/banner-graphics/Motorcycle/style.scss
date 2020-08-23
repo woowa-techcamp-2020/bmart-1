@@ -1,0 +1,50 @@
+.banner-motorcycle {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  height: 70%;
+  width: auto;
+  transform: translateX(calc(100% + 15px)) rotate(20deg);
+  transform-origin: 100% 100%;
+  transition: transform 500ms ease;
+
+  .body {
+    height: 100%;
+  }
+
+  .light {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+}
+
+.banner.animate .banner-motorcycle {
+  transition-delay: 100ms;
+  transform: translateX(0%);
+
+  @keyframes flash-light {
+    0% {
+      opacity: 0;
+    }
+
+    33% {
+      opacity: 1;
+    }
+
+    66% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .light {
+    animation: 500ms flash-light 600ms linear forwards;
+  }
+}
