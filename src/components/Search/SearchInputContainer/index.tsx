@@ -9,6 +9,8 @@ function onInputBlur({ currentTarget }) {
     .querySelector('.search-input-button')
 
   button.classList.remove('active')
+
+  saveSearchTerm(currentTarget.value)
 }
 
 function onInputFocus({ currentTarget }) {
@@ -17,6 +19,30 @@ function onInputFocus({ currentTarget }) {
     .querySelector('.search-input-button')
 
   button.classList.add('active')
+}
+
+function saveSearchTerm(term) {
+  if (!term.trim()) return
+
+  let previousTerms = getRecentTerms()
+
+  if (!previousTerms) {
+    previousTerms = []
+  } else {
+    previousTerms = previousTerms.filter(
+      (previousTerm) => previousTerm !== term
+    )
+  }
+
+  const updatedTerms = [term, ...previousTerms].slice(0, 5)
+
+  localStorage.setItem('recentTerms', JSON.stringify(updatedTerms))
+}
+
+function getRecentTerms() {
+  const recentTerms = localStorage.getItem('recentTerms')
+
+  return JSON.parse(recentTerms)
 }
 
 const SearchInputContainer: React.FC<SearchInputContainerProps> = () => {
