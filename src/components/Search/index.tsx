@@ -33,10 +33,29 @@ function focusInput({ target }) {
   input.focus()
 }
 
+function saveSearchTerm(term) {
+  let previousTerms = getRecentTerms()
+
+  if (!previousTerms) previousTerms = []
+
+  const updatedTerms = [term, ...previousTerms].slice(0, 5)
+
+  localStorage.setItem('recentTerms', JSON.stringify(updatedTerms))
+}
+
+function getRecentTerms() {
+  const recentTerms = localStorage.getItem('recentTerms')
+
+  return JSON.parse(recentTerms)
+}
+
+// TODO: 같은 단어 검색을 방지할까? 최근 검색어에는 중복 방지 처리할까?
 const Search: React.FC<SearchProps> = () => {
   const [page, setPage] = useState(0)
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
+
+  // useEffect : didMount, inputValue === '' 일 때 최근 검색어 보여준다
 
   async function searchProducts() {
     if (!inputValue) {
@@ -52,6 +71,7 @@ const Search: React.FC<SearchProps> = () => {
 
   function onPointerDownOnButton(e) {
     e.stopPropagation()
+    saveSearchTerm(inputValue)
     searchProducts()
   }
 
@@ -60,6 +80,7 @@ const Search: React.FC<SearchProps> = () => {
       const input = document.querySelector('.search').querySelector('input')
 
       input.blur()
+      saveSearchTerm(inputValue)
       searchProducts()
     }
   }
