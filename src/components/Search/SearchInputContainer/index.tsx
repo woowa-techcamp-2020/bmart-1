@@ -53,6 +53,7 @@ function getRecentTerms() {
 
 let lastSearchTerm = ''
 let page = 0
+let timer = null
 
 const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
   setFoundProducts,
@@ -61,6 +62,16 @@ const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
 
   function onInputChange({ target: { value } }) {
     setInputValue(value)
+
+    if (timer) {
+      clearTimeout(timer)
+      timer = null
+    } else {
+      timer = setTimeout(() => {
+        fetchSearch(value)
+        timer = null
+      }, 300)
+    }
   }
 
   function onInputBlur({ currentTarget }) {
@@ -70,18 +81,19 @@ const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
 
     button.classList.remove('active')
 
-    if (currentTarget.value !== lastSearchTerm) {
-      fetchSearch()
-    }
+    fetchSearch(currentTarget.value)
   }
 
-  async function fetchSearch() {
-    const searchResults = await search({ term: inputValue, page })
+  async function fetchSearch(value) {
+    if (value === lastSearchTerm) return
+
+    page = 0
+    const searchResults = await search({ term: value, page })
 
     setFoundProducts(searchResults)
 
-    saveSearchTerm(inputValue)
-    lastSearchTerm = inputValue
+    saveSearchTerm(value)
+    lastSearchTerm = value
     page += 1
   }
 
