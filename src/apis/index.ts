@@ -1,10 +1,10 @@
 import { Jjim } from '@prisma/client'
-import { ERROR_MSG } from 'src/constants'
 import type {
   DeleteFromCartBody,
   ProductsInCart,
   ToggleJjimRequestBody,
 } from 'src/types/api'
+import { PatchProductQuantityInCartApiRequestBody } from './../types/api'
 
 export function saveToken(token: string): void {
   localStorage.setItem('token', token)
@@ -44,7 +44,7 @@ function addBody(body) {
   }
 }
 
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 const defaultOptions = (method: Method, body?): RequestInit => ({
   method,
@@ -65,7 +65,8 @@ async function request(
 
     if (!response.ok) {
       console.error(response.status)
-      throw new Error(ERROR_MSG.BAD_REQUEST)
+
+      throw new Error((await response.json()).message)
     }
 
     const result = await response.json().catch(() => {
@@ -91,10 +92,16 @@ export async function getSubCategories(category: string) {
   return await request(`/sub-categories${createQuery({ category })}`, 'GET')
 }
 
-export async function deleteFromCart(body: DeleteFromCartBody) {
-  return await request('/delete-from-cart', 'DELETE', body)
+export async function deleteFromCart(body: DeleteFromCartBody): Promise<void> {
+  await request('/delete-from-cart', 'DELETE', body)
 }
 
 export async function getProductsInCart(): Promise<ProductsInCart> {
   return await request('/products-in-cart', 'GET')
+}
+
+export async function PatchProductQuantityInCart(
+  body: PatchProductQuantityInCartApiRequestBody
+): Promise<void> {
+  await request('/product-quantity-in-cart', 'PATCH', body)
 }
