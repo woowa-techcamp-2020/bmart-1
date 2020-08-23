@@ -14,3 +14,15 @@
 @mixin element-translucent {
   @include translucent(var(--element-opaque));
 }
+
+@mixin smaller-than($width) {
+  @media only screen and (max-width: $width) {
+    @content;
+  }
+}
+
+@mixin larger-than($width) {
+  @media only screen and (min-width: $width) {
+    @content;
+  }
+}
