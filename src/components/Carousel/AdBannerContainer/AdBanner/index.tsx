@@ -34,7 +34,8 @@ const AdBanner: React.FC<AdBannerProps> = ({ color, index }) => {
   }, [])
 
   return (
-    <div className={classNames('ad-banner', color)}>
+    <div className="banner-wrapper">
+      <div className={classNames('banner', color)}>
       <div className="text">
         <h2 className="subtitle">주문하면 바로 배달 오는</h2>
         <h1 className="title">

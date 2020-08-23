@@ -1,6 +1,6 @@
 $banner-gap: 14px;
 
-.ad-banner-container-scroll-wrapper {
+.banner-container-scroll-wrapper {
   width: 100%;
   display: flex;
   position: relative;
@@ -12,7 +12,7 @@ $banner-gap: 14px;
     padding-top: calc(50.75% - 26px);
   }
 
-  .ad-banner-container {
+  .banner-container {
     position: absolute;
     height: 100%;
     display: inline-block;

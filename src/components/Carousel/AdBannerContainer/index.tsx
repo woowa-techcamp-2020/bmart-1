@@ -27,10 +27,10 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = (props) => {
     const loop = () => {
       setCurrentIndex((currentIndex) => {
         const firstAdBanner = container.current.querySelector<HTMLDivElement>(
-          '.ad-banner'
+          '.banner'
         )
         const nextAdBanner =
-          container.current.querySelectorAll<HTMLDivElement>('.ad-banner')[
+          container.current.querySelectorAll<HTMLDivElement>('.banner')[
             currentIndex + 1
           ] || firstAdBanner
 
@@ -92,8 +92,8 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = (props) => {
   }, [])
 
   return (
-    <div className="ad-banner-container-scroll-wrapper">
-      <div className="ad-banner-container" ref={container}>
+    <div className="banner-container-scroll-wrapper">
+      <div className="banner-container" ref={container}>
         {Array(totalNumber)
           .fill(undefined)
           .map((_, i) => (

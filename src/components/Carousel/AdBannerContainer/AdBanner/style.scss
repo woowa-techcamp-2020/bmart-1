@@ -1,10 +1,6 @@
-.ad-banner {
-  position: relative;
+
+.banner-wrapper {
   display: inline-block;
-  width: 100%;
-  background-color: red;
-  scroll-snap-align: center;
-  border-radius: 10px;
   height: calc(100% - 5px);
   width: calc(100% - 56px);
   margin-right: 14px;
