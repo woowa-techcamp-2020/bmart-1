@@ -83,6 +83,11 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     currentY = y
   }
 
+  function translate(offset) {
+    slot.current.style.transform = `translateY(${offset - height}px)`
+    content.current.style.transform = `translateY(${offset}px)`
+  }
+
   function moveSlotDown(offset) {
     let duration = null
 
@@ -93,7 +98,8 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     }
 
     slot.current.style.transitionDuration = duration
-    slot.current.style.marginTop = `${offset}px`
+    content.current.style.transitionDuration = duration
+    translate(offset)
   }
 
   function pullSlotDown(offset) {
@@ -171,7 +177,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     }
 
     if (action === PULLING || action === RELEASING || action === RESETING) {
-      const y = parseFloat(getComputedStyle(slot.current).marginTop)
+      const y = getComputedTranslateY(slot.current)
       const newIdx = Math.floor((y + height / 2) / height)
 
       if (slotIdx === null || newIdx !== slotIdx) {
@@ -251,6 +257,14 @@ function getFirstTouchY(event) {
 
 function formula(r) {
   return 1 - (1 - r) ** 3
+}
+
+function getComputedTranslateY(elem: HTMLDivElement) {
+  const matrix = getComputedStyle(elem).transform
+
+  if (!matrix) return 0
+
+  return parseFloat(/\.*matrix\(.*,.*,.*,.*,.*,(.*)\)/i.exec(matrix)[1])
 }
 
 export default SlotMachine
