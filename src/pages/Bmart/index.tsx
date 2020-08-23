@@ -132,8 +132,6 @@ const Bmart: React.FC<BmartProps> = () => {
           diffX = newX - initX
           diffY = newY - initY
 
-          const sanitizeNan = (value: number) => (isNaN(value) ? 0 : value)
-
           const slope = sanitizeNan(Math.abs(diffY / diffX))
 
           if (slope < 1 || isVerticalScrollLocked) {

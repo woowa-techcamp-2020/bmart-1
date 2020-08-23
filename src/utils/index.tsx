@@ -52,3 +52,5 @@ HTMLElement.prototype.$sel = $sel
 HTMLElement.prototype.$$sel = $$sel
 Document.prototype.$sel = $sel
 Document.prototype.$$sel = $$sel
+
+export const sanitizeNan = (value: number): number => (isNaN(value) ? 0 : value)
