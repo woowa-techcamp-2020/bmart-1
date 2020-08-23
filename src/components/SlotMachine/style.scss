@@ -1,13 +1,16 @@
 .slot-machine {
   font-size: 22px;
   font-weight: 600px;
+
   .pullable {
     overflow: scroll;
   }
+
   .slot {
     display: inline-block;
     width: 100%;
-    margin-top: 0px;
+    margin-top: 0;
+
     .slot-body {
       height: 40px;
       display: flex;
@@ -15,9 +18,12 @@
       justify-content: space-evenly;
     }
   }
+
   .menu {
     display: inline-block;
+    width: 10em;
   }
+
   .content {
     min-height: 100vh;
   }
