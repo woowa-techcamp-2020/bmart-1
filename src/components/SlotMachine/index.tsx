@@ -120,8 +120,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
       y = MAX_PULL_LENGTH * formula(y / MAX_PULL_LENGTH)
     }
 
-    y /= 2
-    moveSlotDown(y)
+    moveSlotDown(y / 4)
   }
 
   function animateSlotMenu(y, height) {
