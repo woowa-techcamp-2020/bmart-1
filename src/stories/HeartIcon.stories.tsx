@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react/types-6-0'
 import React from 'react'
-import HeartIcon, { HeartIconProps } from '../components/HeartIcon'
+import HeartIcon, { HeartIconProps } from '../components/icons/HeartIcon'
 
 export default {
   title: 'HeartIcon',

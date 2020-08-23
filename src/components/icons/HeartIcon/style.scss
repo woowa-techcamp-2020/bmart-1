@@ -1,19 +1,23 @@
 .heart-icon {
   display: inline-block;
-  background-image: url('../../assets/images/heart.svg');
+  background-image: url('~src/assets/images/heart.svg');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+
   &.broken {
-    background-image: url('../../assets/images/broken-heart.svg');
+    background-image: url('~src/assets/images/broken-heart.svg');
   }
+
   &.attached {
-    background-image: url('../../assets/images/attached-heart.svg');
+    background-image: url('~src/assets/images/attached-heart.svg');
   }
+
   &.small {
     width: 25px;
     height: 25px;
   }
+
   &.big {
     width: 52px;
     height: 52px;

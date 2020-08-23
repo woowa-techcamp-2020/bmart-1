@@ -7,31 +7,24 @@ body {
   font-weight: 600;
 
   .title {
+    display: flex;
     font-style: normal;
     font-size: 25px;
+    vertical-align: center;
     line-height: 140%;
     margin-bottom: 17px;
+    align-items: center;
 
-    .title-icon {
+    .icon {
       margin-left: 7px;
-      display: inline-block;
-      background-image: url('~src/assets/images/chevron-down.svg');
-      background-position: center;
-      background-repeat: no-repeat;
-      width: 17px;
-      height: 17px;
+      height: 25px;
+      padding-bottom: 2px;
     }
   }
 
   .sort-by {
-    .sort-by-icon {
-      display: inline-block;
-      width: 17px;
-      height: 17px;
+    .icon {
       margin-right: 5px;
-      background-image: url('~src/assets/images/arrow-up-down.svg');
-      background-position: center;
-      background-repeat: no-repeat;
     }
 
     margin: 17px 0;

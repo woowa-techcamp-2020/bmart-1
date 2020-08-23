@@ -8,7 +8,10 @@ export type DiscountLabelProps = {
   discount: number
 }
 
-const DiscountLabel: React.FC<DiscountLabelProps> = ({ size = 'small', discount = 0 }) => {
+const DiscountLabel: React.FC<DiscountLabelProps> = ({
+  size = 'small',
+  discount = 0,
+}) => {
   return (
     <div className={`discount-label ${size}`}>
       <span className="discount-percentage">{discount}%</span>

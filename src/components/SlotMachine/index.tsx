@@ -4,14 +4,26 @@ import './style.scss'
 export type SlotMachineProps = {
   itemList?: string[]
 }
-const NO_ACTION = 0
-const PULLING = 1
-const RELEASING = 2
-const WAITING = 3
-const RESETING = 4
-const MIN_PULL_LENGTH = 50
+const NO_CHANGE = 'NO_CHANGE' as const
+const NO_ACTION = 'NO_ACTION' as const
+const PULLING = 'PUULING' as const
+const RELEASING = 'RELEASING' as const
+const WAITING = 'WAITING' as const
+const RESETING = 'RESETING' as const
+
+type ActionType =
+  | typeof NO_CHANGE
+  | typeof NO_ACTION
+  | typeof PULLING
+  | typeof RELEASING
+  | typeof WAITING
+  | typeof RESETING
+
+const MIN_PULL_LENGTH = 100
 const MAX_PULL_LENGTH = 600
-const SHOW_DURATION = 800
+const RELEASING_DURATION = 1500
+const RESETING_DURATION = 300
+const WAITING_DURATION = 800
 const ITEM_LIST = [
   '김치찌개',
   '샐러드',
@@ -28,25 +40,33 @@ const ITEM_LIST = [
   '아직 아무것도 못했음',
 ]
 
+type ActionRequestType = {
+  type?: ActionType
+  y?: number
+  startAt?: number
+  done?: boolean
+}
+
 const SlotMachine: React.FC<SlotMachineProps> = ({
   itemList = ITEM_LIST,
   children,
 }) => {
-  const action = useRef<number>(NO_ACTION)
-  const height = useRef<number>(0)
+  let action: ActionType = NO_ACTION
+  let requestedActions: ActionRequestType[] = []
+  let height = 0
+  let startY,
+    currentY = 0
+  let slotIdx = 0
   const pullable = useRef<HTMLDivElement>()
   const slot = useRef<HTMLDivElement>()
   const content = useRef<HTMLDivElement>()
   const menu = useRef<HTMLSpanElement>()
-  const startY = useRef<number>(0)
-  const resetAt = useRef<number>(0)
-  const slotIdx = useRef<number>(0)
   const animateRef = useRef<number>(null)
 
   useEffect(() => {
-    height.current = slot.current.getBoundingClientRect().height
-    slot.current.style.transform = `translatey(${-height.current}px)`
-    content.current.style.marginTop = `${-height.current}px`
+    height = slot.current.getBoundingClientRect().height
+    slot.current.style.transform = `translatey(${-height}px)`
+    content.current.style.marginTop = `${-height}px`
     menu.current.innerText = pickRandomItem()
     animateRef.current = requestAnimationFrame(animate)
 
@@ -59,47 +79,36 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     return itemList[Math.floor(itemList.length * Math.random())]
   }
 
-  function onCursorDown(y) {
-    if (action.current !== NO_ACTION) return
+  function requestAction({
+    type = NO_CHANGE,
+    y = 0,
+    startAt = 0,
+    done = false,
+  }: ActionRequestType) {
+    if (type !== NO_CHANGE) {
+      requestedActions.push({ type, y, startAt, done })
+    }
 
-    action.current = PULLING
-    startY.current = y
-    slot.current.style.transitionDuration = null
+    currentY = y
   }
 
-  function onCursorUp(y) {
-    if (action.current !== PULLING) return
-
-    if (Math.abs(y - startY.current) < MIN_PULL_LENGTH) {
-      action.current = RESETING
-      moveSlotDown(0)
-    } else {
-      action.current = RELEASING
-      moveSlotDown(height.current)
-    }
-  }
-
-  function onCursorMove(y) {
-    if (action.current !== PULLING) return
-
-    const offsetY = y - startY.current
-
-    if (offsetY > 0) {
-      pullSlotDown(offsetY)
-    }
+  function translate(offset) {
+    slot.current.style.transform = `translateY(${offset - height}px)`
+    content.current.style.transform = `translateY(${offset}px)`
   }
 
   function moveSlotDown(offset) {
     let duration = null
 
-    if (action.current === RELEASING) {
-      duration = '1.5s'
-    } else if (action.current === RESETING) {
-      duration = '0.3s'
+    if (action === RELEASING) {
+      duration = `${RELEASING_DURATION / 1000}s`
+    } else if (action === RESETING) {
+      duration = `${RESETING_DURATION / 1000}s`
     }
 
     slot.current.style.transitionDuration = duration
-    slot.current.style.marginTop = `${offset}px`
+    content.current.style.transitionDuration = duration
+    translate(offset)
   }
 
   function pullSlotDown(offset) {
@@ -111,11 +120,14 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
       y = MAX_PULL_LENGTH * formula(y / MAX_PULL_LENGTH)
     }
 
-    y /= 2
-    moveSlotDown(y)
+    moveSlotDown(y / 4)
   }
 
-  function animateMenu(offset, N) {
+  function animateSlotMenu(y, height) {
+    const NN = height,
+      N = height / 2
+    const offset = ((y + N) % NN) - N
+
     menu.current.style.transform = `translatey(${offset}px)`
     menu.current.style.opacity = `${
       offset < 0 ? (N - offset) / N : 1 - offset / N
@@ -123,40 +135,68 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   function animate(t) {
-    if (
-      action.current === PULLING ||
-      action.current === RELEASING ||
-      action.current === RESETING
-    ) {
-      const y = parseFloat(getComputedStyle(slot.current).marginTop)
-      const targetY = parseFloat(slot.current.style.marginTop)
-      const isActionDone = almostSame(y, targetY)
-      const NN = height.current,
-        N = NN / 2
-      const newIdx = Math.floor((y + N) / NN)
+    requestedActions
+      .filter((x) => x.startAt == 0 || x.startAt < t)
+      .map((requestedAction) => {
+        switch (requestedAction.type) {
+          case PULLING:
+            if (action !== NO_ACTION) break
 
-      if (slotIdx.current === null || newIdx !== slotIdx.current) {
-        menu.current.innerText = pickRandomItem()
-        slotIdx.current = newIdx
-      }
+            action = PULLING
+            startY = currentY
+            break
 
-      animateMenu(((y + N) % NN) - N, N)
+          case WAITING:
+            action = WAITING
+            requestAction({ type: RESETING, startAt: t + WAITING_DURATION })
+            break
 
-      if (isActionDone) {
-        if (action.current === RELEASING) {
-          action.current = WAITING
-          resetAt.current = t + SHOW_DURATION
+          case NO_ACTION:
+            action = NO_ACTION
+            moveSlotDown(0) // TODO: REMOVE THIS
+            break
+
+          case RESETING:
+            action = RESETING
+            requestAction({ type: NO_ACTION, startAt: t + RESETING_DURATION })
+            moveSlotDown(0) // TODO: REMOVE THIS
+            break
+
+          case RELEASING:
+            if (action !== PULLING) break
+
+            if (Math.abs(currentY - startY) < MIN_PULL_LENGTH) {
+              requestAction({ type: RESETING })
+              break
+            }
+
+            action = RELEASING
+            requestAction({ type: WAITING, startAt: t + RELEASING_DURATION })
+            moveSlotDown(height) // TODO: REMOVE THIS
         }
 
-        if (action.current === RESETING) {
-          action.current = NO_ACTION
-        }
+        requestedAction.done = true
+      })
+    requestedActions = requestedActions.filter(({ done }) => done === false)
+
+    if (action === PULLING) {
+      const offsetY = currentY - startY
+
+      if (offsetY > 0) {
+        pullSlotDown(offsetY)
       }
     }
 
-    if (action.current === WAITING && resetAt.current < t) {
-      action.current = RESETING
-      moveSlotDown(0)
+    if (action === PULLING || action === RELEASING || action === RESETING) {
+      const y = getComputedTranslateY(slot.current)
+      const newIdx = Math.floor((y + height / 2) / height)
+
+      if (slotIdx === null || newIdx !== slotIdx) {
+        menu.current.innerText = pickRandomItem()
+        slotIdx = newIdx
+      }
+
+      animateSlotMenu(y, height)
     }
 
     window.requestAnimationFrame(animate)
@@ -167,12 +207,42 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
       <div
         className="pullable"
         ref={pullable}
-        onTouchStart={(event) => onCursorDown(getFirstTouchY(event))}
-        onTouchEnd={(event) => onCursorUp(getFirstTouchY(event))}
-        onTouchMove={(event) => onCursorMove(getFirstTouchY(event))}
-        onMouseDown={({ clientY }) => onCursorDown(clientY)}
-        onMouseUp={({ clientY }) => onCursorUp(clientY)}
-        onMouseMove={({ clientY }) => onCursorMove(clientY)}
+        onTouchStart={(event) =>
+          requestAction({
+            type: PULLING,
+            y: getFirstTouchY(event),
+          })
+        }
+        onTouchEnd={(event) =>
+          requestAction({
+            type: RELEASING,
+            y: getFirstTouchY(event),
+          })
+        }
+        onTouchMove={(event) =>
+          requestAction({
+            type: NO_CHANGE,
+            y: getFirstTouchY(event),
+          })
+        }
+        onMouseDown={({ clientY }) =>
+          requestAction({
+            type: PULLING,
+            y: clientY,
+          })
+        }
+        onMouseUp={({ clientY }) =>
+          requestAction({
+            type: RELEASING,
+            y: clientY,
+          })
+        }
+        onMouseMove={({ clientY }) =>
+          requestAction({
+            type: NO_CHANGE,
+            y: clientY,
+          })
+        }
       >
         <div className="slot" ref={slot}>
           <div className="slot-body">
@@ -200,8 +270,12 @@ function formula(r) {
   return 1 - (1 - r) ** 3
 }
 
-function almostSame(a, b) {
-  return Math.abs(a * 10e5 - b * 10e5) < 10
+function getComputedTranslateY(elem: HTMLDivElement) {
+  const matrix = getComputedStyle(elem).transform
+
+  if (!matrix) return 0
+
+  return parseFloat(/\.*matrix\(.*,.*,.*,.*,.*,(.*)\)/i.exec(matrix)[1])
 }
 
 export default SlotMachine

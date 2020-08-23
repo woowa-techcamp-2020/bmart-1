@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { toggleJjim } from 'src/apis'
-import DiscountLabel from 'src/components/DiscountLabel'
-import HeartIcon from 'src/components/HeartIcon'
+import DiscountLabel from 'src/components/icons/DiscountLabel'
+import HeartIcon from 'src/components/icons/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
-import ColorfulBrokenHeartIcon from '../ColorfulBrokenHeartIcon'
-import ColorfulHeartIcon from '../ColorfulHeartIcon'
+import ColorfulBrokenHeartIcon from '../icons/ColorfulBrokenHeartIcon'
+import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
 
 export type ProductItemProps = {
@@ -73,15 +73,19 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
         backgroundImage: `url(${props.imgV})`,
       }}
     >
-      {isJjimmed ? <HeartIcon size="small" isBroken={false} isAttached={true} /> : ''}
-      {props.discount ? <DiscountLabel size="small" discount={props.discount} /> : ''}
+      {isJjimmed && (
+        <HeartIcon size="small" isBroken={false} isAttached={true} />
+      )}
+      {props.discount && (
+        <DiscountLabel size="small" discount={props.discount} />
+      )}
       <div className="product-item-info">
         <div className="product-item-info-name">{props.name}</div>
         <div className="product-item-info-price">
-          {props.defaultPrice !== props.price ? (
-            <span className="product-item-info-price-default">{props.defaultPrice}</span>
-          ) : (
-            ''
+          {props.defaultPrice !== props.price && (
+            <span className="product-item-info-price-default">
+              {props.defaultPrice}
+            </span>
           )}
           <span className="product-item-info-price-current">{props.price}</span>
         </div>
