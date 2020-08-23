@@ -23,6 +23,7 @@ $banner-gap: 14px;
   );
   color: #fff;
   user-select: none;
+  overflow: hidden;
 
   &.violet {
     --grad-begin: #5c63ff;
@@ -86,5 +87,13 @@ $banner-gap: 14px;
         font-weight: 700;
       }
     }
+  }
+
+  .sentinel {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    top: 0;
   }
 }

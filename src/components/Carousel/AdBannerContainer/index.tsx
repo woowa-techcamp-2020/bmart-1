@@ -2,6 +2,11 @@ import React, { useContext, useEffect, useRef } from 'react'
 import getState, { $$sel, $sel, sanitizeNan } from 'src/utils'
 import { CarouselContext } from '..'
 import AdBanner, { AdBannerProps } from './AdBanner'
+import Coupons from './banner-graphics/Coupons'
+import Motorcycle from './banner-graphics/Motorcycle'
+import Motorcycle2 from './banner-graphics/Motorcycle2'
+import Motorcycle3 from './banner-graphics/Motorcycle3'
+import Rain from './banner-graphics/Rain'
 import './style.scss'
 
 const colors = [
@@ -14,6 +19,17 @@ const colors = [
   'dark',
   'blue',
 ] as AdBannerProps['color'][]
+
+const graphics = [
+  Motorcycle,
+  Coupons,
+  Rain,
+  Motorcycle2,
+  Motorcycle3,
+  Motorcycle,
+  Motorcycle,
+  Motorcycle,
+]
 
 const bannerInfo = [
   {
@@ -202,7 +218,13 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
         {Array(totalNumber)
           .fill(undefined)
           .map((_, i) => (
-            <AdBanner key={i} index={i} color={colors[i]} {...bannerInfo[i]} />
+            <AdBanner
+              key={i}
+              index={i}
+              color={colors[i]}
+              {...bannerInfo[i]}
+              Graphic={graphics[i]}
+            ></AdBanner>
           ))}
       </div>
     </div>
