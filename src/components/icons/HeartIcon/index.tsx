@@ -1,3 +1,4 @@
+import $ from 'classnames'
 import React from 'react'
 import './style.scss'
 
@@ -16,9 +17,12 @@ const HeartIcon: React.FC<HeartIconProps> = ({
 }) => {
   return (
     <div
-      className={`heart-icon ${size} ${isBroken ? 'broken' : ''} ${
-        isAttached ? 'attached' : ''
-      }`}
+      className={$(
+        'heart-icon',
+        size,
+        { broken: isBroken },
+        { attached: isAttached }
+      )}
     ></div>
   )
 }

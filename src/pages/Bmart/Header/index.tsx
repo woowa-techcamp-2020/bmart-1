@@ -1,5 +1,5 @@
 import React from 'react'
-import FullNameLogoAlt from 'src/components/FullNameLogoAlt'
+import FullNameLogoAlt from 'src/components/icons/FullNameLogoAlt'
 import './style.scss'
 
 const onClickTab = (index: number): void => {

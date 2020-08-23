@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
-import ResizableCartIcon from 'src/components/ResizableCartIcon'
+import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import { ProductsInCart } from 'src/types/api'
 import { addCommaToPrice } from 'src/utils'
 import CartItem from './CartItem'
