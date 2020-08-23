@@ -73,7 +73,7 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     autoScrollInterval.current = window.setInterval(() => {
       $sel('.banner-container').style.transition = ''
       setCurrentIndex((prev) => (prev + 1) % totalNumber)
-    }, 2000)
+    }, 3000)
   }
 
   function stopAutoScroll() {
