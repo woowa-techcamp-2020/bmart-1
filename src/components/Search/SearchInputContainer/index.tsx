@@ -1,16 +1,22 @@
+import { Product } from '@prisma/client'
 import React, { useState } from 'react'
+import { search } from 'src/apis'
+import { ProductWithJjimmed } from 'src/types/api'
+import { Dispatcher } from 'src/types/react-helper'
 import './style.scss'
 
-export type SearchInputContainerProps = unknown
+export type SearchInputContainerProps = {
+  setFoundProducts: Dispatcher<Product[] | ProductWithJjimmed[]>
+}
 
-function onInputBlur({ currentTarget }) {
-  const button = currentTarget
-    .closest('.search-input-container')
-    .querySelector('.search-input-button')
+function onButtonClick(e) {
+  e.stopPropagation()
+}
 
-  button.classList.remove('active')
-
-  saveSearchTerm(currentTarget.value)
+function onInputKeyDown({ currentTarget, key }) {
+  if (key === 'Enter') {
+    currentTarget.blur()
+  }
 }
 
 function onInputFocus({ currentTarget }) {
@@ -45,15 +51,38 @@ function getRecentTerms() {
   return JSON.parse(recentTerms)
 }
 
-const SearchInputContainer: React.FC<SearchInputContainerProps> = () => {
+let lastSearchTerm = ''
+let page = 0
+
+const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
+  setFoundProducts,
+}) => {
   const [inputValue, setInputValue] = useState('')
 
   function onInputChange({ target: { value } }) {
     setInputValue(value)
   }
 
-  function onButtonClick(e) {
-    e.stopPropagation()
+  function onInputBlur({ currentTarget }) {
+    const button = currentTarget
+      .closest('.search-input-container')
+      .querySelector('.search-input-button')
+
+    button.classList.remove('active')
+
+    if (currentTarget.value !== lastSearchTerm) {
+      fetchSearch()
+    }
+  }
+
+  async function fetchSearch() {
+    const searchResults = await search({ term: inputValue, page })
+
+    setFoundProducts(searchResults)
+
+    saveSearchTerm(inputValue)
+    lastSearchTerm = inputValue
+    page += 1
   }
 
   return (
@@ -67,6 +96,7 @@ const SearchInputContainer: React.FC<SearchInputContainerProps> = () => {
         placeholder="검색"
         onBlur={onInputBlur}
         onFocus={onInputFocus}
+        onKeyDown={onInputKeyDown}
       ></input>
       <div className="search-input-button" onMouseDown={onButtonClick}>
         완료
