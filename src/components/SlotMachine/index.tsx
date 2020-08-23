@@ -109,7 +109,11 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     moveSlotDown(y)
   }
 
-  function animateMenu(offset, N) {
+  function animateSlotMenu(y, height) {
+    const NN = height,
+      N = height / 2
+    const offset = ((y + N) % NN) - N
+
     menu.current.style.transform = `translatey(${offset}px)`
     menu.current.style.opacity = `${
       offset < 0 ? (N - offset) / N : 1 - offset / N
@@ -129,25 +133,29 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
 
           case WAITING:
             action = WAITING
-            requestAction({ type: NO_ACTION, startAt: t + WAITING_DURATION })
+            requestAction({ type: RESETING, startAt: t + WAITING_DURATION })
             break
 
           case NO_ACTION:
             action = NO_ACTION
-            moveSlotDown(0)
+            moveSlotDown(0) // TODO: REMOVE THIS
+            break
+
+          case RESETING:
+            action = RESETING
+            requestAction({ type: NO_ACTION, startAt: t + RESETING_DURATION })
+            moveSlotDown(0) // TODO: REMOVE THIS
             break
 
           case RELEASING:
             if (Math.abs(currentY - startY) < MIN_PULL_LENGTH) {
-              action = RESETING
-              requestAction({ type: NO_ACTION, startAt: t + RESETING_DURATION })
-              moveSlotDown(0)
+              requestAction({ type: RESETING })
               break
             }
 
             action = RELEASING
             requestAction({ type: WAITING, startAt: t + RELEASING_DURATION })
-            moveSlotDown(height)
+            moveSlotDown(height) // TODO: REMOVE THIS
         }
 
         requestedAction.done = true
@@ -164,16 +172,14 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
 
     if (action === PULLING || action === RELEASING || action === RESETING) {
       const y = parseFloat(getComputedStyle(slot.current).marginTop)
-      const NN = height,
-        N = NN / 2
-      const newIdx = Math.floor((y + N) / NN)
+      const newIdx = Math.floor((y + height / 2) / height)
 
       if (slotIdx === null || newIdx !== slotIdx) {
         menu.current.innerText = pickRandomItem()
         slotIdx = newIdx
       }
 
-      animateMenu(((y + N) % NN) - N, N)
+      animateSlotMenu(y, height)
     }
 
     window.requestAnimationFrame(animate)
