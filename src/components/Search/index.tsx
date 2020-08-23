@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { search } from 'src/apis'
 import ProductItem from 'src/components/ProductItem'
 import './style.scss'
@@ -54,10 +54,29 @@ const Search: React.FC<SearchProps> = () => {
   const [page, setPage] = useState(0)
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
+  const [recentTerms, setRecentTerms] = useState(getRecentTerms())
 
-  // useEffect : didMount, inputValue === '' 일 때 최근 검색어 보여준다
+  const searchTermsRef = useRef<HTMLDivElement>()
+  const searchResultsRef = useRef<HTMLDivElement>()
+
+  useEffect(() => {
+    const { current: searchTermsDiv } = searchTermsRef
+    const { current: searchResultsDiv } = searchResultsRef
+
+    if (!inputValue) {
+      const loadedRecentTerms = getRecentTerms()
+
+      setRecentTerms(loadedRecentTerms)
+      searchTermsDiv.classList.remove('hidden')
+      searchResultsDiv.classList.add('hidden')
+    } else {
+      searchTermsDiv.classList.add('hidden')
+    }
+  }, [inputValue])
 
   async function searchProducts() {
+    const { current: searchResultsDiv } = searchResultsRef
+
     if (!inputValue) {
       setPage(0)
       setFoundProducts([])
@@ -66,6 +85,7 @@ const Search: React.FC<SearchProps> = () => {
 
       setPage(page + 1)
       setFoundProducts(searchResults)
+      searchResultsDiv.classList.remove('hidden')
     }
   }
 
@@ -107,7 +127,15 @@ const Search: React.FC<SearchProps> = () => {
         </div>
       </div>
 
-      <div className="search-results">
+      <div className="search-terms hidden" ref={searchTermsRef}>
+        <div className="search-terms-title">최근 검색어</div>
+        {recentTerms.map((recentTerm: string, idx: number) => (
+          <div key={idx} className="search-terms-term">
+            {recentTerm}
+          </div>
+        ))}
+      </div>
+      <div className="search-results hidden" ref={searchResultsRef}>
         {foundProducts.map((product) => (
           <div key={product.id} className="search-results-result">
             <ProductItem {...product} />
