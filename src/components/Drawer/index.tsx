@@ -90,6 +90,27 @@ const Drawer: React.FC<DrawerProps> = ({
     setOpened(false)
   }
 
+  function onCursorMove(state: RefObject<DrawerStateType>, y, bodyRef) {
+    const { isHolding, startY, startAt } = state.current
+
+    if (!isHolding) return
+
+    const velocity = ((y - startY) / (+new Date() - startAt)) * 1000
+
+    console.log(velocity)
+
+    if (velocity > 400) {
+      state.current.isHolding = false
+      setOpened(false)
+
+      return
+    }
+
+    moveRef(bodyRef, {
+      position: Math.max(y - startY, 0),
+    })
+  }
+
   function closeDrawer() {
     setOpened(false)
   }
@@ -131,16 +152,6 @@ const Drawer: React.FC<DrawerProps> = ({
   )
 }
 
-function onCursorMove(state: RefObject<DrawerStateType>, y, bodyRef) {
-  const { isHolding, startY } = state.current
-
-  if (!isHolding) return
-
-  moveRef(bodyRef, {
-    position: Math.max(y - startY, 0),
-  })
-}
-
 function onCursorUp(state: RefObject<DrawerStateType>, y, height) {
   state.current.isHolding = false
 
@@ -152,7 +163,10 @@ function onCursorUp(state: RefObject<DrawerStateType>, y, height) {
 }
 
 function onCursorDown(state: RefObject<DrawerStateType>, y) {
+  if (state.current.isHolding) return
+
   state.current.startY = y
+  state.current.startAt = +new Date()
   state.current.isHolding = true
 }
 
