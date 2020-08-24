@@ -7,4 +7,12 @@
   :not(.active) {
     color: #ccc;
   }
+
+  .mock {
+    border-radius: 7px;
+    height: 18px;
+    line-height: 140%;
+    background-color: #eee;
+    color: #eee;
+  }
 }

@@ -6,25 +6,29 @@ import { CategoryType } from 'src/types'
 import './style.scss'
 
 export type SubCategorySelectorProps = {
-  category: CategoryType
+  category?: CategoryType
   subCategory?: string
-  setSubCategory: (subCategory: string) => void
+  isLoading?: boolean
+  setSubCategory?: (subCategory: string) => void
 }
+
+const mockBlocks = [14, 5, 7, 12, 6, 4, 7, 2, 6]
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
   category = DEFAULTS.CATEGORY,
   subCategory = null,
+  isLoading = false,
   setSubCategory,
 }) => {
   const [subCategories, setSubCategories] = useState([])
 
   useEffect(() => {
-    setSubCategory(null)
-    setSubCategories([])
+    setSubCategory && setSubCategory(null)
+    setSubCategories && setSubCategories([])
   }, [category])
 
   useEffect(() => {
-    loadSubCategories()
+    setSubCategory && loadSubCategories()
   }, [subCategory])
 
   async function loadSubCategories() {
@@ -37,15 +41,24 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
 
   return (
     <div className="sub-category-selector">
-      {subCategories.map((x) => (
-        <span
-          key={x}
-          className={$({ active: x === subCategory })}
-          onClick={() => setSubCategory(x)}
-        >
-          {x}&nbsp;
-        </span>
-      ))}
+      {isLoading
+        ? mockBlocks.map((x, i) => (
+            <>
+              <span className="mock" key={i}>
+                {new Array(x).fill('김').join('')}
+              </span>
+              <span>&nbsp;</span>
+            </>
+          ))
+        : subCategories.map((x) => (
+            <span
+              key={x}
+              className={$({ active: x === subCategory })}
+              onClick={() => setSubCategory(x)}
+            >
+              {x}&nbsp;
+            </span>
+          ))}
     </div>
   )
 }
