@@ -12,15 +12,21 @@ export type SubCategorySelectorProps = {
   setSubCategory?: (subCategory: string) => void
 }
 
-const mockBlocks = [14, 5, 7, 12, 6, 4, 7, 2, 6]
+const mocks = [7, 4, 3, 5, 5, 7, 4, 6]
+let mockBlocks = []
+
+function shuffle() {
+  mockBlocks = mocks.map((x) => mocks[Math.floor(Math.random() * mocks.length)])
+}
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
   category = DEFAULTS.CATEGORY,
   subCategory = null,
-  isLoading = false,
+  isLoading: isInitLoading = false,
   setSubCategory,
 }) => {
   const [subCategories, setSubCategories] = useState([])
+  const [isLoading, setLoading] = useState<boolean>(isInitLoading)
 
   useEffect(() => {
     setSubCategory && setSubCategory(null)
@@ -28,11 +34,17 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
   }, [category])
 
   useEffect(() => {
-    setSubCategory && loadSubCategories()
+    if (subCategory === null) setSubCategory && loadSubCategories()
   }, [subCategory])
 
   async function loadSubCategories() {
+    shuffle()
+    setLoading(true)
     const newSubCategories = await getSubCategories(category)
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
 
     setSubCategories(newSubCategories)
 
