@@ -23,7 +23,7 @@
 ) {
   display: grid;
   grid-template-columns: repeat(
-    auto-fit,
+    auto-fill,
     minmax($item-min-width, $item-max-width)
   );
   gap: $gap-vertical $gap-horizontal;
