@@ -19,7 +19,7 @@
   $item-min-width: 120px,
   $item-max-width: 1fr,
   $gap-vertical: 20px,
-  $gap-horizontal: 25px
+  $gap-horizontal: 10px
 ) {
   display: grid;
   grid-template-columns: repeat(
