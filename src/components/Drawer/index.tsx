@@ -97,8 +97,6 @@ const Drawer: React.FC<DrawerProps> = ({
 
     const velocity = ((y - startY) / (+new Date() - startAt)) * 1000
 
-    console.log(velocity)
-
     if (velocity > 400) {
       state.current.isHolding = false
       setOpened(false)
