@@ -1,7 +1,8 @@
 import { Product } from '@prisma/client'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ProductItem from 'src/components/ProductItem'
 import { ProductWithJjimmed } from 'src/types/api'
+import { getItemNumbersInRow, getRowNumber } from 'src/utils'
 import './style.scss'
 
 export type SearchResultsProps = {
@@ -13,10 +14,15 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   isSkeletonOn,
   results,
 }) => {
-  console.log(results)
+  const gridRef = useRef<HTMLDivElement>()
+  const [itemNumsInRow, setItemNumbersInRow] = useState<number>()
+
+  useEffect(() => {
+    setItemNumbersInRow(getItemNumbersInRow(gridRef.current))
+  }, [])
 
   return (
-    <div className="search-results">
+    <div className="search-results" ref={gridRef}>
       {isSkeletonOn
         ? Array(4) // TODO: skeleton item 개수 동적 결정
             .fill(undefined)
@@ -25,8 +31,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 <ProductItem isSkeleton={true} />
               </div>
             ))
-        : results.map((result) => (
-            <div key={result.id} className="search-results-result">
+        : results.map((result, idx) => (
+            <div
+              key={result.id}
+              className="search-results-result"
+              style={{
+                animationDelay: `${getRowNumber(idx, itemNumsInRow) * 200}ms`,
+              }}
+            >
               <ProductItem {...result} />
             </div>
           ))}
