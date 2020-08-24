@@ -72,7 +72,13 @@ const Search: React.FC<SearchProps> = () => {
   }
 
   async function onSearch(term) {
-    if (term === lastSearchTerm) return
+    if (!term.trim()) return
+
+    if (term === lastSearchTerm) {
+      const copiedProducts = { ...foundProducts }
+
+      setFoundProducts(copiedProducts)
+    }
 
     page = 0
     const searchResults = await search({ term, page })
