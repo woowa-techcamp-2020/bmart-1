@@ -1,0 +1,33 @@
+@use '~src/styles/design-system' as *;
+
+.category-item {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--element);
+  border-radius: 10px;
+  user-select: none;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-top: 64.45%;
+  }
+
+  .category-name {
+    position: absolute;
+    top: 13px;
+    left: 12px;
+    white-space: pre;
+    font-size: 18px;
+    font-weight: $bold;
+  }
+
+  .category-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+  }
+}
