@@ -60,7 +60,7 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
               <span className="mock" key={i}>
                 {new Array(x).fill('김').join('')}
               </span>
-              <span>&nbsp;</span>
+              <span key={`b${i}`}>&nbsp;</span>
             </>
           ))
         : subCategories.map((x) => (
