@@ -63,15 +63,17 @@ const Search: React.FC<SearchProps> = () => {
     if (timer) {
       clearTimeout(timer)
       timer = null
-    } else {
-      timer = setTimeout(() => {
-        onSearch(term)
-        timer = null
-      }, 300)
     }
+
+    timer = setTimeout(() => {
+      onSearch(term)
+    }, 300)
   }
 
   async function onSearch(term) {
+    clearTimeout(timer)
+    timer = null
+
     if (!term.trim()) return
 
     if (term === lastSearchTerm) {
