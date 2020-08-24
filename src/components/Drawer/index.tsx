@@ -12,11 +12,12 @@ import './style.scss'
 export type DrawerProps = {
   isOpened: boolean
   setOpened: (number) => void
+  maxHeight?: string
 }
 
 export const DrawerContext = createContext<{
-  isOpened: boolean
   closeDrawer: () => void
+  isOpened: boolean
   setFocusPosition: Dispatcher<number>
 }>(undefined)
 
@@ -24,6 +25,7 @@ const Drawer: React.FC<DrawerProps> = ({
   isOpened = true,
   children,
   setOpened,
+  maxHeight = '70vh',
 }) => {
   const bodyRef = useRef<HTMLDivElement>()
   const containerRef = useRef<HTMLDivElement>()
@@ -38,6 +40,7 @@ const Drawer: React.FC<DrawerProps> = ({
     moveRef(bodyRef, {
       position: getRefHeight(bodyRef),
     })
+    containerRef.current.style.maxHeight = `calc(${maxHeight} - 40px)`
   }, [])
 
   useEffect(() => {
