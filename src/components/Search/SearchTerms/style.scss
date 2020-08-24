@@ -1,3 +1,5 @@
+@use '~src/styles/design-system' as *;
+
 .search-terms {
   &-title {
     font-size: 14px;
@@ -15,26 +17,14 @@
     padding: 9px 12px;
     color: #000;
     font-weight: 500;
-    opacity: 0;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    animation: float 400ms ease forwards;
+
+    @include float-animation;
 
     &:not(:last-child) {
       margin-bottom: 7px;
     }
-  }
-}
-
-@keyframes float {
-  from {
-    transform: scaleX(0.9) translateY(20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: scaleX(1) translateY(0);
-    opacity: 1;
   }
 }

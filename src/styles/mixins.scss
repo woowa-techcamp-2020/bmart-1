@@ -28,3 +28,20 @@
   );
   gap: $gap-vertical $gap-horizontal;
 }
+
+@mixin float-animation($animation-duration: 400ms) {
+  opacity: 0;
+  animation: float $animation-duration ease forwards;
+
+  @keyframes float {
+    from {
+      transform: scaleX(0.9) translateY(20px);
+      opacity: 0;
+    }
+
+    to {
+      transform: scaleX(1) translateY(0);
+      opacity: 1;
+    }
+  }
+}
