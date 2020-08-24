@@ -24,7 +24,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <div className="search-results" ref={gridRef}>
       {isSkeletonOn
-        ? Array(4) // TODO: skeleton item 개수 동적 결정
+        ? Array(8)
             .fill(undefined)
             .map((_, idx) => (
               <div key={idx} className="search-results-result">
