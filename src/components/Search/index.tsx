@@ -28,7 +28,7 @@ function saveSearchTerm(term) {
 function getRecentTerms() {
   const recentTerms = localStorage.getItem('recentTerms')
 
-  return JSON.parse(recentTerms)
+  return JSON.parse(recentTerms) ?? []
 }
 
 let lastSearchTerm = ''
