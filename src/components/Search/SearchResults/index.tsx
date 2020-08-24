@@ -18,7 +18,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <div className="search-results">
       {isSkeletonOn
-        ? '스켈레톤'
+        ? Array(4) // TODO: skeleton item 개수 동적 결정
+            .fill(undefined)
+            .map((_, idx) => (
+              <div key={idx} className="search-results-result">
+                <ProductItem isSkeleton={true} />
+              </div>
+            ))
         : results.map((result) => (
             <div key={result.id} className="search-results-result">
               <ProductItem {...result} />
