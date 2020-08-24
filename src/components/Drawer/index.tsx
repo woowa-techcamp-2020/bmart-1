@@ -25,7 +25,6 @@ type DrawerStateType = {
   isHolding: boolean
   startY: number
   startAt: number
-  needInit: boolean
 }
 
 const Drawer: React.FC<DrawerProps> = ({
@@ -38,7 +37,6 @@ const Drawer: React.FC<DrawerProps> = ({
     isHolding: false,
     startY: 0,
     startAt: 0,
-    needInit: false,
   })
   const bodyRef = useRef<HTMLDivElement>()
   const containerRef = useRef<HTMLDivElement>()
@@ -59,10 +57,6 @@ const Drawer: React.FC<DrawerProps> = ({
       smooth: true,
     })
     focus()
-
-    if (isOpened) {
-      state.current.needInit = true
-    }
 
     backgroundRef.current.style.pointerEvents = isOpened ? 'all' : 'none'
     backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'
