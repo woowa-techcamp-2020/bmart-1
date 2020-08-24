@@ -12,11 +12,12 @@ export type SubCategorySelectorProps = {
   setSubCategory?: (subCategory: string) => void
 }
 
-const mocks = [7, 4, 3, 5, 5, 7, 4, 6]
 let mockBlocks = []
 
 function shuffle() {
-  mockBlocks = mocks.map((x) => mocks[Math.floor(Math.random() * mocks.length)])
+  const mocks = [7, 4, 3, 5, 5, 7, 4, 6]
+
+  mockBlocks = mocks.map(() => mocks[Math.floor(Math.random() * mocks.length)])
 }
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
