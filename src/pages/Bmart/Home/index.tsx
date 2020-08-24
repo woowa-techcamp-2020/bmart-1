@@ -1,5 +1,6 @@
 import React from 'react'
 import Carousel from 'src/components/Carousel'
+import SlotMachine from 'src/components/SlotMachine'
 import './style.scss'
 
 export type HomeProps = unknown
@@ -7,7 +8,9 @@ export type HomeProps = unknown
 const Home: React.FC<HomeProps> = () => {
   return (
     <div className="home">
-      <Carousel></Carousel>
+      <SlotMachine>
+        <Carousel></Carousel>
+      </SlotMachine>
     </div>
   )
 }
