@@ -77,7 +77,7 @@ const Search: React.FC<SearchProps> = () => {
     if (!term.trim()) return
 
     if (term === lastSearchTerm) {
-      const copiedProducts = { ...foundProducts }
+      const copiedProducts = foundProducts.slice()
 
       setFoundProducts(copiedProducts)
     }
