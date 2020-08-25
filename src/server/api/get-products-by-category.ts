@@ -67,6 +67,8 @@ getProductsByCategoryRouter.get(
         })
 
         res.json(productsWithJjimmed)
+
+        return
       }
 
       res.json(products)
