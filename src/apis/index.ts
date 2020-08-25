@@ -27,7 +27,7 @@ function addToken() {
   return { Authorization: `Bearer ${token}` }
 }
 
-const createQuery = (data: Record<string, string>): string => {
+export const createQuery = (data: Record<string, string>): string => {
   return data
     ? '?' +
         Object.keys(data)
@@ -55,7 +55,7 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
   ...addBody(body),
 })
 
-async function request(
+export async function request(
   url: string,
   method: Method,
   body?: Record<string, unknown>
