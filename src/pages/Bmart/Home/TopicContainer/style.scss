@@ -1,11 +1,22 @@
 .topic-container {
+  background: linear-gradient(180deg, #efefef 0%, #fff 100%);
+  padding: var(--ordinary-space) var(--ordinary-space);
+  margin-top: var(--home-gap);
+
+  .title {
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: center;
+  }
+
   .scroll-container {
     width: 100vw;
+    margin-top: 20px;
     overflow: scroll;
 
     .container {
-      width: 100vw;
       display: grid;
+      min-width: 250vw;
       gap: var(--ordinary-space);
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       margin: auto;
