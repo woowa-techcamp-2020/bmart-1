@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { $sel } from 'src/utils'
 import './style.scss'
 
 export type SlotMachineProps = {
@@ -142,7 +143,10 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
           case PULLING:
             if (action !== NO_ACTION) break
 
+            if ($sel('.slide-page').scrollTop !== 0) break
+
             action = PULLING
+
             startY = currentY
             break
 
