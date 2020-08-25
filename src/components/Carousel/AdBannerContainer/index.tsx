@@ -74,12 +74,46 @@ const bannerInfo = [
   },
 ]
 
+let tec
+
+function moveBannerTo(index: number, isAfterSwipe = false, max = 8) {
+  const bannerContainer = $sel('.banner-container')
+
+  if (isAfterSwipe) {
+    bannerContainer.style.transition = 'transform 250ms ease-out'
+  } else {
+    bannerContainer.style.transition = ''
+  }
+
+  bannerContainer.style.transform = `translateX(${(index + 1) * -100}%)`
+
+  if (index + 1 < 0) {
+    bannerContainer.addEventListener(
+      'transitionend',
+      (tec = () => {
+        bannerContainer.style.transition = 'none'
+        bannerContainer.style.transform = `translateX(${max * -100}%)`
+
+        bannerContainer.removeEventListener('transitionend', tec)
+      })
+    )
+  } else if (index + 1 > max) {
+    bannerContainer.addEventListener(
+      'transitionend',
+      (tec = () => {
+        bannerContainer.style.transition = 'none'
+        bannerContainer.style.transform = `translateX(-100%)`
+
+        bannerContainer.removeEventListener('transitionend', tec)
+      })
+    )
+  }
+}
+
 export type AdBannerContainerProps = unknown
 
 const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
-  const { totalNumber, currentIndex, setCurrentIndex } = useContext(
-    CarouselContext
-  )
+  const { totalNumber, setCurrentIndex } = useContext(CarouselContext)
 
   const autoScrollInterval = useRef<number>(null)
 
@@ -88,7 +122,13 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
 
     autoScrollInterval.current = window.setInterval(() => {
       $sel('.banner-container').style.transition = ''
-      setCurrentIndex((prev) => (prev + 1) % totalNumber)
+      setCurrentIndex((prev) => {
+        const next = (prev + 1) % totalNumber
+
+        moveBannerTo(prev + 1)
+
+        return next
+      })
     }, 3000)
   }
 
@@ -98,6 +138,9 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
 
   // Init the page after mounted
   useEffect(() => {
+    container.current.style.transition = 'none'
+    container.current.style.transform = 'translateX(-100%)'
+
     let isScrolling: number
 
     // Prevent banner auto scroll when scroll the page
@@ -119,9 +162,16 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     startAutoScroll()
   }, [])
 
+  // Clone first and last banner
   useEffect(() => {
-    container.current.style.transform = `translateX(${-100 * currentIndex}%)`
-  }, [currentIndex])
+    const firstBannerClone = container.current.firstElementChild.cloneNode(true)
+    const lastBannerClone = container.current.lastElementChild.cloneNode(
+      true
+    ) as HTMLElement
+
+    container.current.appendChild(firstBannerClone)
+    container.current.prepend(lastBannerClone)
+  }, [])
 
   useEffect(() => {
     const scrollWrapper = $sel('.banner-container-scroll-wrapper')
@@ -137,6 +187,9 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     scrollWrapper.addEventListener(
       'touchstart',
       (touchStartEvent: TouchEvent) => {
+        bannerContainer.removeEventListener('transitionend', tec)
+        container.current.style.transition = ''
+
         isVerticalScrollLocked = false
 
         diffX = 0
@@ -175,7 +228,7 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
 
             bannerContainer.style.transition = 'none'
             bannerContainer.style.transform = `translateX(calc(${
-              -100 * currentIndex
+              -100 * (currentIndex + 1)
             }% + ${diffX}px))`
           } else {
             // Vertical scroll
@@ -185,14 +238,18 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
         }
 
         function onTouchEnd() {
-          bannerContainer.style.transition = 'transform 250ms ease-out'
-
           if (diffX < 0) {
-            setCurrentIndex((prev) => (prev + 1) % totalNumber)
+            setCurrentIndex((prev) => {
+              moveBannerTo(prev + 1, true)
+
+              return (prev + 1) % totalNumber
+            })
           } else {
-            setCurrentIndex((prev) =>
-              prev - 1 < 0 ? totalNumber - 1 : prev - 1
-            )
+            setCurrentIndex((prev) => {
+              moveBannerTo(prev - 1, true)
+
+              return prev - 1 < 0 ? totalNumber - 1 : prev - 1
+            })
           }
 
           container.current.closest<HTMLElement>('.slide-page').style.overflow =
