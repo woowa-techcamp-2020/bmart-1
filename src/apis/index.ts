@@ -1,7 +1,8 @@
 import { Jjim } from '@prisma/client'
 import type {
   DeleteFromCartBody,
-  ProductsInCart,
+  GetProductsByTopicResponse,
+  GetProductsInCartResponse,
   ToggleJjimRequestBody,
 } from 'src/types/api'
 import { PatchProductQuantityInCartApiRequestBody } from './../types/api'
@@ -96,8 +97,14 @@ export async function deleteFromCart(body: DeleteFromCartBody): Promise<void> {
   await request('/delete-from-cart', 'DELETE', body)
 }
 
-export async function getProductsInCart(): Promise<ProductsInCart> {
+export async function getProductsInCart(): Promise<GetProductsInCartResponse> {
   return await request('/products-in-cart', 'GET')
+}
+
+export async function getProductsByTopic(
+  topic: 'new' | 'now'
+): Promise<GetProductsByTopicResponse> {
+  return await request(`/products-by-topic?topic=${topic}`, 'GET')
 }
 
 export async function PatchProductQuantityInCart(
