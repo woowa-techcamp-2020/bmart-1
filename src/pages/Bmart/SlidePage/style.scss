@@ -12,6 +12,7 @@
   padding-top: $header-height + $ordinary-space;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 
   & * {
     white-space: initial;
