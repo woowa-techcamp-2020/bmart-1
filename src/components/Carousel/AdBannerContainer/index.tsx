@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import getState, { $$sel, $sel, sanitizeNan } from 'src/utils'
+import getState, { $sel, sanitizeNan } from 'src/utils'
 import { CarouselContext } from '..'
 import AdBanner, { AdBannerProps } from './AdBanner'
 import Coupons from './banner-graphics/Coupons'
@@ -208,10 +208,6 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
           if (slope < 1 || isVerticalScrollLocked) {
             // Horizontal scroll
             isVerticalScrollLocked = true
-
-            $$sel('.slide-page').forEach((sliedPage) => {
-              sliedPage.style.overflow = 'hidden'
-            })
 
             container.current.closest<HTMLElement>(
               '.slide-page'
