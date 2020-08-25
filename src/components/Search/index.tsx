@@ -77,9 +77,12 @@ const Search: React.FC<SearchProps> = () => {
     if (!term.trim()) return
 
     if (term === lastSearchTerm) {
+      setIsSkeletonOn(false)
       const copiedProducts = foundProducts.slice()
 
       setFoundProducts(copiedProducts)
+
+      return
     }
 
     page = 0
