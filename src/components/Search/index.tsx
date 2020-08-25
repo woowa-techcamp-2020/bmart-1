@@ -46,6 +46,9 @@ const Search: React.FC<SearchProps> = () => {
     if (!inputValue) {
       const loadedRecentTerms = getRecentTerms()
 
+      clearTimeout(timer)
+      timer = null
+
       setRecentTerms(loadedRecentTerms)
       setIsKeywordsOn(true)
     } else {
@@ -91,7 +94,6 @@ const Search: React.FC<SearchProps> = () => {
     setIsSkeletonOn(false)
 
     setFoundProducts(searchResults)
-
     saveSearchTerm(term)
     lastSearchTerm = term
     page += 1
