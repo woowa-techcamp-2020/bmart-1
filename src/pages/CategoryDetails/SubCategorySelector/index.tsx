@@ -15,7 +15,7 @@ export type SubCategorySelectorProps = {
 let mockBlocks = []
 
 function shuffle() {
-  const mocks = [7, 4, 3, 5, 5, 7, 4, 6]
+  const mocks = [7, 4, 3, 2, 5, 4, 4, 6]
 
   mockBlocks = mocks.map(() => mocks[Math.floor(Math.random() * mocks.length)])
 }
@@ -60,7 +60,6 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
               <span className="mock" key={i}>
                 {new Array(x).fill('김').join('')}
               </span>
-              <span key={`b${i}`}>&nbsp;</span>
             </>
           ))
         : subCategories.map((x) => (
