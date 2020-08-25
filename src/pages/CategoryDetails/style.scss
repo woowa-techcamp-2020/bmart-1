@@ -5,6 +5,7 @@ body {
 .category-details {
   padding: 25px;
   font-weight: 600;
+  user-select: none;
 
   .title {
     display: flex;

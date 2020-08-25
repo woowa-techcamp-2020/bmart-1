@@ -37,7 +37,7 @@ const ScrollableTemplate: Story<DrawerProps> = (args) => {
       <div
         style={{
           height: '2000px',
-          background: 'linear-gradient( to bottom, yellow, red )',
+          background: 'linear-gradient(to bottom, yellow, red)',
         }}
       ></div>
     </Drawer>
@@ -45,6 +45,27 @@ const ScrollableTemplate: Story<DrawerProps> = (args) => {
 }
 
 export const Scrollable = ScrollableTemplate.bind({})
+
+const FullScrollableTemplate: Story<DrawerProps> = (args) => {
+  const [isOpened, setOpened] = useState(false)
+
+  useEffect(() => {
+    setOpened(args.isOpened)
+  }, [args.isOpened])
+
+  return (
+    <Drawer isOpened={isOpened} setOpened={setOpened} maxHeight="100vh">
+      <div
+        style={{
+          height: '2000px',
+          background: 'linear-gradient(to bottom, yellow, red)',
+        }}
+      ></div>
+    </Drawer>
+  )
+}
+
+export const FullScrollable = FullScrollableTemplate.bind({})
 
 const OptionsDrawerTemplate: Story<DrawerProps> = (args) => {
   const [isOpened, setOpened] = useState(false)
