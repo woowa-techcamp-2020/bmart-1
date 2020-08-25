@@ -3,11 +3,21 @@
 .search-results {
   @include grid-template();
 
+  position: relative;
+
   &-result {
     display: flex;
     justify-content: center;
     align-items: center;
 
     @include float-animation;
+  }
+
+  .sentinel {
+    position: absolute;
+    border: 1px solid black;
+    left: 0;
+    right: 0;
+    bottom: 10px;
   }
 }

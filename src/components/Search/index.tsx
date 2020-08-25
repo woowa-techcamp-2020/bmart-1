@@ -99,6 +99,10 @@ const Search: React.FC<SearchProps> = () => {
     page += 1
   }
 
+  async function onLoadMore() {
+    console.log('더 불러온다')
+  }
+
   return (
     <div className="search">
       <SearchInputContainer
@@ -116,7 +120,11 @@ const Search: React.FC<SearchProps> = () => {
           }}
         />
       ) : (
-        <SearchResults isSkeletonOn={isSkeletonOn} results={foundProducts} />
+        <SearchResults
+          isSkeletonOn={isSkeletonOn}
+          results={foundProducts}
+          onLoadMore={onLoadMore}
+        />
       )}
     </div>
   )
