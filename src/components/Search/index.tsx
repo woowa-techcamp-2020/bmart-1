@@ -103,7 +103,13 @@ const Search: React.FC<SearchProps> = () => {
       />
 
       {isKeywordsOn ? (
-        <SearchTerms terms={recentTerms} />
+        <SearchTerms
+          terms={recentTerms}
+          onSearchTermClick={(term) => {
+            onInputChange(term)
+            onSearch(term)
+          }}
+        />
       ) : (
         <SearchResults isSkeletonOn={isSkeletonOn} results={foundProducts} />
       )}
