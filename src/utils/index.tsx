@@ -2,6 +2,9 @@ export function addCommaToPrice(price: number): string {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
+export const toPriceLabel = (price: number | string) =>
+  price.toLocaleString() + '원'
+
 /**
  * Get the latest React state value from
  * its state action function using functional updates

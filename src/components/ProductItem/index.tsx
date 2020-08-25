@@ -3,6 +3,7 @@ import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import HeartIcon from 'src/components/icons/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
+import { toPriceLabel } from 'src/utils'
 import ColorfulBrokenHeartIcon from '../icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
@@ -84,10 +85,12 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
         <div className="product-item-info-price">
           {props.defaultPrice !== props.price && (
             <span className="product-item-info-price-default">
-              {props.defaultPrice}
+              {toPriceLabel(props.defaultPrice)}
             </span>
           )}
-          <span className="product-item-info-price-current">{props.price}</span>
+          <span className="product-item-info-price-current">
+            {toPriceLabel(props.price)}
+          </span>
         </div>
       </div>
       <div ref={productItemCover} className="product-item-cover hidden">
