@@ -35,3 +35,9 @@ const Template: Story<SubCategorySelectorProps> = (args) => {
 }
 
 export const Main = Template.bind({})
+
+const MockTemplate: Story<SubCategorySelectorProps> = (args) => {
+  return <SubCategorySelector {...args} isLoading={true}></SubCategorySelector>
+}
+
+export const LazyLoading = MockTemplate.bind({})

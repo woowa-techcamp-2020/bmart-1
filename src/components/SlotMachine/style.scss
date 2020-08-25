@@ -1,9 +1,9 @@
-html {
-  overflow: hidden;
-}
+// html {
+// overflow: hidden;
+// }
 
 body {
-  overscroll-behavior: none;
+  overscroll-behavior: contain;
 }
 
 .slot-machine {
@@ -24,13 +24,14 @@ body {
       height: 40px;
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
+      justify-content: space-around;
     }
   }
 
   .menu {
     display: inline-block;
-    width: 10em;
+    margin-left: 2em;
+    width: 8 em;
   }
 
   .content {
