@@ -95,7 +95,7 @@ function moveBannerTo(index: number, isAfterSwipe = false, max = 8) {
       bannerContainer.style.transform = `translateX(${max * -100}%)`
 
       bannerContainer.parentElement.style.pointerEvents = ''
-    }, 250)
+    }, 400)
   } else if (index + 1 > max) {
     bannerContainer.parentElement.style.pointerEvents = 'none'
 
@@ -104,7 +104,7 @@ function moveBannerTo(index: number, isAfterSwipe = false, max = 8) {
       bannerContainer.style.transform = `translateX(-100%)`
 
       bannerContainer.parentElement.style.pointerEvents = ''
-    }, 250)
+    }, 400)
   }
 }
 
