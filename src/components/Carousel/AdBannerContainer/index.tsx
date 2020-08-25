@@ -87,26 +87,24 @@ function moveBannerTo(index: number, isAfterSwipe = false, max = 8) {
 
   bannerContainer.style.transform = `translateX(${(index + 1) * -100}%)`
 
-  if (index + 1 < 0) {
-    bannerContainer.addEventListener(
-      'transitionend',
-      (tec = () => {
-        bannerContainer.style.transition = 'none'
-        bannerContainer.style.transform = `translateX(${max * -100}%)`
+  if (index + 1 <= 0) {
+    bannerContainer.parentElement.style.pointerEvents = 'none'
 
-        bannerContainer.removeEventListener('transitionend', tec)
-      })
-    )
+    setTimeout(() => {
+      bannerContainer.style.transition = 'none'
+      bannerContainer.style.transform = `translateX(${max * -100}%)`
+
+      bannerContainer.parentElement.style.pointerEvents = ''
+    }, 250)
   } else if (index + 1 > max) {
-    bannerContainer.addEventListener(
-      'transitionend',
-      (tec = () => {
-        bannerContainer.style.transition = 'none'
-        bannerContainer.style.transform = `translateX(-100%)`
+    bannerContainer.parentElement.style.pointerEvents = 'none'
 
-        bannerContainer.removeEventListener('transitionend', tec)
-      })
-    )
+    setTimeout(() => {
+      bannerContainer.style.transition = 'none'
+      bannerContainer.style.transform = `translateX(-100%)`
+
+      bannerContainer.parentElement.style.pointerEvents = ''
+    }, 250)
   }
 }
 
@@ -187,7 +185,6 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     scrollWrapper.addEventListener(
       'touchstart',
       (touchStartEvent: TouchEvent) => {
-        bannerContainer.removeEventListener('transitionend', tec)
         container.current.style.transition = ''
 
         isVerticalScrollLocked = false
