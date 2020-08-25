@@ -1,0 +1,10 @@
+.topic-container {
+  .container {
+    width: 100vw;
+    overflow: scroll;
+    display: grid;
+    gap: var(--ordinary-space);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin: auto;
+  }
+}
