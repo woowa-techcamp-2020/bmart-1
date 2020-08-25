@@ -1,11 +1,15 @@
 .sale-page {
   position: relative;
+  width: calc(100% - 90px);
+  margin: auto;
+  max-width: 400px;
 
   .lightning-sentinel {
     position: absolute;
     top: 0;
     left: 50%;
-    height: 1px;
+    width: 1px;
+    height: 100%;
   }
 
   .flash {
@@ -43,5 +47,15 @@
     opacity: 0;
     pointer-events: none;
     z-index: 9998;
+  }
+
+  .sale-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > * {
+      margin-bottom: var(--ordinary-space);
+    }
   }
 }

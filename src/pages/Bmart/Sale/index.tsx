@@ -1,5 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { createQuery, request } from 'src/apis'
 import Lightning from 'src/assets/images/thunder/lightning.png'
+import ProductItem from 'src/components/ProductItem'
+import { DEFAULTS } from 'src/constants'
+import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
 import './style.scss'
 
@@ -56,8 +60,9 @@ function thunder(reset = false) {
 
 export type SaleProps = unknown
 
-const Sale: React.FC<SaleProps> = (props) => {
+const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
+  const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -73,11 +78,38 @@ const Sale: React.FC<SaleProps> = (props) => {
     observer.observe(lightningSentinelRef.current)
   }, [])
 
+  useEffect(() => {
+    async function init() {
+      for (const category of DEFAULTS.CATEGORIES) {
+        const products = (await request(
+          `/products-by-category${createQuery({
+            category: category,
+            sortBy: 'discount',
+            direction: 'desc',
+            amount: '1',
+            page: '1',
+          })}`,
+          'GET'
+        )) as ProductWithJjimmed[]
+
+        setSaleProducts((prev) => [...prev, ...products])
+      }
+    }
+
+    init()
+  }, [])
+
   return (
     <div className="sale-page">
       <div className="flash" />
       <img src={Lightning} className="lightning" alt="lightning" />
       <div className="lightning-sentinel" ref={lightningSentinelRef} />
+
+      <div className="sale-products">
+        {saleProducts.map((product) => (
+          <ProductItem {...product} key={product.id} />
+        ))}
+      </div>
     </div>
   )
 }
