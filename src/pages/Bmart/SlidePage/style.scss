@@ -15,7 +15,7 @@
   overflow-y: auto;
   overscroll-behavior-y: contain;
 
-  & * {
+  > * {
     white-space: initial;
   }
 
