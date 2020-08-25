@@ -3,7 +3,7 @@ import React from 'react'
 import CartItem, { CartItemProps } from 'src/pages/Cart/CartItem'
 
 export default {
-  title: 'CartItem',
+  title: 'CartPage/CartItem',
   component: CartItem,
   args: {
     productInCart: {

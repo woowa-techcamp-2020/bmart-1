@@ -1,4 +1,8 @@
 module.exports = {
+  env: {
+    browser: true,
+    node: true,
+  },
   parser: '@typescript-eslint/parser',
   extends: [
     'plugin:prettier/recommended',
@@ -8,6 +12,21 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint'],
   rules: {
+    '@typescript-eslint/explicit-function-return-type': [0],
+    '@typescript-eslint/member-delimiter-style': [
+      0,
+      {
+        multiline: {
+          delimiter: 'comma',
+          requireLast: false,
+        },
+        singleline: {
+          delimiter: 'none',
+          requireLast: false,
+        },
+      },
+    ],
+    'no-undef': [0],
     'react/prop-types': [0],
     '@typescript-eslint/ban-types': [0],
     'react-hooks/exhaustive-deps': [0],

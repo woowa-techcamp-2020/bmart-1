@@ -1,5 +1,16 @@
+@use '~src/styles/design-system' as *;
+
 .home {
-  .title {
-    font-size: 20px;
+  .home-content {
+    padding: 0 var(--ordinary-space);
+    margin-top: 37px;
+
+    .categories-container {
+      display: grid;
+      gap: var(--ordinary-space);
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      max-width: 800px;
+      margin: auto;
+    }
   }
 }

@@ -12,32 +12,43 @@ import './style.scss'
 export type DrawerProps = {
   isOpened: boolean
   setOpened: (number) => void
+  maxHeight?: string
 }
 
 export const DrawerContext = createContext<{
-  isOpened: boolean
   closeDrawer: () => void
+  isOpened: boolean
   setFocusPosition: Dispatcher<number>
 }>(undefined)
+
+type DrawerStateType = {
+  isHolding: boolean
+  startY: number
+  startAt: number
+}
 
 const Drawer: React.FC<DrawerProps> = ({
   isOpened = true,
   children,
   setOpened,
+  maxHeight = '70vh',
 }) => {
+  const state = useRef<DrawerStateType>({
+    isHolding: false,
+    startY: 0,
+    startAt: 0,
+  })
   const bodyRef = useRef<HTMLDivElement>()
   const containerRef = useRef<HTMLDivElement>()
   const backgroundRef = useRef<HTMLDivElement>()
 
-  const isHolding = useRef<boolean>(false)
-  const startY = useRef<number>(0)
   const [focusPosition, setFocusPosition] = useState<number>(0)
-  const needInit = useRef<boolean>(false)
 
   useEffect(() => {
     moveRef(bodyRef, {
       position: getRefHeight(bodyRef),
     })
+    containerRef.current.style.maxHeight = `calc(${maxHeight} - var(--holder-height) - 15px)`
   }, [])
 
   useEffect(() => {
@@ -46,10 +57,6 @@ const Drawer: React.FC<DrawerProps> = ({
       smooth: true,
     })
     focus()
-
-    if (isOpened) {
-      needInit.current = true
-    }
 
     backgroundRef.current.style.pointerEvents = isOpened ? 'all' : 'none'
     backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'
@@ -68,10 +75,10 @@ const Drawer: React.FC<DrawerProps> = ({
     })
   }
 
-  function handleCursorUp(y) {
-    if (!isHolding.current) return
+  function handleCursorUp(state: RefObject<DrawerStateType>, y) {
+    if (!state.current.isHolding) return
 
-    if (onCursorUp(y, isHolding, startY, getRefHeight(bodyRef))) {
+    if (onCursorUp(state, y, getRefHeight(bodyRef))) {
       moveRef(bodyRef, {
         position: 0,
         smooth: true,
@@ -83,6 +90,25 @@ const Drawer: React.FC<DrawerProps> = ({
     setOpened(false)
   }
 
+  function onCursorMove(state: RefObject<DrawerStateType>, y, bodyRef) {
+    const { isHolding, startY, startAt } = state.current
+
+    if (!isHolding) return
+
+    const velocity = ((y - startY) / (+new Date() - startAt)) * 1000
+
+    if (velocity > 400) {
+      state.current.isHolding = false
+      setOpened(false)
+
+      return
+    }
+
+    moveRef(bodyRef, {
+      position: Math.max(y - startY, 0),
+    })
+  }
+
   function closeDrawer() {
     setOpened(false)
   }
@@ -91,14 +117,12 @@ const Drawer: React.FC<DrawerProps> = ({
     <>
       <div
         className="drawer"
-        onMouseMove={({ clientY }) =>
-          onCursorMove(clientY, isHolding, startY, bodyRef)
-        }
+        onMouseMove={({ clientY }) => onCursorMove(state, clientY, bodyRef)}
         onTouchMove={(event) =>
-          onCursorMove(getFirstTouchY(event), isHolding, startY, bodyRef)
+          onCursorMove(state, getFirstTouchY(event), bodyRef)
         }
-        onMouseUp={({ clientY }) => handleCursorUp(clientY)}
-        onTouchEnd={(event) => handleCursorUp(getFirstTouchY(event))}
+        onMouseUp={({ clientY }) => handleCursorUp(state, clientY)}
+        onTouchEnd={(event) => handleCursorUp(state, getFirstTouchY(event))}
       >
         <div
           className="background"
@@ -108,12 +132,8 @@ const Drawer: React.FC<DrawerProps> = ({
         <div className={$('body', { active: isOpened })} ref={bodyRef}>
           <div
             className="holder"
-            onTouchStart={(event) =>
-              onCursorDown(getFirstTouchY(event), isHolding, startY)
-            }
-            onMouseDown={({ clientY }) =>
-              onCursorDown(clientY, isHolding, startY)
-            }
+            onTouchStart={(event) => onCursorDown(state, getFirstTouchY(event))}
+            onMouseDown={({ clientY }) => onCursorDown(state, clientY)}
           >
             <div className="handle" />
           </div>
@@ -130,27 +150,22 @@ const Drawer: React.FC<DrawerProps> = ({
   )
 }
 
-function onCursorMove(y, isHolding, startY, bodyRef) {
-  if (!isHolding.current) return
+function onCursorUp(state: RefObject<DrawerStateType>, y, height) {
+  state.current.isHolding = false
 
-  moveRef(bodyRef, {
-    position: Math.max(y - startY.current, 0),
-  })
-}
-
-function onCursorUp(y, isHolding, startY, height) {
-  isHolding.current = false
-
-  if (y - startY.current < height / 2) {
+  if (y - state.current.startY < height / 2) {
     return true
   }
 
   return false
 }
 
-function onCursorDown(y, isHolding, startY) {
-  startY.current = y
-  isHolding.current = true
+function onCursorDown(state: RefObject<DrawerStateType>, y) {
+  if (state.current.isHolding) return
+
+  state.current.startY = y
+  state.current.startAt = +new Date()
+  state.current.isHolding = true
 }
 
 function getFirstTouch(event: React.TouchEvent) {
@@ -177,7 +192,6 @@ function moveRef(
 
   ref.current.style.transform = `translateY(${position}px)`
   ref.current.style.transition = smooth ? `transform 500ms ease` : ``
-  // ref.current.style.transitionDuration = smooth ? '0.5s' : null
 }
 
 export default Drawer

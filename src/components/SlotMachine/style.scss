@@ -1,24 +1,41 @@
+// html {
+// overflow: hidden;
+// }
+
+body {
+  overscroll-behavior: contain;
+}
+
 .slot-machine {
   font-size: 22px;
   font-weight: 600px;
+
   .pullable {
     overflow: scroll;
   }
+
   .slot {
+    transition-property: transform;
     display: inline-block;
     width: 100%;
-    margin-top: 0px;
+    margin-top: 0;
+
     .slot-body {
       height: 40px;
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
+      justify-content: space-around;
     }
   }
+
   .menu {
     display: inline-block;
+    margin-left: 2em;
+    width: 8 em;
   }
+
   .content {
+    transition-property: transform;
     min-height: 100vh;
   }
 }
