@@ -1,5 +1,5 @@
 .drawer {
-  $holder-height: 40px;
+  --holder-height: 40px;
 
   .background {
     position: fixed;
@@ -10,7 +10,6 @@
     background-color: black;
     opacity: 0.2;
     z-index: 1;
-    // transition-duration: 0.5s;
     transition: opacity 500ms ease;
     will-change: opacity;
   }
@@ -21,8 +20,6 @@
     z-index: 2;
     bottom: 0;
     width: 100vw;
-    // background: rgba(255, 255, 255, 0.85);
-    // backdrop-filter: blur(30px);
     background-color: var(--element);
     border-radius: 20px 20px 0 0;
 
@@ -31,7 +28,7 @@
     }
 
     .holder {
-      min-height: $holder-height;
+      min-height: var(--holder-height);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -47,9 +44,11 @@
     }
 
     .container {
-      max-height: calc(70vh - 40px);
       overflow: scroll;
-      will-change: scroll-position;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
   }
 }

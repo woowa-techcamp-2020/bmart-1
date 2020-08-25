@@ -48,7 +48,7 @@ const Drawer: React.FC<DrawerProps> = ({
     moveRef(bodyRef, {
       position: getRefHeight(bodyRef),
     })
-    containerRef.current.style.maxHeight = `calc(${maxHeight} - 40px)`
+    containerRef.current.style.maxHeight = `calc(${maxHeight} - var(--holder-height) - 15px)`
   }, [])
 
   useEffect(() => {
