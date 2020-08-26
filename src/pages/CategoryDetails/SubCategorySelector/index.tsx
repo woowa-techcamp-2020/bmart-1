@@ -56,11 +56,9 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
     <div className="sub-category-selector">
       {isLoading
         ? mockBlocks.map((x, i) => (
-            <>
-              <span className="mock" key={i}>
-                {new Array(x).fill('김').join('')}
-              </span>
-            </>
+            <span className="mock" key={i}>
+              {new Array(x).fill('김').join('')}
+            </span>
           ))
         : subCategories.map((x) => (
             <span
