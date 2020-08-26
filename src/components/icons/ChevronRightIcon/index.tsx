@@ -1,12 +1,12 @@
 import React from 'react'
 
-export type ChevronDownIconProps = {
+export type ChevronRightIconProps = {
   width?: string
   color?: string
   rotation?: number
 }
 
-const ChevronDownIcon: React.FC<ChevronDownIconProps> = ({
+const ChevronRightIcon: React.FC<ChevronRightIconProps> = ({
   color = 'black',
   width = '5px',
 }) => {
@@ -28,4 +28,4 @@ const ChevronDownIcon: React.FC<ChevronDownIconProps> = ({
   )
 }
 
-export default ChevronDownIcon
+export default ChevronRightIcon
