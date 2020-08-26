@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { deleteFromCart, PatchProductQuantityInCart } from 'src/apis'
 import MinusPlus from 'src/components/MinusPlus'
 import { ProductInCart } from 'src/types/api'
@@ -49,12 +50,16 @@ const CartItem: React.FC<CartItemProps> = ({
       ref={cartItem}
       onTransitionEnd={onDeleteTransitionEnd}
     >
-      <div className="cart-item-name">{name}</div>
+      <Link to={`/products/${id}`}>
+        <div className="cart-item-name">{name}</div>
+      </Link>
       <div className="cart-item-info">
-        <div
-          className="cart-item-info-left"
-          style={{ backgroundImage: `url(${imgV})` }}
-        ></div>
+        <Link to={`/products/${id}`}>
+          <div
+            className="cart-item-info-left"
+            style={{ backgroundImage: `url(${imgV})` }}
+          ></div>
+        </Link>
         <div className="cart-item-info-right">
           <MinusPlus
             quantity={quantity}
