@@ -43,7 +43,7 @@ getProductsByCategoryRouter.get(
     try {
       const products = await prisma.product.findMany({
         where: {
-          category,
+          subcategory: category,
         },
         include: {
           jjims: userId
