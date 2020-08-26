@@ -50,7 +50,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
   return (
     <div className="product-container" ref={gridRef}>
       {isSkeletonOn
-        ? Array(8)
+        ? Array(Math.max(8, products.length))
             .fill(undefined)
             .map((_, idx) => (
               <div key={idx} className="product-container-product">
