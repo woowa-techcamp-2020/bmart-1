@@ -6,7 +6,7 @@ export type GoBackProps = unknown
 
 const GoBack: React.FC<GoBackProps> = () => {
   return (
-    <div
+    <button
       className="go-back"
       onClick={() => {
         window.history.back()
@@ -22,7 +22,7 @@ const GoBack: React.FC<GoBackProps> = () => {
         <ChevronRightIcon width="0.5em" />
       </div>
       <span>뒤로 가기</span>
-    </div>
+    </button>
   )
 }
 
