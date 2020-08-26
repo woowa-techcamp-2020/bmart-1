@@ -7,15 +7,21 @@
   --white: #fff;
   --black: #000;
   --soft-black: #222;
+  --dawn-black: #444;
+  --gray: #808080;
+  --light-gray: #c6c6c6;
 
   /* Spaces */
   --ordinary-space: 15px;
 
   /* Theme */
   --foundation: var(--white);
+  --layered-foundation: var(--white);
   --element: var(--bmart-light-blue);
+  --layered-element: var(--bmart-light-blue);
   --distinct: var(--black);
-  --foundation-opaque: rgba(255, 255, 255, 0.7);
+  --universal-gray: var(--gray);
+  --foundation-opaque: rgba(255, 255, 255, 0.5);
   --element-opaque: rgba(243, 243, 245, 0.8);
 }
 
@@ -23,8 +29,11 @@
   :root {
     // Theme
     --foundation: var(--black);
+    --layered-foundation: var(--soft-black);
     --element: var(--soft-black);
+    --layered-element: var(--dawn-black);
     --distinct: var(--white);
+    --universal-gray: var(--light-gray);
     --foundation-opaque: rgba(0, 0, 0, 0.3);
     --element-opaque: rgba(51, 51, 51, 0.3);
   }
