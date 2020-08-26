@@ -8,12 +8,12 @@ const getUserInfoRouter = express.Router()
 getUserInfoRouter.get(
   '/me',
   async (req: Request, res: Response<GetUserInfoApiResponse>) => {
-    const userId = req.auth?.userId || ''
+    const userId = req.auth?.userId
 
     try {
       const user = await prisma.user.findOne({
         where: {
-          email: userId,
+          id: userId,
         },
         include: {
           addresses: true,
