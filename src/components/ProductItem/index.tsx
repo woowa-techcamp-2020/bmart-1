@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import HeartIcon from 'src/components/icons/HeartIcon'
@@ -16,6 +16,7 @@ export type ProductItemProps = {
   discount: number
   imgV: string
   isJjimmed: boolean
+  size?: 'small' | 'big'
 }
 
 let timer
@@ -24,6 +25,7 @@ const HEART_DELAY = 100
 
 // TODO: scroll & pointermove conflict 해결
 const ProductItem: React.FC<ProductItemProps> = (props) => {
+  const { size = 'small' } = props
   const [isJjimmed, setIsJjimmed] = useState(props.isJjimmed)
 
   const productItem = useRef<HTMLDivElement>()
@@ -70,15 +72,18 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
     <div
       ref={productItem}
       className="product-item"
-      style={{
-        backgroundImage: `url(${props.imgV})`,
-      }}
+      style={
+        {
+          backgroundImage: `url(${props.imgV})`,
+          '--zoom': size === 'small' ? '1' : '1.7',
+        } as CSSProperties
+      }
     >
       {isJjimmed && (
-        <HeartIcon size="small" isBroken={false} isAttached={true} />
+        <HeartIcon size={size} isBroken={false} isAttached={true} />
       )}
       {props.discount && (
-        <DiscountLabel size="small" discount={props.discount} />
+        <DiscountLabel size={size} discount={props.discount} />
       )}
       <div className="product-item-info">
         <div className="product-item-info-name">{props.name}</div>

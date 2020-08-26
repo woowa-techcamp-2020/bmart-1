@@ -107,7 +107,7 @@ const Sale: React.FC<SaleProps> = () => {
 
       <div className="sale-products">
         {saleProducts.map((product) => (
-          <ProductItem {...product} key={product.id} />
+          <ProductItem key={product.id} {...product} size="big" />
         ))}
       </div>
     </div>
