@@ -71,6 +71,8 @@ model User {
   name             String    @default("")
   phone            String    @default("")
   email            String    @unique
+  profileImg       String?
+  token            String?
   createdAt        DateTime  @default(now())
   defaultAddressId Int?
   defaultAddress   Address?  @relation("AddressToUser_defaultAddressId", fields: [defaultAddressId], references: [id])
