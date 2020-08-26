@@ -114,8 +114,15 @@ export async function search(
 export async function getProductsByCategory(
   query: GetProductsByCategoryApiRequestQuery
 ): Promise<Product[] | ProductWithJjimmed[]> {
+  const { category, page, sortBy, direction } = query
+
   return await request(
-    `/products-by-category?category=${query.category}&page=${query.page}`,
+    `/products-by-category${createQuery({
+      category,
+      page: page.toString(),
+      sortBy,
+      direction,
+    })}`,
     'GET'
   )
 }

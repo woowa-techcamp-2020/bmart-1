@@ -59,7 +59,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
             ))
         : products.map((result, idx) => (
             <div
-              key={result.id}
+              key={idx}
               className="product-container-product"
               style={{
                 animationDelay: `${getRowNumber(idx, itemNumsInRow) * 200}ms`,

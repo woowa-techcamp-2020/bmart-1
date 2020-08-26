@@ -57,6 +57,7 @@ getProductsByCategoryRouter.get(
         skip: ((page ?? 1) - 1) * take,
         take: take,
         ...orderByOptions,
+        distinct: ['id'],
       })
 
       if (userId) {

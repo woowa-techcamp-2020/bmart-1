@@ -50,15 +50,56 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
     history.push(`/category/${category}`)
   }
 
+  function sortByResolver() {
+    let orderBy = 'createdAt',
+      direction = 'asc' as 'asc' | 'desc'
+
+    switch (sortBy) {
+      case '기본 정렬':
+        orderBy = 'createdAt'
+        direction = 'asc'
+        break
+
+      case '인기 상품순':
+        orderBy = 'createdAt'
+        direction = 'desc'
+        break
+
+      case '금액 낮은순':
+        orderBy = 'price'
+        direction = 'asc'
+        break
+
+      case '금액 높은순':
+        orderBy = 'price'
+        direction = 'desc'
+        break
+
+      case '신규 상품순':
+        orderBy = 'createdAt'
+        direction = 'desc'
+        break
+
+      case '할인율 순':
+        orderBy = 'discount'
+        direction = 'desc'
+    }
+
+    return {
+      sortBy: orderBy,
+      direction,
+    }
+  }
+
   async function getProducts() {
     setLoading(true)
     const newProducts = (await getProductsByCategory({
       category: subCategory,
       page,
+      ...sortByResolver(),
     })) as ProductWithJjimmed[]
 
     setLoading(false)
-    console.log(page, products.length)
 
     if (page === 1) {
       setProducts(newProducts)
@@ -70,12 +111,19 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   useEffect(() => {
     if (subCategory === '') return
 
-    setPage(1)
-  }, [subCategory])
+    setPage(0)
+  }, [subCategory, sortBy])
+
+  useEffect(() => {
+    if (subCategory === '') return
+
+    setSortBy(DEFAULTS.OPTION)
+  }, [subCategory, category])
 
   useEffect(() => {
     if (page > 0) getProducts()
-  }, [page, subCategory])
+    else setPage(1)
+  }, [page])
 
   return (
     <div className="category-details">
