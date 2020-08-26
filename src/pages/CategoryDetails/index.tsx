@@ -74,7 +74,7 @@ const CategoryDetails: React.FC = () => {
 
   return (
     <>
-      {isValidSlug ? <Component /> : <div>유효하지 않은 카테고리입니다.</div>}
+      {isValidSlug() ? <Component /> : <div>유효하지 않은 카테고리입니다.</div>}
     </>
   )
 }
