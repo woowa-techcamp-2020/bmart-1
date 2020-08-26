@@ -11,6 +11,10 @@ export function getRowNumber(idx: number, itemNumbersInRow: number): number {
   return Math.floor(idx / itemNumbersInRow)
 }
 
+export function addCommaToPrice(price: number): string {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 export const toPriceLabel = (price: number | string): string =>
   price.toLocaleString() + '원'
 
