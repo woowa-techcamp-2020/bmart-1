@@ -10,22 +10,22 @@ import Bmart from './pages/Bmart'
 import Jjims from './pages/Jjims'
 import { Dispatcher } from './types/react-helper'
 
-export const LoginContext = createContext<{
-  isLogged: boolean
-  setIsLogged: Dispatcher<boolean>
+export const SignedContext = createContext<{
+  isSigned: boolean
+  setSigned: Dispatcher<boolean>
 }>(undefined)
 
 const App: React.FC = () => {
-  const [isLogged, setIsLogged] = useState<boolean>(false)
+  const [isSigned, setSigned] = useState<boolean>(false)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      setIsLogged(true)
+      setSigned(true)
     }
   }, [])
 
   return (
-    <LoginContext.Provider value={{ isLogged, setIsLogged }}>
+    <SignedContext.Provider value={{ isSigned, setSigned }}>
       <Router>
         <div className="app">
           <Switch>
@@ -47,7 +47,7 @@ const App: React.FC = () => {
           </Switch>
         </div>
       </Router>
-    </LoginContext.Provider>
+    </SignedContext.Provider>
   )
 }
 
