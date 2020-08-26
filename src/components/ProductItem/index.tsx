@@ -1,3 +1,4 @@
+import $ from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
 import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
@@ -8,13 +9,14 @@ import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
 
 export type ProductItemProps = {
-  id: number
-  name: string
-  defaultPrice: number
-  price: number
-  discount: number
-  imgV: string
-  isJjimmed: boolean
+  id?: number
+  name?: string
+  defaultPrice?: number
+  price?: number
+  discount?: number
+  imgV?: string
+  isJjimmed?: boolean
+  isSkeleton?: boolean
 }
 
 let timer
@@ -22,8 +24,17 @@ let isLongPress = false
 const HEART_DELAY = 100
 
 // TODO: scroll & pointermove conflict 해결
-const ProductItem: React.FC<ProductItemProps> = (props) => {
-  const [isJjimmed, setIsJjimmed] = useState(props.isJjimmed)
+const ProductItem: React.FC<ProductItemProps> = ({
+  id = 0,
+  name = '',
+  defaultPrice = 0,
+  price = 0,
+  discount = 0,
+  imgV = '',
+  isJjimmed = false,
+  isSkeleton = false,
+}) => {
+  const [isJjimmedLocal, setIsJjimmedLocal] = useState(isJjimmed)
 
   const productItem = useRef<HTMLDivElement>()
   const productItemCover = useRef<HTMLDivElement>()
@@ -36,7 +47,7 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
       productItemCoverElem.classList.add('hidden')
       setTimeout(
         () =>
-          setIsJjimmed((previousState) => {
+          setIsJjimmedLocal((previousState) => {
             return !previousState
           }),
         HEART_DELAY
@@ -45,7 +56,7 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
 
     productItemElem.addEventListener('pointerdown', () => {
       timer = setTimeout(async () => {
-        await toggleJjim({ productId: props.id })
+        await toggleJjim({ productId: id })
         productItemCoverElem.classList.remove('hidden')
 
         isLongPress = true
@@ -68,30 +79,30 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
   return (
     <div
       ref={productItem}
-      className="product-item"
+      className={$('product-item', { skeleton: isSkeleton })}
       style={{
-        backgroundImage: `url(${props.imgV})`,
+        backgroundImage: `url(${imgV})`,
       }}
     >
-      {isJjimmed && (
+      {isJjimmedLocal && (
         <HeartIcon size="small" isBroken={false} isAttached={true} />
       )}
-      {props.discount && (
-        <DiscountLabel size="small" discount={props.discount} />
-      )}
+      {Boolean(discount) && <DiscountLabel size="small" discount={discount} />}
       <div className="product-item-info">
-        <div className="product-item-info-name">{props.name}</div>
+        <div className="product-item-info-name">{name}</div>
         <div className="product-item-info-price">
-          {props.defaultPrice !== props.price && (
+          {defaultPrice !== price ? (
             <span className="product-item-info-price-default">
-              {props.defaultPrice}
+              {defaultPrice}
             </span>
+          ) : (
+            ''
           )}
-          <span className="product-item-info-price-current">{props.price}</span>
+          <span className="product-item-info-price-current">{price}</span>
         </div>
       </div>
       <div ref={productItemCover} className="product-item-cover hidden">
-        {isJjimmed ? (
+        {isJjimmedLocal ? (
           <ColorfulBrokenHeartIcon color="white" width="100%" />
         ) : (
           <ColorfulHeartIcon color="white" width="100%" />

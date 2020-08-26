@@ -9,5 +9,7 @@ module.exports = {
     'value-keyword-case': null,
     'selector-list-comma-newline-after': null,
     'declaration-colon-newline-after': null,
+    'function-name-case': null,
+    'value-keyword-case': null,
   },
 }

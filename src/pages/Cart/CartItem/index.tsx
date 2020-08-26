@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import { deleteFromCart, PatchProductQuantityInCart } from 'src/apis'
 import MinusPlus from 'src/components/MinusPlus'
 import { ProductInCart } from 'src/types/api'
-import { addCommaToPrice } from 'src/utils'
 import './style.scss'
 
 export type CartItemProps = {
@@ -63,18 +62,20 @@ const CartItem: React.FC<CartItemProps> = ({
           ></MinusPlus>
           <div className="price">
             <div className="price-detail">
-              {defaultPrice !== price && (
+              {defaultPrice !== price ? (
                 <span className="price-detail-default">
-                  {addCommaToPrice(defaultPrice)}원
+                  {defaultPrice.toLocaleString()}원
                 </span>
+              ) : (
+                ''
               )}
               <span className="price-detail-current">
-                {addCommaToPrice(price)}원{' '}
+                {price.toLocaleString()}원{' '}
               </span>
               <span className="price-detail-quantity">x {quantity}</span>
             </div>
             <div className="price-total">
-              {addCommaToPrice(price * quantity)}원
+              {(price * quantity).toLocaleString()}원
             </div>
           </div>
           <div className="delete" onClick={() => shrinkCartItem()}>
