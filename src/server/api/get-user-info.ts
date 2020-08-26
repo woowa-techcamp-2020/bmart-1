@@ -20,6 +20,7 @@ getUserInfoRouter.get(
         },
       })
 
+      delete user?.token
       res.json(user)
     } catch (e) {
       console.error(e)
