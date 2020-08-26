@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
 import { $$sel, $sel, sanitizeNan } from 'src/utils'
 import Header from './Header'
 import Home from './Home'
@@ -68,20 +67,19 @@ export function interpolate(
   return prev + scrollLeft * ((next - prev) / singlePageWidth) + extra
 }
 
-export type BmartProps = unknown
+export type BmartProps = {
+  path?: 'home' | 'sale' | 'me'
+}
 
-const Bmart: React.FC<BmartProps> = () => {
+const Bmart: React.FC<BmartProps> = ({ path }) => {
   const slidePagesWrapper = useRef<HTMLDivElement>()
 
-  const location = useLocation()
-
   useEffect(() => {
-    console.log('location change')
-    const path = location.pathname.replace('/', '')
-    const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+    const index =
+      path === 'home' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 
     navigateSlidePageTo(index, '0', undefined, false)
-  }, [location])
+  }, [path])
 
   useEffect(() => {
     const logoWrapper = $sel('.logo-wrapper')

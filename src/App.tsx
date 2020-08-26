@@ -11,13 +11,13 @@ const App: React.FC = () => {
       <div className="app">
         <Switch>
           <Route path="/" exact>
-            <Bmart />
+            <Bmart path="home" />
           </Route>
           <Route path="/sale" exact>
-            <Bmart />
+            <Bmart path="sale" />
           </Route>
           <Route path="/me" exact>
-            <Bmart />
+            <Bmart path="me" />
           </Route>
           <Route path="/jjims">
             <Jjims />
