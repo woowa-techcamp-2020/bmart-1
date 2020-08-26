@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
+import Empty from 'src/components/Empty'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import { ProductInCart, ProductsInCart } from 'src/types/api'
-import { addCommaToPrice } from 'src/utils'
 import CartItem from './CartItem'
 import './style.scss'
 
@@ -57,7 +57,7 @@ const Cart: React.FC<CartProps> = (props) => {
           </div>
         </>
       ) : (
-        <div className="cart-empty">텅</div>
+        <Empty />
       )}
     </div>
   )
