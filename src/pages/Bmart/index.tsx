@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { $$sel, $sel, sanitizeNan } from 'src/utils'
 import Header from './Header'
 import Home from './Home'
@@ -74,10 +74,21 @@ const Bmart: React.FC<BmartProps> = () => {
   const slidePagesWrapper = useRef<HTMLDivElement>()
 
   const location = useLocation()
+  const history = useHistory()
 
   useEffect(() => {
-    console.log('location change')
     const path = location.pathname.replace('/', '')
+
+    if (path === 'verified') {
+      const token = new URLSearchParams(location.search).get('token')
+
+      localStorage.setItem('token', token)
+
+      history.replace('/')
+
+      return
+    }
+
     const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 
     navigateSlidePageTo(index, '0', undefined, false)

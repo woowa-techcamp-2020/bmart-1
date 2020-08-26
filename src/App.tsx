@@ -1,5 +1,10 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
 import './app.style.scss'
 import Bmart from './pages/Bmart'
 import Jjims from './pages/Jjims'
@@ -20,6 +25,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/jjims">
             <Jjims />
+          </Route>
+          <Route path="/verified">
+            <Redirect to="/"></Redirect>
           </Route>
         </Switch>
       </div>
