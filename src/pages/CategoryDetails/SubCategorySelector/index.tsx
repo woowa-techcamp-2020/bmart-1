@@ -6,29 +6,46 @@ import { CategoryType } from 'src/types'
 import './style.scss'
 
 export type SubCategorySelectorProps = {
-  category: CategoryType
+  category?: CategoryType
   subCategory?: string
-  setSubCategory: (subCategory: string) => void
+  isLoading?: boolean
+  setSubCategory?: (subCategory: string) => void
+}
+
+let mockBlocks = []
+
+function shuffle() {
+  const mocks = [7, 4, 3, 2, 5, 4, 4, 6]
+
+  mockBlocks = mocks.map(() => mocks[Math.floor(Math.random() * mocks.length)])
 }
 
 const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
   category = DEFAULTS.CATEGORY,
   subCategory = null,
+  isLoading: isInitLoading = false,
   setSubCategory,
 }) => {
   const [subCategories, setSubCategories] = useState([])
+  const [isLoading, setLoading] = useState<boolean>(isInitLoading)
 
   useEffect(() => {
-    setSubCategory(null)
-    setSubCategories([])
+    setSubCategory && setSubCategory(null)
+    setSubCategories && setSubCategories([])
   }, [category])
 
   useEffect(() => {
-    loadSubCategories()
+    if (subCategory === null) setSubCategory && loadSubCategories()
   }, [subCategory])
 
   async function loadSubCategories() {
+    shuffle()
+    setLoading(true)
     const newSubCategories = await getSubCategories(category)
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
 
     setSubCategories(newSubCategories)
 
@@ -37,15 +54,21 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
 
   return (
     <div className="sub-category-selector">
-      {subCategories.map((x) => (
-        <span
-          key={x}
-          className={$({ active: x === subCategory })}
-          onClick={() => setSubCategory(x)}
-        >
-          {x}&nbsp;
-        </span>
-      ))}
+      {isLoading
+        ? mockBlocks.map((x, i) => (
+            <span className="mock" key={i}>
+              {new Array(x).fill('김').join('')}
+            </span>
+          ))
+        : subCategories.map((x, i) => (
+            <span
+              key={i}
+              className={$({ active: x === subCategory })}
+              onClick={() => setSubCategory(x)}
+            >
+              {x}&nbsp;
+            </span>
+          ))}
     </div>
   )
 }

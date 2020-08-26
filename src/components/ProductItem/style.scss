@@ -1,3 +1,5 @@
+@use '~src/styles/design-system' as *;
+
 .product-item {
   --zoom: 1;
 
@@ -41,7 +43,7 @@
     padding: calc(8px * var(--zoom)) calc(7px * var(--zoom));
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(15px);
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 calc(10px * var(--zoom)) calc(10px * var(--zoom));
 
     &-name {
       display: block;
@@ -95,6 +97,10 @@
 
   .hidden {
     display: none;
+  }
+
+  &.skeleton {
+    @include skeleton-animation;
   }
 }
 

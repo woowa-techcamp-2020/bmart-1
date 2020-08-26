@@ -45,6 +45,7 @@ body {
     sans-serif;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: contain;
   background-color: var(--foundation);
   color: var(--distinct);
 }

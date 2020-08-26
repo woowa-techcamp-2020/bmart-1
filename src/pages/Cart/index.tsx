@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import { ProductsInCart } from 'src/types/api'
-import { addCommaToPrice } from 'src/utils'
 import CartItem from './CartItem'
 import './style.scss'
 
@@ -51,7 +50,7 @@ const Cart: React.FC<CartProps> = (props) => {
           </div>
           <div className="cart-footer">
             <div className="cart-footer-total-price">
-              {addCommaToPrice(totalAmount)}원
+              {totalAmount.toLocaleString()}원
             </div>
             <div className="cart-footer-confirm-button">결제하기</div>
           </div>

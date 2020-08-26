@@ -21,9 +21,9 @@ type ActionType =
 
 const MIN_PULL_LENGTH = 100
 const MAX_PULL_LENGTH = 600
-const RELEASING_DURATION = 1500
-const RESETING_DURATION = 300
-const WAITING_DURATION = 800
+const RELEASING_DURATION = 1000
+const RESETING_DURATION = 100
+const WAITING_DURATION = 500
 const ITEM_LIST = [
   '김치찌개',
   '샐러드',
@@ -35,9 +35,9 @@ const ITEM_LIST = [
   '살려주세요',
   '짬뽕',
   '고려국시',
-  '살짝만 땡기면 바로 돌아감',
-  '오호오호호',
-  '아직 아무것도 못했음',
+  '크로와상',
+  '지코바',
+  '알리오올리오',
 ]
 
 type ActionRequestType = {
@@ -189,14 +189,15 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
 
     if (action === PULLING || action === RELEASING || action === RESETING) {
       const y = getComputedTranslateY(slot.current)
-      const newIdx = Math.floor((y + height / 2) / height)
+      const menuHeight = height * 0.8
+      const newIdx = Math.floor((y + menuHeight / 2) / menuHeight)
 
       if (slotIdx === null || newIdx !== slotIdx) {
         menu.current.innerText = pickRandomItem()
         slotIdx = newIdx
       }
 
-      animateSlotMenu(y, height)
+      animateSlotMenu(y, menuHeight)
     }
 
     window.requestAnimationFrame(animate)
