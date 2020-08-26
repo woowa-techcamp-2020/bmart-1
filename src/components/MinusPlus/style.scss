@@ -1,3 +1,5 @@
+@use '~src/styles/design-system' as *;
+
 .minus-plus {
   $height: 44.79px;
 
@@ -9,8 +11,8 @@
   height: $height;
   left: 154.8px;
   top: 30.02px;
-  background: #f3f3f5;
-  border-radius: 9581.37px;
+  background: var(--layered-element);
+  border-radius: $circle;
 
   div {
     display: flex;

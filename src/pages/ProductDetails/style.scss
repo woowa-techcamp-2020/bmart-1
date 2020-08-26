@@ -22,14 +22,14 @@
     &-description {
       font-weight: 600;
       font-size: 15px;
-      color: #808080;
+      color: var(--universal-gray);
       margin-bottom: 7px;
     }
 
     &-name {
       font-weight: 600;
       font-size: 25px;
-      color: #000;
+      color: var(--distinct);
       margin-bottom: 32px;
     }
 
@@ -48,13 +48,13 @@
           font-weight: 600;
           font-size: 15px;
           text-decoration-line: line-through;
-          color: #808080;
+          color: var(--universal-gray);
         }
 
         &-current {
           font-size: 25px;
           font-weight: 700;
-          color: #000;
+          color: var(--distinct);
         }
       }
     }
