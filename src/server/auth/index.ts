@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import { Strategy } from 'passport-github'
 import { prisma } from '~/utils/prisma'
@@ -26,7 +27,6 @@ passport.use(
       const profileImg =
         profile.photos?.map((x) => x.value).find(() => true) ?? ''
 
-      console.log('hi')
       await prisma.user.upsert({
         create: {
           email,
@@ -42,10 +42,7 @@ passport.use(
           email: email,
         },
       })
-      console.log('done!', name, email, profileImg)
-
-      await prisma.$disconnect()
-      done(null, profile)
+      done(null, { userId: email })
     }
   )
 )
@@ -59,11 +56,8 @@ authRouter.get(
   '/callback',
   passport.authenticate('github', { session: false }),
   (req: Request, res: Response) => {
-    const userId = req.auth?.userId
+    const token = jwt.sign(req.user || '', process.env.TOKEN_SECRET)
 
-    console.log(req.user)
-
-    console.log('done!!')
-    res.send({ login: 'OK', userId: req.user })
+    res.redirect(`${process.env.CLIENT_FALLBACK ?? ''}/verified?token=${token}`)
   }
 )
