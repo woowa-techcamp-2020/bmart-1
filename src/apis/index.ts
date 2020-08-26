@@ -1,5 +1,6 @@
 import { Jjim, Product, User } from '@prisma/client'
 import type {
+  AddToCartRequestBody,
   DeleteFromCartBody,
   ProductsInCart,
   ProductWithJjimmed,
@@ -108,6 +109,10 @@ export async function PatchProductQuantityInCart(
   await request('/product-quantity-in-cart', 'PATCH', body)
 }
 
+export async function addToCart(body: AddToCartRequestBody) {
+  return await request('/add-to-cart', 'POST', body)
+}
+  
 export async function getUser(): Promise<User> {
   return await request('/me', 'GET')
 }
