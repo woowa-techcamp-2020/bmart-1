@@ -4,14 +4,16 @@ import Drawer from 'src/components/Drawer'
 import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
 import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
 import { DEFAULTS } from 'src/constants'
-import { SortByType } from 'src/types'
+import { CategoryType, SortByType } from 'src/types'
 import OptionSelector from './OptionSelector'
 import './style.scss'
 import SubCategorySelector from './SubCategorySelector'
 
 export type DispatchByType<T> = Dispatch<SetStateAction<T>>
 
-export type CategoryDetailsProps = unknown
+export type CategoryDetailsProps = {
+  category?: CategoryType
+}
 
 export const CategoryDetailsContext = createContext<{
   subCategory: string
@@ -20,9 +22,8 @@ export const CategoryDetailsContext = createContext<{
   setSortBy: DispatchByType<SortByType>
 }>(undefined)
 
-const Component: React.FC<CategoryDetailsProps> = () => {
+const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const history = useHistory()
-  const { slug } = useParams()
 
   const [sortBy, setSortBy] = useState<string>(DEFAULTS.OPTION)
   const [subCategory, setSubCategory] = useState(null)
@@ -36,11 +37,11 @@ const Component: React.FC<CategoryDetailsProps> = () => {
   return (
     <div className="category-details">
       <div className="title" onClick={() => setCategoryOpened(true)}>
-        {slug}
+        {category}
         <ChevronDownIcon />
       </div>
       <SubCategorySelector
-        category={slug}
+        category={category}
         subCategory={subCategory}
         setSubCategory={setSubCategory}
       />
@@ -51,7 +52,7 @@ const Component: React.FC<CategoryDetailsProps> = () => {
       <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>
         <OptionSelector
           options={DEFAULTS.CATEGORIES.slice()}
-          option={slug}
+          option={category}
           setOption={setCategory}
         ></OptionSelector>
       </Drawer>
@@ -66,15 +67,19 @@ const Component: React.FC<CategoryDetailsProps> = () => {
 }
 
 const CategoryDetails: React.FC = () => {
-  const { slug } = useParams()
+  const { category } = useParams()
 
-  function isValidSlug(): boolean {
-    return DEFAULTS.CATEGORIES.indexOf(slug) !== -1
+  function isValidCategory(): boolean {
+    return DEFAULTS.CATEGORIES.indexOf(category) !== -1
   }
 
   return (
     <>
-      {isValidSlug() ? <Component /> : <div>유효하지 않은 카테고리입니다.</div>}
+      {isValidCategory() ? (
+        <Component category={category} />
+      ) : (
+        <div>유효하지 않은 카테고리입니다.</div>
+      )}
     </>
   )
 }

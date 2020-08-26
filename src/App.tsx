@@ -22,7 +22,7 @@ const App: React.FC = () => {
           <Route path="/jjims">
             <Jjims />
           </Route>
-          <Route path="/category/:slug">
+          <Route path="/category/:category">
             <CategoryDetails />
           </Route>
         </Switch>
