@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react/types-6-0'
 import React from 'react'
 import FullNameLogoAlt, {
   FullNameLogoAltProps,
-} from '../components/FullNameLogoAlt'
+} from '../components/icons/FullNameLogoAlt'
 
 export default {
   title: 'Example/Logo',

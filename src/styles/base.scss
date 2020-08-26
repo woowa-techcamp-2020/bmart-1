@@ -6,7 +6,7 @@
   --bmart-light-blue: #f3f3f5;
   --white: #fff;
   --black: #000;
-  --soft-black: #333;
+  --soft-black: #222;
 
   /* Spaces */
   --ordinary-space: 15px;
@@ -45,6 +45,7 @@ body {
     sans-serif;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: contain;
   background-color: var(--foundation);
   color: var(--distinct);
 }

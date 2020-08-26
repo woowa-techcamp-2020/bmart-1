@@ -1,24 +1,38 @@
 import classNames from 'classnames'
-import React, { useContext, useEffect, useRef } from 'react'
-import { CarouselContext } from '../..'
+import React, { useEffect, useRef, useState } from 'react'
 import './style.scss'
 
 export type AdBannerProps = {
-  color: 'violet' | 'purple' | 'sky' | 'orange' | 'mint' | 'grass' | 'dark' | 'blue'
+  color:
+    | 'violet'
+    | 'purple'
+    | 'sky'
+    | 'orange'
+    | 'mint'
+    | 'grass'
+    | 'dark'
+    | 'blue'
   index: number
+  subtitle: string
+  titleFirstLine: string
+  titleSecondLine: string
+  Graphic: React.FC
 }
 
-const AdBanner: React.FC<AdBannerProps> = ({ color, index }) => {
-  const { setCurrentIndex } = useContext(CarouselContext)
-
+const AdBanner: React.FC<AdBannerProps> = ({
+  color,
+  subtitle,
+  titleFirstLine,
+  titleSecondLine,
+  Graphic,
+}) => {
   const sentinel = useRef<HTMLDivElement>()
+  const [isAnimated, setIsAnimated] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
-        if (entry.isIntersecting) {
-          setCurrentIndex(index)
-        }
+        setIsAnimated(entry.isIntersecting)
       }
     })
 
@@ -26,16 +40,22 @@ const AdBanner: React.FC<AdBannerProps> = ({ color, index }) => {
   }, [])
 
   return (
-    <div className={classNames('ad-banner', color)}>
-      <div className="text">
-        <h2 className="subtitle">주문하면 바로 배달 오는</h2>
-        <h1 className="title">
-          누구나
-          <br />
-          4천원 할인
-        </h1>
+    <div className="banner-wrapper">
+      <div
+        className={classNames('banner', color, {
+          animate: isAnimated,
+        })}
+      >
+        <div className="text">
+          <h2 className="subtitle">{subtitle}</h2>
+          <h1 className="title">
+            <span dangerouslySetInnerHTML={{ __html: titleFirstLine }} />
+            <span dangerouslySetInnerHTML={{ __html: titleSecondLine }} />
+          </h1>
+        </div>
+        <Graphic />
+        <div className="sentinel" ref={sentinel} />
       </div>
-      <div className="sentinel" ref={sentinel} />
     </div>
   )
 }

@@ -1,7 +1,9 @@
 @use '~src/styles/variables' as *;
 
 .slide-page {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: inline-block;
   width: 100%;
   height: 100%;
@@ -10,28 +12,13 @@
   padding-top: $header-height + $ordinary-space;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 
-  & > * {
+  & * {
     white-space: initial;
   }
 
-  .sp-vertical-scroll-sentinel {
-    position: absolute;
-    left: 20px;
-    top: $ordinary-space * 2;
-    width: calc(100% - 40px);
-    height: 1px;
-    pointer-events: none;
-    opacity: 0;
-  }
-
-  .sp-horizontal-scroll-sentinel {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 1px;
-    height: 100vh;
-    pointer-events: none;
-    opacity: 0;
+  &:nth-child(2) {
+    background-image: linear-gradient(to bottom, #565977, #5b2f62);
   }
 }

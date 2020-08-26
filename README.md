@@ -30,37 +30,37 @@ This variable will be used during prisma cli is running.
 
 ## npm scripts
 
-### Install dependencies
+**Install dependencies**
 
 ```zsh
 npm install
 ```
 
-### Dev
+**Dev**
 
 ```zsh
 npm run dev
 ```
 
-### Build
+**Build**
 
 ```zsh
 npm run build
 ```
 
-### Check TypeScript types
+**Check TypeScript types**
 
 ```zsh
 npm run typecheck
 ```
 
-### Lint
+**Lint**
 
 ```zsh
 npm run lint
 ```
 
-### Prisma
+**Prisma**
 
 Introspect schema from remote DB and convert to Prisma schema.
 

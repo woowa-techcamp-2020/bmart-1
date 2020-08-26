@@ -1,11 +1,11 @@
 import $ from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
 import { toggleJjim } from 'src/apis'
-import DiscountLabel from 'src/components/DiscountLabel'
-import HeartIcon from 'src/components/HeartIcon'
+import DiscountLabel from 'src/components/icons/DiscountLabel'
+import HeartIcon from 'src/components/icons/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
-import ColorfulBrokenHeartIcon from '../ColorfulBrokenHeartIcon'
-import ColorfulHeartIcon from '../ColorfulHeartIcon'
+import ColorfulBrokenHeartIcon from '../icons/ColorfulBrokenHeartIcon'
+import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
 
 export type ProductItemProps = {
