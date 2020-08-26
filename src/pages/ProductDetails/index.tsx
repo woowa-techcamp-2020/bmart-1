@@ -1,5 +1,5 @@
-import { Product } from '@prisma/client'
 import React, { useState } from 'react'
+import { addToCart } from 'src/apis'
 import Drawer from 'src/components/Drawer'
 import ColorfulBrokenHeartIcon from 'src/components/icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from 'src/components/icons/ColorfulHeartIcon'
@@ -9,7 +9,7 @@ import MinusPlus from 'src/components/MinusPlus'
 import { ProductWithJjimmed } from 'src/types/api'
 import './style.scss'
 
-export type ProductDetailsProps = Product | ProductWithJjimmed
+export type ProductDetailsProps = ProductWithJjimmed
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({
   id,
@@ -26,6 +26,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 }) => {
   const [isCartOpened, setIsCartOpened] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
+
+  async function onConfirm() {
+    await addToCart({ productId: id, quantity: quantity })
+  }
 
   return (
     <div className="product-details">
@@ -70,7 +74,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           <img className="product-details-cart-image" src={imgV}></img>
           <div className="product-details-cart-buttons">
             <MinusPlus quantity={quantity} onChange={setQuantity} />
-            <div className="product-details-cart-buttons-confirm">담기</div>
+            <div
+              className="product-details-cart-buttons-confirm"
+              onClick={onConfirm}
+            >
+              담기
+            </div>
           </div>
         </div>
       </Drawer>

@@ -1,5 +1,6 @@
 import { Jjim, Product } from '@prisma/client'
 import type {
+  AddToCartRequestBody,
   DeleteFromCartBody,
   ProductsInCart,
   ProductWithJjimmed,
@@ -115,4 +116,8 @@ export async function PatchProductQuantityInCart(
   body: PatchProductQuantityInCartApiRequestBody
 ): Promise<void> {
   await request('/product-quantity-in-cart', 'PATCH', body)
+}
+
+export async function addToCart(body: AddToCartRequestBody) {
+  return await request('/add-to-cart', 'POST', body)
 }
