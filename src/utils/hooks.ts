@@ -9,7 +9,7 @@ export function useSigned() {
     setSigned(true)
   }
 
-  function signOut(token) {
+  function signOut() {
     localStorage.removeItem('token')
     setSigned(false)
   }

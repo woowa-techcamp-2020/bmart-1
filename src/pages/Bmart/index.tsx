@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { $$sel, $sel, sanitizeNan } from 'src/utils'
+import { useSigned } from 'src/utils/hooks'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
@@ -75,6 +76,7 @@ const Bmart: React.FC<BmartProps> = () => {
 
   const location = useLocation()
   const history = useHistory()
+  const { signIn } = useSigned()
 
   useEffect(() => {
     const path = location.pathname.replace('/', '')
@@ -82,7 +84,7 @@ const Bmart: React.FC<BmartProps> = () => {
     if (path === 'verified') {
       const token = new URLSearchParams(location.search).get('token')
 
-      localStorage.setItem('token', token)
+      signIn(token)
 
       history.replace('/')
 

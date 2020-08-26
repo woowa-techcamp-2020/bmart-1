@@ -9,45 +9,60 @@ import './app.style.scss'
 import Bmart from './pages/Bmart'
 import Jjims from './pages/Jjims'
 import { Dispatcher } from './types/react-helper'
+import { useSigned } from './utils/hooks'
 
 export const SignedContext = createContext<{
   isSigned: boolean
   setSigned: Dispatcher<boolean>
 }>(undefined)
 
-const App: React.FC = () => {
+const SignedContextProvider: React.FC = ({ children }) => {
   const [isSigned, setSigned] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      setSigned(true)
-    }
-  }, [])
 
   return (
     <SignedContext.Provider value={{ isSigned, setSigned }}>
-      <Router>
-        <div className="app">
-          <Switch>
-            <Route path="/" exact>
-              <Bmart />
-            </Route>
-            <Route path="/sale" exact>
-              <Bmart />
-            </Route>
-            <Route path="/me" exact>
-              <Bmart />
-            </Route>
-            <Route path="/jjims">
-              <Jjims />
-            </Route>
-            <Route path="/verified">
-              <Redirect to="/"></Redirect>
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      {children}
     </SignedContext.Provider>
+  )
+}
+
+const AppRouter: React.FC = () => {
+  const { initSigned } = useSigned()
+
+  useEffect(() => {
+    initSigned()
+  }, [])
+
+  return (
+    <Router>
+      <div className="app">
+        <Switch>
+          <Route path="/" exact>
+            <Bmart />
+          </Route>
+          <Route path="/sale" exact>
+            <Bmart />
+          </Route>
+          <Route path="/me" exact>
+            <Bmart />
+          </Route>
+          <Route path="/jjims">
+            <Jjims />
+          </Route>
+          <Route path="/verified">
+            <Redirect to="/"></Redirect>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  )
+}
+
+const App: React.FC = () => {
+  return (
+    <SignedContextProvider>
+      <AppRouter></AppRouter>
+    </SignedContextProvider>
   )
 }
 
