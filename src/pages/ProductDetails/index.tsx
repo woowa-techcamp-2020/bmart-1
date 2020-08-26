@@ -2,6 +2,7 @@ import { Product } from '@prisma/client'
 import React, { useState } from 'react'
 import { addToCart, toggleJjim } from 'src/apis'
 import Drawer from 'src/components/Drawer'
+import ChevronRightIcon from 'src/components/icons/ChevronRightIcon'
 import ColorfulBrokenHeartIcon from 'src/components/icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from 'src/components/icons/ColorfulHeartIcon'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
@@ -42,7 +43,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       <img className="product-details-image" src={imgH}></img>
       <div className="product-details-info">
         <div className="product-details-info-category">
-          {`${category} > ${subcategory}`}
+          {category}
+          <ChevronRightIcon />
+          {subcategory}
         </div>
         <div className="product-details-info-description">{description}</div>
         <div className="product-details-info-name">{name}</div>
