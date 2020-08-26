@@ -11,15 +11,6 @@ import { PatchProductQuantityInCartApiRequestBody } from './../types/api'
 
 const baseURL = isDev ? `http://${window.location.hostname}:13100/api` : `/api`
 
-export function saveToken(token: string): void {
-  localStorage.setItem('token', token)
-}
-
-// TODO REMOVE THIS AFTER LOGIN IMPLEMENTATION
-saveToken(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcklkIjoxNSwiaWF0IjoxNTE2MjM5MDIyfQ.OYhK3YG3W7iX5JxsQuwBn1ARPKVOgzh4GDs0FVqxols'
-)
-
 function loadToken(): string {
   return localStorage.getItem('token')
 }
