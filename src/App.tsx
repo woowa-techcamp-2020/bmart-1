@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.style.scss'
 import Bmart from './pages/Bmart'
+import CategoryDetails from './pages/CategoryDetails'
 import Jjims from './pages/Jjims'
 
 const App: React.FC = () => {
@@ -20,6 +21,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/jjims">
             <Jjims />
+          </Route>
+          <Route path="/category/:slug">
+            <CategoryDetails />
           </Route>
         </Switch>
       </div>
