@@ -10,7 +10,10 @@ const addToCartRouter = express.Router()
 
 addToCartRouter.post(
   '/add-to-cart',
-  [body('productId').isInt(), body('quantity').isInt({ min: CONSTRAINT.MIN_QUANTITY })],
+  [
+    body('productId').isInt(),
+    body('quantity').isInt({ min: CONSTRAINT.MIN_QUANTITY }),
+  ],
   requestValidator(),
   async (req: Request<{}, {}, AddToCartRequestBody>, res: Response) => {
     const userId = req.auth?.userId as number

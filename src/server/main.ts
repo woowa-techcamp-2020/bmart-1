@@ -6,6 +6,7 @@ import bearerToken from 'express-bearer-token'
 import morgan from 'morgan'
 import { isDev } from './../utils'
 import { apiRouter } from './api'
+import { authRouter } from './auth'
 import { tokenVerifier } from './middlewares'
 
 const app = express()
@@ -27,6 +28,7 @@ if (!isDev) {
   app.use(express.static(appRoot.resolve('/build')))
 }
 
+app.use('/auth', authRouter)
 app.use('/api', apiRouter)
 
 if (!isDev) {

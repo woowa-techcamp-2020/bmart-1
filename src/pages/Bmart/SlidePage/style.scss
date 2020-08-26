@@ -10,11 +10,12 @@
   vertical-align: top;
   scroll-snap-align: start;
   padding-top: $header-height + $ordinary-space;
+  padding-bottom: 50px;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior-y: contain;
 
-  & * {
+  > * {
     white-space: initial;
   }
 

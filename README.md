@@ -1,10 +1,26 @@
 ![GitHub Banner (3)](https://user-images.githubusercontent.com/19797697/90615358-fab55f80-e246-11ea-8a33-1d7495c7ec55.png)
 
+This project clones **B mart** web application using TypeScript, React and Express. It is totally redesigned from the ground up while keeping the same functionalities as similar as possible. We worked so hard in every detail to achieve the most unique but familiar user experience whole inside a single web page. Silently in server side, [Prisma](https://www.prisma.io) enables us to develop reliable and type-safe APIs much faster.
+
+## Design System
+
+![Colors](https://user-images.githubusercontent.com/19797697/91301828-7d5a9380-e7e0-11ea-9341-b0db5ca84f2c.png)
+
+We were trying to consolidate our design language to unify the same look and feel and share it with all of our developers. Including colors, border radius, spaces and typography, most of design properties are harmoniously defined.
+
+### Dark Mode
+
+By considering the dark mode from the beginning, we could easily design, develop, and switch between the light mode and the dark mode.
+
+## Responsive Design
+
+By leveraging the power of CSS and thanks to our design system, our B mart looks nice in every viewport no matter what devices you have.
+
 ## Resources
 
-- [🗒 Notes in Notion](https://www.notion.so/BMART-ad57078df0cf4dbf9558bcb170ac4aa1)
-- [💬 Discussions at GitHub](https://github.com/orgs/woowa-techcamp-2020/teams/bmart-team-one)
-- [🎨 Design in Figma](https://www.figma.com/file/MXVVUZmgoY4NPO2BO0nfLq/%EC%9A%B0%EC%95%84%ED%95%9C-%ED%85%8C%ED%81%AC%EC%BA%A0%ED%94%84?node-id=613%3A302)
+- [Notes in Notion](https://www.notion.so/BMART-ad57078df0cf4dbf9558bcb170ac4aa1)
+- [Discussions at GitHub](https://github.com/orgs/woowa-techcamp-2020/teams/bmart-team-one)
+- [Design in Figma](https://www.figma.com/file/MXVVUZmgoY4NPO2BO0nfLq/%EC%9A%B0%EC%95%84%ED%95%9C-%ED%85%8C%ED%81%AC%EC%BA%A0%ED%94%84?node-id=613%3A302)
 
 ## Configure environment variables
 

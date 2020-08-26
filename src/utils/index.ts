@@ -7,9 +7,16 @@ export function getItemNumbersInRow(gridElement: HTMLDivElement): number {
   return Math.floor(gridWidth / itemWidth)
 }
 
-export function getRowNumber(idx, itemNumbersInRow) {
+export function getRowNumber(idx: number, itemNumbersInRow: number): number {
   return Math.floor(idx / itemNumbersInRow)
 }
+
+export function addCommaToPrice(price: number): string {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+export const toPriceLabel = (price: number | string): string =>
+  price.toLocaleString() + '원'
 
 /**
  * Get the latest React state value from

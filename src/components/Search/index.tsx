@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { search } from 'src/apis'
+import ProductContainer from 'src/components/ProductContainer'
 import SearchInputContainer from './SearchInputContainer'
-import SearchResults from './SearchResults'
 import SearchTerms from './SearchTerms'
 import './style.scss'
 
@@ -120,9 +120,9 @@ const Search: React.FC<SearchProps> = () => {
           }}
         />
       ) : (
-        <SearchResults
+        <ProductContainer
           isSkeletonOn={isSkeletonOn}
-          results={foundProducts}
+          products={foundProducts}
           onLoadMore={onLoadMore}
         />
       )}

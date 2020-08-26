@@ -1,0 +1,64 @@
+@use '~src/styles/design-system' as *;
+
+.sale-page {
+  position: relative;
+  width: calc(100% - 90px);
+  margin: auto;
+  margin-top: 30px;
+  max-width: 1200px;
+
+  .lightning-sentinel {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+  }
+
+  .flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9999;
+
+    &.on {
+      opacity: 0.8;
+    }
+
+    &.off {
+      transition: opacity 1s ease;
+      opacity: 0;
+    }
+
+    &.spread {
+      opacity: 1;
+      transition: opacity 400ms ease;
+    }
+  }
+
+  .lightning {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  .sale-products {
+    display: grid;
+    gap: calc(var(--ordinary-space) * 2);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+    @include smaller-than(500px) {
+      grid-template-columns: unset;
+    }
+  }
+}

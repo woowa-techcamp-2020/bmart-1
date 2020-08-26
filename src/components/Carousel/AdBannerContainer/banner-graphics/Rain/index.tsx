@@ -8,8 +8,8 @@ export type RainProps = unknown
 const Rain: React.FC<RainProps> = () => {
   return (
     <div className="banner-graphic-rain">
-      <img src={UmbrellaBg} className="umbrella-bg" />
-      <img src={Umbrella} className="umbrella" />
+      <img src={UmbrellaBg} className="umbrella-bg" alt="background" />
+      <img src={Umbrella} className="umbrella" alt="umbrella" />
     </div>
   )
 }
