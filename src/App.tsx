@@ -1,11 +1,34 @@
-import React from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.style.scss'
 import Bmart from './pages/Bmart'
 import CategoryDetails from './pages/CategoryDetails'
 import Jjims from './pages/Jjims'
+import { Dispatcher } from './types/react-helper'
+import { useSigned } from './utils/hooks'
 
-const App: React.FC = () => {
+export const SignedContext = createContext<{
+  isSigned: boolean
+  setSigned: Dispatcher<boolean>
+}>(undefined)
+
+const SignedContextProvider: React.FC = ({ children }) => {
+  const [isSigned, setSigned] = useState<boolean>(false)
+
+  return (
+    <SignedContext.Provider value={{ isSigned, setSigned }}>
+      {children}
+    </SignedContext.Provider>
+  )
+}
+
+const AppRouter: React.FC = () => {
+  const { initSigned } = useSigned()
+
+  useEffect(() => {
+    initSigned()
+  }, [])
+
   return (
     <Router>
       <div className="app">
@@ -25,9 +48,20 @@ const App: React.FC = () => {
           <Route path="/category/:category">
             <CategoryDetails />
           </Route>
+          <Route path="/verified">
+            <Bmart />
+          </Route>
         </Switch>
       </div>
     </Router>
+  )
+}
+
+const App: React.FC = () => {
+  return (
+    <SignedContextProvider>
+      <AppRouter></AppRouter>
+    </SignedContextProvider>
   )
 }
 

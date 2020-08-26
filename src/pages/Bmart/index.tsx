@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import { $$sel, $sel, sanitizeNan } from 'src/utils'
+import { useSigned } from 'src/utils/hooks'
 import Header from './Header'
 import Home from './Home'
 import Me from './Me'
@@ -73,10 +75,24 @@ export type BmartProps = {
 
 const Bmart: React.FC<BmartProps> = ({ path }) => {
   const slidePagesWrapper = useRef<HTMLDivElement>()
+  const location = useLocation()
+  const history = useHistory()
+  const { signIn } = useSigned()
 
   useEffect(() => {
-    const index =
-      path === 'home' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+    const path = location.pathname.replace('/', '')
+
+    if (path === 'verified') {
+      const token = new URLSearchParams(location.search).get('token')
+
+      signIn(token)
+
+      history.replace('/')
+
+      return
+    }
+
+    const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 
     navigateSlidePageTo(index, '0', undefined, false)
   }, [path])

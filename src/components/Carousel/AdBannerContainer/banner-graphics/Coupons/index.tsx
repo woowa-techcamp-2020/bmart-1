@@ -8,8 +8,8 @@ export type CouponsProps = unknown
 const Coupons: React.FC<CouponsProps> = () => {
   return (
     <div className="coupons">
-      <img src={CouponUpper} className="coupon upper" />
-      <img src={CouponLower} className="coupon lower" />
+      <img src={CouponUpper} className="coupon upper" alt="coupon" />
+      <img src={CouponLower} className="coupon lower" alt="coupon" />
     </div>
   )
 }

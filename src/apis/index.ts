@@ -1,20 +1,18 @@
-import { Jjim } from '@prisma/client'
+import { Jjim, Product, User } from '@prisma/client'
 import type {
+  AddToCartRequestBody,
   DeleteFromCartBody,
   GetProductsByTopicResponse,
   GetProductsInCartResponse,
+  ProductsInCart,
+  ProductWithJjimmed,
+  SearchApiRequestQuery,
   ToggleJjimRequestBody,
 } from 'src/types/api'
+import { isDev } from 'src/utils'
 import { PatchProductQuantityInCartApiRequestBody } from './../types/api'
 
-export function saveToken(token: string): void {
-  localStorage.setItem('token', token)
-}
-
-// TODO REMOVE THIS AFTER LOGIN IMPLEMENTATION
-saveToken(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcklkIjoxNSwiaWF0IjoxNTE2MjM5MDIyfQ.OYhK3YG3W7iX5JxsQuwBn1ARPKVOgzh4GDs0FVqxols'
-)
+const baseURL = isDev ? `http://${window.location.hostname}:13100/api` : `/api`
 
 function loadToken(): string {
   return localStorage.getItem('token')
@@ -28,7 +26,7 @@ function addToken() {
   return { Authorization: `Bearer ${token}` }
 }
 
-const createQuery = (data: Record<string, string>): string => {
+export const createQuery = (data: Record<string, string>): string => {
   return data
     ? '?' +
         Object.keys(data)
@@ -56,13 +54,13 @@ const defaultOptions = (method: Method, body?): RequestInit => ({
   ...addBody(body),
 })
 
-async function request(
+export async function request(
   url: string,
   method: Method,
   body?: Record<string, unknown>
 ): Promise<any> {
   try {
-    const response = await fetch(`/api${url}`, defaultOptions(method, body))
+    const response = await fetch(baseURL + url, defaultOptions(method, body))
 
     if (!response.ok) {
       console.error(response.status)
@@ -105,10 +103,23 @@ export async function getProductsByTopic(
   topic: 'new' | 'now'
 ): Promise<GetProductsByTopicResponse> {
   return await request(`/products-by-topic?topic=${topic}`, 'GET')
+
+export async function search(
+  query: SearchApiRequestQuery
+): Promise<Product[] | ProductWithJjimmed[]> {
+  return await request(`/search?term=${query.term}&page=${query.page}`, 'GET')
 }
 
 export async function PatchProductQuantityInCart(
   body: PatchProductQuantityInCartApiRequestBody
 ): Promise<void> {
   await request('/product-quantity-in-cart', 'PATCH', body)
+}
+
+export async function addToCart(body: AddToCartRequestBody) {
+  return await request('/add-to-cart', 'POST', body)
+}
+  
+export async function getUser(): Promise<User> {
+  return await request('/me', 'GET')
 }

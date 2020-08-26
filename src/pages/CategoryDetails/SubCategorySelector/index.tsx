@@ -60,9 +60,9 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
               {new Array(x).fill('김').join('')}
             </span>
           ))
-        : subCategories.map((x) => (
+        : subCategories.map((x, i) => (
             <span
-              key={x}
+              key={i}
               className={$({ active: x === subCategory })}
               onClick={() => setSubCategory(x)}
             >

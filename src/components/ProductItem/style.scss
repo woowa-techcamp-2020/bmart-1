@@ -1,66 +1,87 @@
+@use '~src/styles/design-system' as *;
+
 .product-item {
+  --zoom: 1;
+
   display: inline-block;
-  width: 120px;
-  height: 158px;
-  border-radius: 10px;
+  // width: 120px;
+  width: 100%;
+  // height: 158px;
+  border-radius: calc(10px * var(--zoom));
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
   overflow: hidden;
   user-select: none;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-top: 131.66666%;
+  }
+
   --cover-animation-duration: 800ms;
+
   .heart-icon {
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: calc(5px * var(--zoom));
+    left: calc(5px * var(--zoom));
   }
+
   .discount-label {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: calc(5px * var(--zoom));
+    right: calc(5px * var(--zoom));
   }
+
   &-info {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 8px 7px;
+    padding: calc(8px * var(--zoom)) calc(7px * var(--zoom));
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(15px);
+    border-radius: 0 0 calc(10px * var(--zoom)) calc(10px * var(--zoom));
+
     &-name {
       display: block;
-      font-size: 10px;
-      line-height: 10px;
+      font-size: calc(10px * var(--zoom));
+      line-height: calc(10px * var(--zoom));
       font-weight: 600;
       color: #fff;
-      margin-bottom: 5px;
-      max-height: 20px;
+      margin-bottom: calc(5px * var(--zoom));
+      max-height: calc(20px * var(--zoom));
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     &-price {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background: rgba(0, 0, 0, 0.4);
-      border-radius: 5px;
-      padding: 3px 4px;
-      line-height: 10px;
+      border-radius: calc(5px * var(--zoom));
+      padding: calc(3px * var(--zoom)) calc(4px * var(--zoom));
+
       &-default {
         color: rgba(255, 255, 255, 0.8);
-        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
         font-weight: 600;
-        font-size: 9px;
+        font-size: calc(9px * var(--zoom));
         text-decoration-line: line-through;
         margin-right: 5px;
       }
+
       &-current {
-        color: #ffffff;
-        text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        color: #fff;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         font-weight: 600;
-        font-size: 10px;
+        font-size: calc(10px * var(--zoom));
       }
     }
   }
+
   &-cover {
     position: absolute;
     top: 0;
@@ -73,8 +94,13 @@
     animation-name: cover-animation;
     animation-duration: var(--cover-animation-duration);
   }
+
   .hidden {
     display: none;
+  }
+
+  &.skeleton {
+    @include skeleton-animation;
   }
 }
 
@@ -83,21 +109,26 @@
     opacity: 0;
     transform: scale(0.8);
   }
+
   20% {
     opacity: 1;
     transform: scale(1.2);
   }
+
   40% {
     opacity: 1;
     transform: scale(1);
   }
+
   60% {
     opacity: 1;
     transform: scale(1.2);
   }
+
   80% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
     transform: scale(1);
@@ -108,9 +139,11 @@
   0% {
     transform: scale (0.1);
   }
+
   70% {
     transform: scale (1.2);
   }
+
   100% {
     transform: scale(1);
   }

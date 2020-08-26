@@ -32,7 +32,9 @@ const AdBanner: React.FC<AdBannerProps> = ({
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
-        setIsAnimated(entry.isIntersecting)
+        if (entry.boundingClientRect.top > 0) {
+          setIsAnimated(entry.isIntersecting)
+        }
       }
     })
 

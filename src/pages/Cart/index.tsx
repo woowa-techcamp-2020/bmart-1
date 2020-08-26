@@ -51,7 +51,7 @@ const Cart: React.FC<CartProps> = (props) => {
           </div>
           <div className="cart-footer">
             <div className="cart-footer-total-price">
-              {addCommaToPrice(totalAmount)}원
+              {totalAmount.toLocaleString()}원
             </div>
             <div className="cart-footer-confirm-button">결제하기</div>
           </div>

@@ -1,6 +1,22 @@
+export const isDev = process.env.NODE_ENV === 'development'
+
+export function getItemNumbersInRow(gridElement: HTMLDivElement): number {
+  const gridWidth = gridElement.getBoundingClientRect().width
+  const itemWidth = gridElement.firstElementChild.getBoundingClientRect().width
+
+  return Math.floor(gridWidth / itemWidth)
+}
+
+export function getRowNumber(idx: number, itemNumbersInRow: number): number {
+  return Math.floor(idx / itemNumbersInRow)
+}
+
 export function addCommaToPrice(price: number): string {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+export const toPriceLabel = (price: number | string): string =>
+  price.toLocaleString() + '원'
 
 /**
  * Get the latest React state value from
@@ -48,9 +64,11 @@ declare global {
   }
 }
 
-HTMLElement.prototype.$sel = $sel
-HTMLElement.prototype.$$sel = $$sel
-Document.prototype.$sel = $sel
-Document.prototype.$$sel = $$sel
+if (typeof window !== 'undefined') {
+  HTMLElement.prototype.$sel = $sel
+  HTMLElement.prototype.$$sel = $$sel
+  Document.prototype.$sel = $sel
+  Document.prototype.$$sel = $$sel
+}
 
 export const sanitizeNan = (value: number): number => (isNaN(value) ? 0 : value)

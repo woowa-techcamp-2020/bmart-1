@@ -8,8 +8,8 @@ export type MotorcycleProps = unknown
 const Motorcycle: React.FC<MotorcycleProps> = () => {
   return (
     <div className="banner-motorcycle">
-      <img src={MotorcycleImage} className="body" />
-      <img src={MotorcycleLightImage} className="light" />
+      <img src={MotorcycleImage} className="body" alt="body" />
+      <img src={MotorcycleLightImage} className="light" alt="light" />
     </div>
   )
 }

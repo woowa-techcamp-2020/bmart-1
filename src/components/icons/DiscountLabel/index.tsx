@@ -4,8 +4,8 @@ import './style.scss'
 export type DiscountLabelPropsSize = 'small' | 'big'
 
 export type DiscountLabelProps = {
-  size: DiscountLabelPropsSize
-  discount: number
+  size?: DiscountLabelPropsSize
+  discount?: number
 }
 
 const DiscountLabel: React.FC<DiscountLabelProps> = ({
