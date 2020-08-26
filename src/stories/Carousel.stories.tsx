@@ -3,7 +3,7 @@ import React from 'react'
 import Carousel from 'src/components/Carousel'
 
 export default {
-  title: 'Carousel',
+  title: 'Home/Carousel',
   component: Carousel,
 } as Meta
 

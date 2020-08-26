@@ -1,9 +1,10 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import './style.scss'
 
 export const categoryNames = {
   electronic: {
-    label: '전자제품',
+    label: '가전제품',
     img: require('src/assets/images/categories/refrigerator.png'),
     color: '#919399',
   },
@@ -71,8 +72,13 @@ export type CategoryItemProps = {
 }
 
 const CategoryItem: React.FC<CategoryItemProps> = ({ type }) => {
+  const history = useHistory()
+
   return (
-    <div className="category-item">
+    <div
+      className="category-item"
+      onClick={() => history.push(`/category/${categoryNames[type].label}`)}
+    >
       <img src={categoryNames[type].img} className="category-image" />
       <h1
         className="category-name"

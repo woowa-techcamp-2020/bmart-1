@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { $sel } from 'src/utils'
 import './style.scss'
 
 export type SlotMachineProps = {
@@ -71,6 +72,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     animateRef.current = requestAnimationFrame(animate)
 
     return () => {
+      animateRef.current = null
       cancelAnimationFrame(animateRef.current)
     }
   }, [])
@@ -93,6 +95,8 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   function translate(offset) {
+    if (!slot.current) return
+
     slot.current.style.transform = `translateY(${offset - height}px)`
     content.current.style.transform = `translateY(${offset}px)`
   }
@@ -135,6 +139,8 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   function animate(t) {
+    if (animateRef.current == null) return
+
     requestedActions
       .filter((x) => x.startAt == 0 || x.startAt < t)
       .map((requestedAction) => {
@@ -142,7 +148,10 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
           case PULLING:
             if (action !== NO_ACTION) break
 
+            if ($sel('.slide-page').scrollTop !== 0) break
+
             action = PULLING
+
             startY = currentY
             break
 
@@ -200,7 +209,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
       animateSlotMenu(y, menuHeight)
     }
 
-    window.requestAnimationFrame(animate)
+    if (animateRef.current) window.requestAnimationFrame(animate)
   }
 
   return (
@@ -272,6 +281,8 @@ function formula(r) {
 }
 
 function getComputedTranslateY(elem: HTMLDivElement) {
+  if (!elem) return
+
   const matrix = getComputedStyle(elem).transform
 
   if (!matrix) return 0

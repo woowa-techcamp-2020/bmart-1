@@ -1,0 +1,32 @@
+.topic-container {
+  background: linear-gradient(180deg, #efefef 0%, #fff 100%);
+  padding: var(--ordinary-space) var(--ordinary-space);
+  margin-top: var(--home-gap);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .scroll-container {
+    width: 100vw;
+    max-width: 800px;
+    margin-top: 20px;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .container {
+      display: grid;
+      gap: var(--ordinary-space);
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin: auto;
+    }
+  }
+}

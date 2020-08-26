@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.style.scss'
 import Bmart from './pages/Bmart'
+import CategoryDetails from './pages/CategoryDetails'
 import Jjims from './pages/Jjims'
 import { Dispatcher } from './types/react-helper'
 import { useSigned } from './utils/hooks'
@@ -33,16 +34,19 @@ const AppRouter: React.FC = () => {
       <div className="app">
         <Switch>
           <Route path="/" exact>
-            <Bmart />
+            <Bmart path="home" />
           </Route>
           <Route path="/sale" exact>
-            <Bmart />
+            <Bmart path="sale" />
           </Route>
           <Route path="/me" exact>
-            <Bmart />
+            <Bmart path="me" />
           </Route>
           <Route path="/jjims">
             <Jjims />
+          </Route>
+          <Route path="/category/:category">
+            <CategoryDetails />
           </Route>
           <Route path="/verified">
             <Bmart />

@@ -5,7 +5,7 @@ import Carousel from 'src/components/Carousel'
 import SlotMachine, { SlotMachineProps } from 'src/components/SlotMachine'
 
 export default {
-  title: 'SlotMachine',
+  title: 'Home/SlotMachine',
   component: SlotMachine,
 } as Meta
 

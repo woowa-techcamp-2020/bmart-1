@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
-import { ProductsInCart } from 'src/types/api'
+import { ProductInCart, ProductsInCart } from 'src/types/api'
+import { addCommaToPrice } from 'src/utils'
 import CartItem from './CartItem'
 import './style.scss'
 
@@ -17,11 +18,11 @@ function getTotalAmount(products: ProductsInCart) {
 }
 
 const Cart: React.FC<CartProps> = (props) => {
-  const [productsInCart, setProductsInCart] = useState([])
+  const [productsInCart, setProductsInCart] = useState<ProductInCart[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
 
   async function loadProductsInCart() {
-    const productsInCart = await getProductsInCart()
+    const productsInCart = (await getProductsInCart()) as ProductInCart[]
 
     setProductsInCart(productsInCart)
     setTotalAmount(getTotalAmount(productsInCart))

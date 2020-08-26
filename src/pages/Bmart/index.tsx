@@ -69,11 +69,12 @@ export function interpolate(
   return prev + scrollLeft * ((next - prev) / singlePageWidth) + extra
 }
 
-export type BmartProps = unknown
+export type BmartProps = {
+  path?: 'home' | 'sale' | 'me'
+}
 
-const Bmart: React.FC<BmartProps> = () => {
+const Bmart: React.FC<BmartProps> = ({ path }) => {
   const slidePagesWrapper = useRef<HTMLDivElement>()
-
   const location = useLocation()
   const history = useHistory()
   const { signIn } = useSigned()
@@ -94,7 +95,7 @@ const Bmart: React.FC<BmartProps> = () => {
     const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 
     navigateSlidePageTo(index, '0', undefined, false)
-  }, [location])
+  }, [path])
 
   useEffect(() => {
     const logoWrapper = $sel('.logo-wrapper')
@@ -104,7 +105,7 @@ const Bmart: React.FC<BmartProps> = () => {
     const slideTabs = $$sel('.slide-tabs .tab-button')
     const header = $sel('.header')
 
-    const bannedElementQueries = ['.carousel']
+    const bannedElementQueries = ['.carousel', '.topic-container']
 
     slidePagesWrapper.current.addEventListener(
       'touchstart',

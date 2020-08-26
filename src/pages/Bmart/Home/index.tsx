@@ -6,6 +6,7 @@ import CategoryItem, {
 } from 'src/components/CategoryItem'
 import SlotMachine from 'src/components/SlotMachine'
 import './style.scss'
+import TopicContainer from './TopicContainer'
 
 export type HomeProps = unknown
 
@@ -23,6 +24,7 @@ const Home: React.FC<HomeProps> = () => {
             )}
           </div>
         </div>
+        <TopicContainer title="신상임ㅋ" type="new"></TopicContainer>
       </SlotMachine>
     </div>
   )
