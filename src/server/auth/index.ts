@@ -39,10 +39,16 @@ passport.use(
           token,
         },
         where: {
-          email: email,
+          email,
         },
       })
-      done(null, { userId: email })
+      const user = await prisma.user.findOne({
+        where: {
+          email,
+        },
+      })
+
+      done(null, { userId: user.id })
     }
   )
 )
