@@ -47,7 +47,7 @@ const CartItem: React.FC<CartItemProps> = ({
       className="cart-item"
       key={id}
       ref={cartItem}
-      onTransitionEnd={() => onDeleteTransitionEnd}
+      onTransitionEnd={onDeleteTransitionEnd}
     >
       <div className="cart-item-name">{name}</div>
       <div className="cart-item-info">
@@ -78,7 +78,7 @@ const CartItem: React.FC<CartItemProps> = ({
               {(price * quantity).toLocaleString()}원
             </div>
           </div>
-          <div className="delete" onClick={() => shrinkCartItem()}>
+          <div className="delete" onClick={shrinkCartItem}>
             <div className="delete-icon"></div>
             <span className="delete-description">삭제</span>
           </div>
