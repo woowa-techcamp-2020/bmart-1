@@ -8,6 +8,8 @@ This project clones **B mart** web application using TypeScript, React and Expre
 
 We were trying to consolidate our design language to unify the same look and feel and share it with all of our developers. Including colors, border radius, spaces and typography, most of design properties are harmoniously defined.
 
+For more information about it, checkout the corresponding [Sass source codes](https://github.com/woowa-techcamp-2020/bmart-1/tree/main/src/styles) and [pull requests](https://github.com/woowa-techcamp-2020/bmart-1/pulls?q=is%3Apr+is%3Aclosed+label%3ADocumentation+label%3A%22Design+System%22).
+
 ### Dark Mode
 
 By considering the dark mode from the beginning, we could easily design, develop, and switch between the light mode and the dark mode.
