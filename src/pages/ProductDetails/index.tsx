@@ -1,6 +1,6 @@
 import { Product } from '@prisma/client'
 import React, { useState } from 'react'
-import { addToCart } from 'src/apis'
+import { addToCart, toggleJjim } from 'src/apis'
 import Drawer from 'src/components/Drawer'
 import ColorfulBrokenHeartIcon from 'src/components/icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from 'src/components/icons/ColorfulHeartIcon'
@@ -26,9 +26,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 }) => {
   const [isCartOpened, setIsCartOpened] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<number>(1)
+  const [isJjimmedStatus, setIsJjimmedStatus] = useState<boolean>(isJjimmed)
 
   async function onConfirm() {
     await addToCart({ productId: id, quantity: quantity })
+  }
+
+  async function onToggleJjim() {
+    await toggleJjim({ productId: id })
+    setIsJjimmedStatus(!isJjimmedStatus)
   }
 
   return (
@@ -56,11 +62,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           </div>
         </div>
         <div className="product-details-info-options">
-          {isJjimmed ? (
-            <ColorfulBrokenHeartIcon width="75px" />
-          ) : (
-            <ColorfulHeartIcon width="75px" />
-          )}
+          <div
+            className="product-details-info-options-jjim"
+            onClick={onToggleJjim}
+          >
+            {isJjimmedStatus ? (
+              <ColorfulBrokenHeartIcon width="75px" />
+            ) : (
+              <ColorfulHeartIcon width="75px" />
+            )}
+          </div>
           <div
             className="product-details-info-options-cart"
             onClick={() => setIsCartOpened(true)}
