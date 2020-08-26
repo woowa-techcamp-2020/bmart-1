@@ -10,7 +10,10 @@ import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import MinusPlus from 'src/components/MinusPlus'
 import './style.scss'
 
-export type ProductDetailsProps = Product & { isJjimmed?: boolean }
+export type ProductDetailsProps = Product & {
+  isJjimmed?: boolean
+  quantityInCart?: number
+}
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({
   id,
@@ -24,9 +27,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   imgH,
   subcategory,
   isJjimmed = false,
+  quantityInCart = 0,
 }) => {
   const [isCartOpened, setIsCartOpened] = useState<boolean>(false)
-  const [quantity, setQuantity] = useState<number>(1)
+  const [quantity, setQuantity] = useState<number>(
+    quantityInCart ? quantityInCart : 1
+  )
   const [isJjimmedStatus, setIsJjimmedStatus] = useState<boolean>(isJjimmed)
 
   async function onConfirm() {
