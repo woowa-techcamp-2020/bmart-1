@@ -1,3 +1,4 @@
+import { Product } from '@prisma/client'
 import React, { useState } from 'react'
 import { addToCart } from 'src/apis'
 import Drawer from 'src/components/Drawer'
@@ -6,10 +7,9 @@ import ColorfulHeartIcon from 'src/components/icons/ColorfulHeartIcon'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import MinusPlus from 'src/components/MinusPlus'
-import { ProductWithJjimmed } from 'src/types/api'
 import './style.scss'
 
-export type ProductDetailsProps = ProductWithJjimmed
+export type ProductDetailsProps = Product & { isJjimmed?: boolean }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({
   id,
