@@ -5,6 +5,7 @@ import ColorfulBrokenHeartIcon from 'src/components/icons/ColorfulBrokenHeartIco
 import ColorfulHeartIcon from 'src/components/icons/ColorfulHeartIcon'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
+import MinusPlus from 'src/components/MinusPlus'
 import { ProductWithJjimmed } from 'src/types/api'
 import './style.scss'
 
@@ -24,6 +25,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   isJjimmed = false,
 }) => {
   const [isCartOpened, setIsCartOpened] = useState<boolean>(false)
+  const [quantity, setQuantity] = useState<number>(1)
 
   return (
     <div className="product-details">
@@ -55,10 +57,23 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           ) : (
             <ColorfulHeartIcon width="75px" />
           )}
-          <ResizableCartIcon width="50px" />
+          <div
+            className="product-details-info-options-cart"
+            onClick={() => setIsCartOpened(true)}
+          >
+            <ResizableCartIcon width="50px" />
+          </div>
         </div>
       </div>
-      <Drawer isOpened={isCartOpened} setOpened={setIsCartOpened} />
+      <Drawer isOpened={isCartOpened} setOpened={setIsCartOpened}>
+        <div className="product-details-cart">
+          <img className="product-details-cart-image" src={imgV}></img>
+          <div className="product-details-cart-buttons">
+            <MinusPlus quantity={quantity} onChange={setQuantity} />
+            <div className="product-details-cart-buttons-confirm">담기</div>
+          </div>
+        </div>
+      </Drawer>
     </div>
   )
 }

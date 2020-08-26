@@ -60,4 +60,32 @@
       justify-content: space-around;
     }
   }
+
+  &-cart {
+    padding: 0 30px 27px;
+    display: flex;
+    justify-content: space-between;
+
+    &-image {
+      width: 83px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    &-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+
+      &-confirm {
+        background-color: #2ac1bc;
+        border-radius: 9999px;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+        padding: 11px 57px;
+      }
+    }
+  }
 }
