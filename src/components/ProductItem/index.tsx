@@ -1,5 +1,6 @@
 import $ from 'classnames'
 import React, { CSSProperties, useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import HeartIcon from 'src/components/icons/HeartIcon'
@@ -39,6 +40,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
 }) => {
   const [isJjimmedLocal, setIsJjimmedLocal] = useState(isJjimmed)
 
+  const history = useHistory()
   const productItem = useRef<HTMLDivElement>()
   const productItemCover = useRef<HTMLDivElement>()
 
@@ -79,6 +81,12 @@ const ProductItem: React.FC<ProductItemProps> = ({
     return clearTimeout(timer)
   }, [])
 
+  function toProductDetail() {
+    if (isSkeleton) return
+
+    history.push(`/products/${id}`)
+  }
+
   return (
     <div
       ref={productItem}
@@ -89,6 +97,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
           '--zoom': size === 'small' ? '1' : '1.7',
         } as CSSProperties
       }
+      onClick={toProductDetail}
     >
       {isJjimmedLocal && (
         <HeartIcon size={size} isBroken={false} isAttached={true} />
