@@ -4,7 +4,6 @@ import type {
   DeleteFromCartBody,
   GetProductsByTopicResponse,
   GetProductsInCartResponse,
-  ProductsInCart,
   ProductWithJjimmed,
   SearchApiRequestQuery,
   ToggleJjimRequestBody,
@@ -103,6 +102,7 @@ export async function getProductsByTopic(
   topic: 'new' | 'now'
 ): Promise<GetProductsByTopicResponse> {
   return await request(`/products-by-topic?topic=${topic}`, 'GET')
+}
 
 export async function search(
   query: SearchApiRequestQuery
@@ -119,7 +119,7 @@ export async function PatchProductQuantityInCart(
 export async function addToCart(body: AddToCartRequestBody) {
   return await request('/add-to-cart', 'POST', body)
 }
-  
+
 export async function getUser(): Promise<User> {
   return await request('/me', 'GET')
 }
