@@ -95,7 +95,7 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
     const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 
     navigateSlidePageTo(index, '0', undefined, false)
-  }, [path])
+  }, [location])
 
   useEffect(() => {
     const logoWrapper = $sel('.logo-wrapper')
