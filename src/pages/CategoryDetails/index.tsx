@@ -1,10 +1,19 @@
-import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 import { useHistory, useParams } from 'react-router-dom'
+import { getProductsByCategory } from 'src/apis'
 import Drawer from 'src/components/Drawer'
 import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
 import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
+import ProductContainer from 'src/components/ProductContainer'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
+import { ProductWithJjimmed } from 'src/types/api'
 import OptionSelector from './OptionSelector'
 import './style.scss'
 import SubCategorySelector from './SubCategorySelector'
@@ -29,10 +38,44 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const [subCategory, setSubCategory] = useState(null)
   const [isCategoryOpened, setCategoryOpened] = useState<boolean>(false)
   const [isSortByOpened, setSortByOpened] = useState(false)
+  const [products, setProducts] = useState<ProductWithJjimmed[]>([])
+  const [isLoading, setLoading] = useState<boolean>(false)
+  const [page, setPage] = useState<number>(0)
+
+  function onLoadMore() {
+    setPage((page) => page + 1)
+  }
 
   function setCategory(category) {
     history.push(`/category/${category}`)
   }
+
+  async function getProducts() {
+    setLoading(true)
+    const newProducts = (await getProductsByCategory({
+      category: subCategory,
+      page,
+    })) as ProductWithJjimmed[]
+
+    setLoading(false)
+    console.log(page, products.length)
+
+    if (page === 1) {
+      setProducts(newProducts)
+    } else {
+      setProducts((prevState) => [...prevState, ...newProducts])
+    }
+  }
+
+  useEffect(() => {
+    if (subCategory === '') return
+
+    setPage(1)
+  }, [subCategory])
+
+  useEffect(() => {
+    if (page > 0) getProducts()
+  }, [page, subCategory])
 
   return (
     <div className="category-details">
@@ -49,6 +92,11 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
         <ArrowUpDownIcon></ArrowUpDownIcon>
         {sortBy}
       </div>
+      <ProductContainer
+        isSkeletonOn={isLoading}
+        products={products}
+        onLoadMore={onLoadMore}
+      ></ProductContainer>
       <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>
         <OptionSelector
           options={DEFAULTS.CATEGORIES.slice()}
