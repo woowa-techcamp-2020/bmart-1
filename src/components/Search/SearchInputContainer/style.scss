@@ -2,35 +2,32 @@
   width: 100%;
   max-width: 600px;
   height: 40px;
-  background: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   display: flex;
   align-items: center;
   position: relative;
   margin: 0 auto;
+  overflow: hidden;
 
-  .search-input-icon {
+  .icon {
     position: absolute;
     left: 12px;
-    background-image: url('~src/assets/images/search.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 23px;
-    height: 24px;
     pointer-events: none;
   }
 
   .search-input {
     flex: 1;
     height: 100%;
-    color: #808080;
     font-weight: 500;
-    background-color: transparent;
+    background-color: var(--layered-element);
     border: none;
     padding: 11px 0;
     padding-left: 40px;
     padding-right: 40px;
+
+    &::placeholder {
+      color: var(--universal-gray);
+    }
   }
 
   .search-input-button {
@@ -40,7 +37,6 @@
     transition: opacity 0.1s ease-in-out;
     pointer-events: none;
     user-select: none;
-    color: #000;
     font-weight: 600;
     font-size: 15px;
 
