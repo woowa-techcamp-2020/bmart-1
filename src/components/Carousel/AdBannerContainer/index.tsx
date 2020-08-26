@@ -121,6 +121,8 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     stopAutoScroll()
 
     autoScrollInterval.current = window.setInterval(() => {
+      if (autoScrollInterval.current === null) return
+
       $sel('.banner-container').style.transition = ''
       setCurrentIndex((prev) => {
         const next = (prev + 1) % totalNumber
@@ -160,6 +162,10 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     )
 
     startAutoScroll()
+
+    return () => {
+      autoScrollInterval.current = null
+    }
   }, [])
 
   // Clone first and last banner
