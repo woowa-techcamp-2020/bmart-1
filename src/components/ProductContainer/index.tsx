@@ -5,17 +5,17 @@ import { ProductWithJjimmed } from 'src/types/api'
 import { getItemNumbersInRow, getRowNumber } from 'src/utils'
 import './style.scss'
 
-export type SearchResultsProps = {
+export type ProductContainerProps = {
   isSkeletonOn: boolean
-  results: (Product | ProductWithJjimmed)[]
+  products: (Product | ProductWithJjimmed)[]
   onLoadMore: () => void
 }
 
 let previousIntersectingStatus
 
-const SearchResults: React.FC<SearchResultsProps> = ({
+const ProductContainer: React.FC<ProductContainerProps> = ({
   isSkeletonOn,
-  results,
+  products,
   onLoadMore,
 }) => {
   const gridRef = useRef<HTMLDivElement>()
@@ -48,19 +48,19 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   }, [isSkeletonOn])
 
   return (
-    <div className="search-results" ref={gridRef}>
+    <div className="product-container" ref={gridRef}>
       {isSkeletonOn
         ? Array(8)
             .fill(undefined)
             .map((_, idx) => (
-              <div key={idx} className="search-results-result">
+              <div key={idx} className="product-container-product">
                 <ProductItem isSkeleton={true} />
               </div>
             ))
-        : results.map((result, idx) => (
+        : products.map((result, idx) => (
             <div
               key={result.id}
-              className="search-results-result"
+              className="product-container-product"
               style={{
                 animationDelay: `${getRowNumber(idx, itemNumsInRow) * 200}ms`,
               }}
@@ -73,4 +73,4 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   )
 }
 
-export default SearchResults
+export default ProductContainer

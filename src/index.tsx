@@ -7,6 +7,13 @@ import './styles/base.scss'
 
 smoothscroll.polyfill()
 
+window.oncontextmenu = (e: Event) => {
+  e.preventDefault()
+  e.stopPropagation()
+
+  return false
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

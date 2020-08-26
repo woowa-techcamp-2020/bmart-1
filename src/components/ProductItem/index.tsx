@@ -1,9 +1,10 @@
 import $ from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import HeartIcon from 'src/components/icons/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
+import { toPriceLabel } from 'src/utils'
 import ColorfulBrokenHeartIcon from '../icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
@@ -17,6 +18,7 @@ export type ProductItemProps = {
   imgV?: string
   isJjimmed?: boolean
   isSkeleton?: boolean
+  size?: 'small' | 'big'
 }
 
 let timer
@@ -33,6 +35,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   imgV = '',
   isJjimmed = false,
   isSkeleton = false,
+  size = 'small',
 }) => {
   const [isJjimmedLocal, setIsJjimmedLocal] = useState(isJjimmed)
 
@@ -80,25 +83,30 @@ const ProductItem: React.FC<ProductItemProps> = ({
     <div
       ref={productItem}
       className={$('product-item', { skeleton: isSkeleton })}
-      style={{
-        backgroundImage: `url(${imgV})`,
-      }}
+      style={
+        {
+          backgroundImage: `url(${imgV})`,
+          '--zoom': size === 'small' ? '1' : '1.7',
+        } as CSSProperties
+      }
     >
       {isJjimmedLocal && (
-        <HeartIcon size="small" isBroken={false} isAttached={true} />
+        <HeartIcon size={size} isBroken={false} isAttached={true} />
       )}
-      {Boolean(discount) && <DiscountLabel size="small" discount={discount} />}
+      {Boolean(discount) && <DiscountLabel size={size} discount={discount} />}
       <div className="product-item-info">
         <div className="product-item-info-name">{name}</div>
         <div className="product-item-info-price">
           {defaultPrice !== price ? (
             <span className="product-item-info-price-default">
-              {defaultPrice}
+              {toPriceLabel(defaultPrice)}
             </span>
           ) : (
             ''
           )}
-          <span className="product-item-info-price-current">{price}</span>
+          <span className="product-item-info-price-current">
+            {toPriceLabel(price)}
+          </span>
         </div>
       </div>
       <div ref={productItemCover} className="product-item-cover hidden">
