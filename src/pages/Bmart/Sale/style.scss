@@ -1,8 +1,11 @@
+@use '~src/styles/design-system' as *;
+
 .sale-page {
   position: relative;
   width: calc(100% - 90px);
   margin: auto;
-  max-width: 400px;
+  margin-top: 30px;
+  max-width: 1200px;
 
   .lightning-sentinel {
     position: absolute;
@@ -50,12 +53,12 @@
   }
 
   .sale-products {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    gap: calc(var(--ordinary-space) * 2);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-    > * {
-      margin-bottom: var(--ordinary-space);
+    @include smaller-than(500px) {
+      grid-template-columns: unset;
     }
   }
 }
