@@ -27,6 +27,7 @@ export type GetJjimsApiResponse = Jjim[] | ErrorResponse
 export type GetProductsByCategoryApiRequestQuery = {
   category: string
   page?: number
+  amount?: number
   sortBy?: string
   direction?: 'asc' | 'desc'
 }
