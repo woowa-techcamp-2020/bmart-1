@@ -4,7 +4,7 @@ import './style.scss'
 
 export const categoryNames = {
   electronic: {
-    label: '전자제품',
+    label: '가전제품',
     img: require('src/assets/images/categories/refrigerator.png'),
     color: '#919399',
   },
