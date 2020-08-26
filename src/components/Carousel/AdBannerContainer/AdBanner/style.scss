@@ -6,10 +6,19 @@ $banner-gap: 14px;
   display: inline-block;
   height: calc(100% - 5px);
   min-width: 100%;
+
+  // @include larger-than(700px) {
+  //   min-width: 50%;
+  // }
+
+  // @include larger-than(1400px) {
+  //   min-width: 33.333333%;
+  // }
 }
 
 .banner {
   width: calc(100% - #{$banner-gap * 2});
+  max-width: 800px;
   margin: auto;
   height: 100%;
   position: relative;

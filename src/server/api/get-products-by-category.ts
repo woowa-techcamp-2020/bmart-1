@@ -11,13 +11,14 @@ import { prisma } from '../utils/prisma'
 
 const getProductsByCategoryRouter = express.Router()
 
-const amountOfPage = 30
+const defaultAmount = 30
 
 getProductsByCategoryRouter.get(
   '/products-by-category',
   [
     query('category').exists({ checkFalsy: true }),
     query('page').optional().toInt().isInt(),
+    query('amount').optional().toInt().isInt(),
     query('sortBy').optional().isString(),
     query('direction').optional().isString(),
     requestValidator(),
@@ -26,8 +27,10 @@ getProductsByCategoryRouter.get(
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
   ) => {
-    const { category, sortBy, direction, page } = req.query
+    const { category, sortBy, direction, page, amount } = req.query
     const userId = req.auth?.userId
+
+    const take = amount ?? defaultAmount
 
     const orderByOptions = {
       orderBy: {
@@ -51,8 +54,8 @@ getProductsByCategoryRouter.get(
               }
             : false,
         },
-        skip: ((page ?? 1) - 1) * amountOfPage,
-        take: amountOfPage,
+        skip: ((page ?? 1) - 1) * take,
+        take: take,
         ...orderByOptions,
       })
 
@@ -64,6 +67,8 @@ getProductsByCategoryRouter.get(
         })
 
         res.json(productsWithJjimmed)
+
+        return
       }
 
       res.json(products)
