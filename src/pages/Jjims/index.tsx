@@ -3,6 +3,7 @@ import { getJJims } from 'src/apis'
 import HeartIcon from 'src/components/icons/HeartIcon'
 import PageHeader from 'src/components/PageHeader'
 import ProductContainer from 'src/components/ProductContainer'
+import SlotMachine from 'src/components/SlotMachine'
 import GoBack from 'src/components/shortcuts/GoBack'
 import { ProductWithJjimmed } from 'src/types/api'
 import './style.scss'
@@ -38,10 +39,12 @@ const Jjims: React.FC<JjimsProps> = () => {
         Icon={HeartIcon.bind({}, { size: 'big' })}
         title="찜 목록"
       ></PageHeader>
-      <ProductContainer
-        products={state.products}
-        isSkeletonOn={state.isLoading}
-      ></ProductContainer>
+      <SlotMachine>
+        <ProductContainer
+          products={state.products}
+          isSkeletonOn={state.isLoading}
+        ></ProductContainer>
+      </SlotMachine>
       <GoBack />
     </div>
   )
