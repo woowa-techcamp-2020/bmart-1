@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { $sel } from 'src/utils'
+import { memoScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 export type SlidePageProps = {
@@ -14,17 +15,33 @@ const SlidePage: React.FC<SlidePageProps> = ({ children }) => {
 
     const logoWrapper = $sel('.logo-wrapper')
 
-    slidePageRef.current.addEventListener('scroll', () => {
+    function onScroll() {
       header.style.transition = ''
       header.style.transform = `translateY(${-Math.max(
         Math.min(slidePageRef.current.scrollTop, logoWrapper.clientHeight),
         0
       )}px)`
-    })
+    }
+
+    slidePageRef.current.addEventListener('scroll', onScroll)
+
+    return () => {
+      slidePageRef.current.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   return (
-    <div className="slide-page" ref={slidePageRef}>
+    <div
+      className="slide-page"
+      ref={slidePageRef}
+      onScroll={() => {
+        memoScroll(
+          window.location.pathname,
+          slidePageRef.current.scrollTop,
+          'top'
+        )
+      }}
+    >
       {children}
     </div>
   )
