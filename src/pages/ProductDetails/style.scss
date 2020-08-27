@@ -133,9 +133,14 @@
         background-color: #2ac1bc;
         border-radius: 9999px;
         color: #fff;
-        font-size: 20px;
+        font-size: 17px;
         font-weight: 600;
-        padding: 11px 57px;
+        height: 45px;
+        width: 100%;
+        max-width: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
