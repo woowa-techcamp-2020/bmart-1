@@ -25,7 +25,8 @@ export type DeleteFromCartBody = {
 export type GetJjimsApiResponse = Jjim[] | ErrorResponse
 
 export type GetProductsByCategoryApiRequestQuery = {
-  category: string
+  category?: string
+  subCategory?: string
   page?: number
   amount?: number
   sortBy?: string

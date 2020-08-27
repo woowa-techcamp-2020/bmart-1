@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { getProductsByCategory } from 'src/apis'
+import { getProductsBySubCategory } from 'src/apis'
 import Drawer from 'src/components/Drawer'
 import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
 import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
@@ -40,7 +40,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const [isCategoryOpened, setCategoryOpened] = useState<boolean>(false)
   const [isSortByOpened, setSortByOpened] = useState(false)
   const [products, setProducts] = useState<ProductWithJjimmed[]>([])
-  const [isLoading, setLoading] = useState<boolean>(false)
+  const [isLoading, setLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(0)
 
   function onLoadMore() {
@@ -53,8 +53,8 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
 
   async function getProducts() {
     setLoading(true)
-    const newProducts = (await getProductsByCategory({
-      category: subCategory,
+    const newProducts = (await getProductsBySubCategory({
+      subCategory,
       page,
       ...sortByResolver(sortBy),
     })) as ProductWithJjimmed[]

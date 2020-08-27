@@ -14,7 +14,8 @@ const defaultAmount = 30
 getProductsByCategoryRouter.get(
   '/products-by-category',
   [
-    query('category').exists({ checkFalsy: true }),
+    query('category').optional(),
+    query('subCategory').optional(),
     query('page').optional().toInt().isInt(),
     query('amount').optional().toInt().isInt(),
     query('sortBy').optional().isString(),
@@ -25,7 +26,7 @@ getProductsByCategoryRouter.get(
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
   ) => {
-    const { category, sortBy, direction, page, amount } = req.query
+    const { category, subCategory, sortBy, direction, page, amount } = req.query
     const userId = req.auth?.userId
 
     const take = amount ?? defaultAmount
@@ -38,11 +39,15 @@ getProductsByCategoryRouter.get(
       orderBy: ProductOrderByInput | ProductOrderByInput[] | undefined
     }
 
+    const whereQuery = {}
+
+    if (category) whereQuery['category'] = category
+    else if (subCategory) whereQuery['subcategory'] = subCategory
+    else throw new Error(ERROR_MSG.NO_CATEGORY)
+
     try {
       const products = await prisma.product.findMany({
-        where: {
-          subcategory: category,
-        },
+        where: whereQuery,
         include: {
           jjims: userId
             ? {

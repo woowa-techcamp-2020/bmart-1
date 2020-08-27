@@ -1,4 +1,4 @@
-![GitHub Banner (3)](https://user-images.githubusercontent.com/19797697/90615358-fab55f80-e246-11ea-8a33-1d7495c7ec55.png)
+![GitHub Banner](https://user-images.githubusercontent.com/19797697/91381220-dae2f480-e861-11ea-9d1a-c4c30b9a523a.png)
 
 This project clones **B mart** web application using TypeScript, React and Express. It is totally redesigned from the ground up while keeping the same functionalities as similar as possible. We worked so hard in every detail to achieve the most unique but familiar user experience whole inside a single web page. Silently in server side, [Prisma](https://www.prisma.io) enables us to develop reliable and type-safe APIs much faster.
 
