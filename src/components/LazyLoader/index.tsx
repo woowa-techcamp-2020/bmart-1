@@ -1,17 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
+import { Dispatcher } from 'src/types/react-helper'
 import './style.scss'
 
 export type LazyLoaderProps = {
   isRemovable?: boolean
+  hasCallback?: boolean
 }
+
+export const LazyLoaderContext = createContext<{
+  isLoaded: boolean
+  setLoaded: Dispatcher<boolean>
+}>(undefined)
 
 const LazyLoader: React.FC<LazyLoaderProps> = ({
   isRemovable = false,
+  hasCallback = false,
   children,
 }) => {
   const sentinelRef = useRef<HTMLDivElement>()
   const observer = useRef<IntersectionObserver>()
-  const [isLoaded, setLoaded] = useState<Boolean>(false)
+  const [isLoaded, setLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     observer.current = new IntersectionObserver(
@@ -31,8 +39,10 @@ const LazyLoader: React.FC<LazyLoaderProps> = ({
 
   return (
     <div className="lazy-loader">
-      <div className="sentinel" ref={sentinelRef}></div>
-      {isLoaded && children}
+      <LazyLoaderContext.Provider value={{ isLoaded, setLoaded }}>
+        <div className="sentinel" ref={sentinelRef}></div>
+        {(!hasCallback || isLoaded) && children}
+      </LazyLoaderContext.Provider>
     </div>
   )
 }
