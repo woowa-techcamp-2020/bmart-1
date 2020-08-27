@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { search } from 'src/apis'
 import ProductContainer from 'src/components/ProductContainer'
 import { useSigned } from 'src/utils/hooks'
@@ -45,6 +45,12 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   const [recentTerms, setRecentTerms] = useState(getRecentTerms())
   const [isKeywordsOn, setIsKeywordsOn] = useState(true)
   const { isSigned } = useSigned()
+
+  const self = useRef<HTMLDivElement>()
+
+  function toTop() {
+    self.current.closest('.container').scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     if (!isSigned) {
@@ -116,7 +122,11 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   }
 
   return (
-    <div className="search" style={{ height: `calc(85vh - ${topMargin})` }}>
+    <div
+      className="search"
+      style={{ height: `calc(85vh - ${topMargin})` }}
+      ref={self}
+    >
       <SearchInputContainer
         inputValue={inputValue}
         onInputChange={onInputChange}
@@ -136,6 +146,7 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
           isSkeletonOn={isSkeletonOn}
           products={foundProducts}
           onLoadMore={onLoadMore}
+          onClickToTop={toTop}
         />
       )}
     </div>

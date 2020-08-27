@@ -1,26 +1,57 @@
 @use '~src/styles/design-system' as *;
 
-.product-container {
-  @include grid-template;
-
+.grid-wrapper {
   position: relative;
 
-  &-product {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    @include float-animation;
-  }
-
-  .sentinel {
+  .top-sentinel {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 10px;
+    top: 100px;
     width: 100%;
     height: 1px;
     opacity: 0;
     pointer-events: none;
+  }
+
+  .to-top-button {
+    position: fixed;
+    top: 200px;
+    right: 15px;
+    display: inline-block;
+    color: var(--universal-gray);
+    background-color: var(--layered-element);
+    border-radius: $circle;
+    padding: 10px 4px;
+    z-index: 1;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .product-container {
+    @include grid-template;
+
+    // position: relative;
+
+    &-product {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include float-animation;
+    }
+
+    .sentinel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      width: 100%;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 }
