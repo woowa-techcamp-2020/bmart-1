@@ -1,20 +1,14 @@
 @use '~src/styles/design-system' as *;
 
 .topic-container {
-  background: linear-gradient(to bottom, var(--bmart-light-blue), var(--white));
-
-  @include dark-mode {
-    background: linear-gradient(to bottom, var(--soft-black), var(--black));
-  }
-
-  padding: var(--ordinary-space) var(--ordinary-space);
+  background-color: var(--element);
+  padding: 25px var(--ordinary-space) 35px var(--ordinary-space);
   margin-top: var(--home-gap);
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .title {
-    margin-top: 10px;
     font-size: 20px;
     text-align: center;
   }
