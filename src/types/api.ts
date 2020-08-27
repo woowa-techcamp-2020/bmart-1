@@ -1,4 +1,4 @@
-import { Address, Cart, Jjim, Product, User } from '@prisma/client'
+import { Address, Cart, Product, User } from '@prisma/client'
 
 type ErrorResponse = {
   message: string
@@ -22,7 +22,7 @@ export type DeleteFromCartBody = {
   productIds: number[]
 }
 
-export type GetJjimsApiResponse = Jjim[] | ErrorResponse
+export type GetJjimsApiResponse = Product[] | ErrorResponse
 
 export type GetProductsByCategoryApiRequestQuery = {
   category?: string

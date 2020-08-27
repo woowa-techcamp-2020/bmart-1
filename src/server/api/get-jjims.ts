@@ -15,9 +15,12 @@ getJjimsRouter.get(
         where: {
           userId,
         },
+        include: {
+          product: true,
+        },
       })
 
-      res.send(jjims)
+      res.send(jjims.map((x) => x.product))
     } catch (e) {
       console.error(e)
       res
