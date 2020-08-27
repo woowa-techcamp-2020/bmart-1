@@ -129,6 +129,7 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
     let isVerticalScrollLocked = false
 
     const onTouchStart = async (e: TouchEvent) => {
+      isVerticalScrollLocked = false
       touchStartEvent = e
 
       const target = e.target

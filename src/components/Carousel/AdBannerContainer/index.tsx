@@ -74,7 +74,11 @@ const bannerInfo = [
   },
 ]
 
-function moveBannerTo(index: number, isAfterSwipe = false, max = 8) {
+export function moveBannerTo(
+  index: number,
+  isAfterSwipe = false,
+  max = 8
+): void {
   const bannerContainer = $sel('.banner-container')
 
   if (isAfterSwipe) {

@@ -8,11 +8,13 @@ import './style.scss'
 export type TopicContainerProps = {
   title: string
   type: 'new' | 'now'
+  onFinished?: () => void
 }
 
 const TopicContainer: React.FC<TopicContainerProps> = ({
   title = '',
   type = 'new',
+  onFinished,
 }) => {
   const [products, setProducts] = useState<ProductWithJjimmed[]>([])
   const [isLoading, setLoading] = useState(true)
@@ -24,7 +26,12 @@ const TopicContainer: React.FC<TopicContainerProps> = ({
     setLoading(false)
   }
 
-  useLazy(loadProducts)
+
+  useLazy(loadProducts().then(() => {
+      setTimeout(() => {
+        onFinished && onFinished()
+      }, 0)
+    }))
   const [scrollEnd, setScrollEnd] = useState<'left' | 'right' | 'middle'>(
     'left'
   )

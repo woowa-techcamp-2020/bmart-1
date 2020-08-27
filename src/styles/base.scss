@@ -65,6 +65,7 @@ body {
   overflow-anchor: none;
   background-color: var(--foundation);
   color: var(--distinct);
+  user-select: none;
 }
 
 * {
@@ -77,6 +78,7 @@ body {
   appearance: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none !important;
 }
 
 input,
