@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { search } from 'src/apis'
 import ProductContainer from 'src/components/ProductContainer'
+import { useSigned } from 'src/utils/hooks'
 import SearchInputContainer from './SearchInputContainer'
 import SearchTerms from './SearchTerms'
 import './style.scss'
@@ -43,6 +44,15 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   const [isSkeletonOn, setIsSkeletonOn] = useState(true)
   const [recentTerms, setRecentTerms] = useState(getRecentTerms())
   const [isKeywordsOn, setIsKeywordsOn] = useState(true)
+  const { isSigned } = useSigned()
+
+  useEffect(() => {
+    if (!isSigned) {
+      setRecentTerms(getRecentTerms())
+      setInputValue('')
+      setFoundProducts([])
+    }
+  }, [isSigned])
 
   useEffect(() => {
     if (!inputValue) {
