@@ -88,20 +88,24 @@ const Sale: React.FC<SaleProps> = () => {
 
   useEffect(() => {
     async function init() {
-      for (const category of DEFAULTS.CATEGORIES) {
-        const products = (await request(
-          `/products-by-category${createQuery({
-            category: category,
-            sortBy: 'discount',
-            direction: 'desc',
-            amount: '1',
-            page: '1',
-          })}`,
-          'GET'
-        )) as ProductWithJjimmed[]
+      const allProducts = (
+        await Promise.all(
+          DEFAULTS.CATEGORIES.map((category) =>
+            request(
+              `/products-by-category${createQuery({
+                category: category,
+                sortBy: 'discount',
+                direction: 'desc',
+                amount: '1',
+                page: '1',
+              })}`,
+              'GET'
+            )
+          )
+        )
+      ).flat()
 
-        setSaleProducts((prev) => [...prev, ...products])
-      }
+      setSaleProducts((prev) => [...prev, ...allProducts])
     }
 
     init()
