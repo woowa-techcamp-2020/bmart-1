@@ -1,0 +1,57 @@
+.address-item {
+  $padding: 15px;
+
+  position: relative;
+  box-sizing: border-box;
+  margin-top: var(--ordinary-space);
+  background: #f3f3f5;
+  border-radius: 10px;
+  padding: $padding;
+  max-width: 272px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 0 2px none;
+
+  .check {
+    position: absolute;
+    top: $padding;
+    right: $padding;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .row {
+    span {
+      margin-right: 0.8em;
+
+      &.edit {
+        color: #aaa;
+      }
+
+      &.delete {
+        color: red;
+      }
+    }
+  }
+
+  .address {
+    display: block;
+    margin-top: 0.6em;
+  }
+
+  &:hover {
+    .check {
+      opacity: 0.3;
+    }
+  }
+
+  &.default {
+    box-shadow: 0 0 0 2px #9a47ed;
+    transition: box-shadow 300ms;
+
+    .check {
+      opacity: 1;
+    }
+  }
+}

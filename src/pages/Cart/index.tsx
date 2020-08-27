@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
 import Empty from 'src/components/Empty'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
+import PageHeader from 'src/components/PageHeader'
 import { ProductInCart, ProductsInCart } from 'src/types/api'
 import { Dialog } from 'src/utils/dialog'
 import CartItem from './CartItem'
@@ -35,10 +36,7 @@ const Cart: React.FC<CartProps> = (props) => {
 
   return (
     <div className="cart">
-      <div className="cart-header">
-        <div className="cart-header-icon">{<ResizableCartIcon />}</div>
-        <div className="cart-header-title">장바구니</div>
-      </div>
+      <PageHeader Icon={ResizableCartIcon} title="장바구니"></PageHeader>
       {productsInCart.length > 0 ? (
         <>
           <div className="cart-items">

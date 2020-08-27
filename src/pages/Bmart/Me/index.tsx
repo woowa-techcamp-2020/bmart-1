@@ -1,5 +1,6 @@
 import { User } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { getUser } from 'src/apis'
 import ChevronRightIcon from 'src/components/icons/ChevronRightIcon'
 import { useSigned } from 'src/utils/hooks'
@@ -10,6 +11,7 @@ export type MeProps = unknown
 const Me: React.FC<MeProps> = () => {
   const { isSigned, signOut } = useSigned()
   const [user, setUser] = useState<User>(null)
+  const history = useHistory()
 
   async function loadUser() {
     setUser(await getUser())
@@ -35,17 +37,17 @@ const Me: React.FC<MeProps> = () => {
             <h1 className="user-name">{user.name}님</h1>
           </div>
           <ol className="menus">
-            <li className="address">
+            <li className="address" onClick={() => history.push('/addresses')}>
               <div className="icon address" />
               <div className="title">배송지 설정</div>
               <ChevronRightIcon width="8px" color="#808080" />
             </li>
-            <li className="jjim">
+            <li className="jjim" onClick={() => history.push('/jjims')}>
               <div className="icon jjim" />
               <div className="title">내가 찜한 상품</div>
               <ChevronRightIcon width="8px" color="#808080" />
             </li>
-            <li className="cart">
+            <li className="cart" onClick={() => history.push('/cart')}>
               <div className="icon cart" />
               <div className="title">장바구니</div>
               <ChevronRightIcon width="8px" color="#808080" />

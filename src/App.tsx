@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.style.scss'
+import Addresses from './pages/Addresses'
 import Bmart from './pages/Bmart'
+import Cart from './pages/Cart'
 import CategoryDetails from './pages/CategoryDetails'
 import Jjims from './pages/Jjims'
 import ProductDetails from './pages/ProductDetails'
@@ -45,6 +47,12 @@ const AppRouter: React.FC = () => {
           </Route>
           <Route path="/jjims">
             <Jjims />
+          </Route>
+          <Route path="/cart">
+            <Cart></Cart>
+          </Route>
+          <Route path="/addresses">
+            <Addresses></Addresses>
           </Route>
           <Route path="/category/:category">
             <CategoryDetails />

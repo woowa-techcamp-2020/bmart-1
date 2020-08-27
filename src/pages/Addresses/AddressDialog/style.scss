@@ -1,0 +1,50 @@
+.address-dialog {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .body {
+    z-index: 2;
+    font-size: 18px;
+
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px;
+
+      .title {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+      }
+
+      .item {
+        margin-top: 1em;
+        width: 100%;
+        border-radius: 10px;
+        font-size: 1em;
+        padding: 10px;
+        display: block;
+      }
+
+      input {
+        background: #f3f3f5;
+        color: #808080;
+        border: none;
+      }
+
+      .button {
+        text-align: center;
+        background: #9a47ed;
+        color: white;
+      }
+    }
+  }
+}

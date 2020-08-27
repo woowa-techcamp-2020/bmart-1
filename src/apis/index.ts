@@ -1,6 +1,7 @@
 import { Jjim, Product, User } from '@prisma/client'
 import type {
   AddToCartRequestBody,
+  DeleteAddressRequestBody,
   DeleteFromCartBody,
   GetProductApiRequestQuery,
   GetProductsByCategoryApiRequestQuery,
@@ -160,4 +161,26 @@ export async function getUser(): Promise<User> {
 
 export async function getProduct(query: GetProductApiRequestQuery) {
   return await request(`/product?productId=${query.productId}`, 'GET')
+}
+
+export async function getJJims() {
+  return await request('/jjims', 'GET')
+}
+
+export async function setDefaultAddressId(
+  body: SetDefaultAddressApiRequestBody
+) {
+  return await request('/set-default-address', 'PATCH', body)
+}
+
+export async function addAddresss(body: AddAddressApiRequestBody) {
+  return await request('/add-address', 'POST', body)
+}
+
+export async function deleteAddress(body: DeleteAddressRequestBody) {
+  return await request('/delete-address', 'DELETE', body)
+}
+
+export async function editAddress(body: EditAddressApiRequestBody) {
+  return await request('/edit-address', 'PUT', body)
 }

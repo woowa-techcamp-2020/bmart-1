@@ -4,6 +4,7 @@ import { addAddressRouter } from './add-address'
 import { addToCartRouter } from './add-to-cart'
 import { deleteAddressRouter } from './delete-address'
 import { deleteFromCartRouter } from './delete-from-cart'
+import { editAddressRouter } from './edit-address'
 import { getJjimsRouter } from './get-jjims'
 import { getProductRouter } from './get-product'
 import { getProductsByCategoryRouter } from './get-products-by-category'
@@ -37,5 +38,6 @@ apiRouter.use(deleteFromCartRouter)
 apiRouter.use(setDefaultAddressRouter)
 apiRouter.use(toggleJjimRouter)
 apiRouter.use(patchProductQuantityInCartRouter)
+apiRouter.use(editAddressRouter)
 
 export { apiRouter }

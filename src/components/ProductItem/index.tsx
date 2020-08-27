@@ -1,5 +1,5 @@
 import $ from 'classnames'
-import React, { CSSProperties, useRef, useState } from 'react'
+import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
@@ -90,6 +90,10 @@ const ProductItem: React.FC<ProductItemProps> = ({
     productItemCoverRef.current.classList.add('hidden')
     setTimeout(() => setIsJjimmedLocal(!isJjimmedLocal), HEART_DELAY)
   }
+
+  useEffect(() => {
+    setIsJjimmedLocal(isJjimmed)
+  }, [isJjimmed])
 
   return (
     <div
