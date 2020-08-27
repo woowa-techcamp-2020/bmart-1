@@ -9,6 +9,14 @@ import Sale from './Sale'
 import SlidePage from './SlidePage'
 import './style.scss'
 
+function pathToIndex(path: string): number {
+  return path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+}
+
+function indexToPath(index: number): string {
+  return index === 0 ? '' : index === 1 ? 'sale' : index === 2 ? 'me' : ''
+}
+
 export const navigateSlidePageTo = (
   index: number,
   time = '400ms',
@@ -49,12 +57,9 @@ export const navigateSlidePageTo = (
     correctIndex.toString()
   )
 
-  if (pushState) {
-    window.history.pushState(
-      null,
-      null,
-      `/${index === 0 ? '' : index === 1 ? 'sale' : index === 2 ? 'me' : ''}`
-    )
+  const currentPath = window.location.pathname.replace('/', '')
+  const newPath = indexToPath(index)
+
   }
 }
 
@@ -87,12 +92,13 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
 
       signIn(token)
 
+      // TODO: replace to lastly visited page
       history.replace('/')
 
       return
     }
 
-    const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+    const index = pathToIndex(path)
 
     navigateSlidePageTo(index, '0', undefined, false)
   }, [location])
