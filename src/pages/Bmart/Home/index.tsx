@@ -30,7 +30,11 @@ const Home: React.FC<HomeProps> = () => {
         <TopicContainer title="🎉 새로 나왔어요" type="new"></TopicContainer>
 
         <div className="version">
-          <a href="https://github.com/woowa-techcamp-2020/bmart-1">
+          <a
+            href="https://github.com/woowa-techcamp-2020/bmart-1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className="label">v{packageJson.version}</div>
           </a>
         </div>
