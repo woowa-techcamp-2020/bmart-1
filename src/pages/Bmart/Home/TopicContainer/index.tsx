@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { getProductsByTopic } from 'src/apis'
 import ProductItem from 'src/components/ProductItem'
 import { ProductWithJjimmed } from 'src/types/api'
+import { useLazy } from 'src/utils/hooks'
 import './style.scss'
 
 export type TopicContainerProps = {
@@ -33,9 +34,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({
     })
   }
 
-  useEffect(() => {
-    initLoadProducts()
-  }, [])
+  useLazy(initLoadProducts)
 
   // useLazy(initLoadProducts)
   const [scrollEnd, setScrollEnd] = useState<'left' | 'right' | 'middle'>(

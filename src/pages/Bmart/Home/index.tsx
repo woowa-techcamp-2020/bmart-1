@@ -5,6 +5,7 @@ import CategoryItem, {
   CategoryItemType,
   categoryNames,
 } from 'src/components/CategoryItem'
+import LazyLoader from 'src/components/LazyLoader'
 import SlotMachine from 'src/components/SlotMachine'
 import { $sel } from 'src/utils'
 import { restoreScroll } from 'src/utils/scroll-manager'
@@ -27,17 +28,19 @@ const Home: React.FC<HomeProps> = () => {
             )}
           </div>
         </div>
+        <LazyLoader>
+          <TopicContainer title="🤔 지금 뭐 먹지?" type="now" />
+        </LazyLoader>
 
-        <TopicContainer title="🤔 지금 뭐 먹지?" type="now" />
-
-        <TopicContainer
-          title="🎉 새로 나왔어요"
-          type="new"
-          onFinished={() => {
-            restoreScroll('/home', $sel('.slide-page'))
-          }}
-        />
-
+        <LazyLoader>
+          <TopicContainer
+            title="🎉 새로 나왔어요"
+            type="new"
+            onFinished={() => {
+              restoreScroll('/home', $sel('.slide-page'))
+            }}
+          />
+        </LazyLoader>
         <div className="version">
           <a
             href="https://github.com/woowa-techcamp-2020/bmart-1"
