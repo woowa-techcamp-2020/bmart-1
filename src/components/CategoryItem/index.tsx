@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import './style.scss'
 
 export const categoryNames = {
@@ -73,16 +73,11 @@ export type CategoryItemProps = {
 
 const CategoryItem: React.FC<CategoryItemProps> = ({ type }) => {
   const history = useHistory()
-  const location = useLocation()
 
   function pushHistory() {
     const target = `/category/${categoryNames[type].label}`
 
-    if (location.pathname === '/category') {
-      history.replace(target)
-    } else {
-      history.push(target)
-    }
+    history.push(target)
   }
 
   return (
