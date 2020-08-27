@@ -1,0 +1,119 @@
+@use '~src/styles/design-system' as *;
+
+.me {
+  width: calc(100% - var(--ordinary-space) * 2);
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+
+  .signed-in {
+    .profile-image {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 20px;
+    }
+
+    .user-info {
+      margin-top: 30px;
+
+      .opening-ment {
+        font-size: 17px;
+        font-weight: 700;
+      }
+
+      .user-name {
+        font-size: 30px;
+        font-weight: 700;
+      }
+    }
+
+    .menus {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      background-color: var(--element);
+      border-radius: 10px;
+      margin-top: 25px;
+
+      li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 8px;
+        padding-right: 14px;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+
+        @include dark-mode {
+          border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        cursor: pointer;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .icon {
+          width: 40px;
+          height: 40px;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+
+          &.address {
+            background-image: url('~src/assets/images/me/package.svg');
+          }
+
+          &.jjim {
+            background-image: url('~src/assets/images/me/heart.svg');
+          }
+
+          &.cart {
+            background-image: url('~src/assets/images/me/cart.svg');
+          }
+        }
+
+        .title {
+          margin-left: 5px;
+          flex: 1;
+        }
+      }
+    }
+
+    .sign-out {
+      background-color: var(--distinct);
+      color: var(--foundation);
+      height: 40px;
+      padding: 0 var(--ordinary-space);
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      width: 100%;
+      margin-top: 25px;
+      line-height: 1;
+      cursor: pointer;
+    }
+  }
+
+  .signed-out {
+    min-height: calc(100vh - #{$header-height} - 70px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      display: flex;
+      align-items: center;
+      background-color: var(--element);
+      padding: 10px 15px;
+      border-radius: 10px;
+
+      .github {
+        margin-right: 10px;
+      }
+    }
+  }
+}
