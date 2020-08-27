@@ -41,6 +41,8 @@ getProductRouter.get(
         }
 
         res.json(productWithJjimmedQuantity)
+
+        return
       }
 
       res.json(product)
