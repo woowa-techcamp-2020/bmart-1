@@ -7,7 +7,7 @@ export type SlidePageProps = {
   pageName: 'home' | 'sale' | 'me'
 }
 
-const SlidePage: React.FC<SlidePageProps> = ({ children }) => {
+const SlidePage: React.FC<SlidePageProps> = ({ children, pageName }) => {
   const slidePageRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
@@ -34,12 +34,8 @@ const SlidePage: React.FC<SlidePageProps> = ({ children }) => {
     <div
       className="slide-page"
       ref={slidePageRef}
-      onScroll={() => {
-        memoScroll(
-          window.location.pathname,
-          slidePageRef.current.scrollTop,
-          'top'
-        )
+      onScroll={(e) => {
+        memoScroll(`/${pageName}`, e.currentTarget.scrollTop, 'top')
       }}
     >
       {children}
