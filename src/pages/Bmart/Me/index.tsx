@@ -29,7 +29,9 @@ const Me: React.FC<MeProps> = () => {
 
   return (
     <div className="me">
-      {isSigned && user ? (
+      {isSigned && !user ? (
+        <></>
+      ) : user ? (
         <div className="signed-in">
           <img src={user.profileImg} className="profile-image" />
           <div className="user-info">
