@@ -144,25 +144,28 @@ const AdBannerContainer: React.FC<AdBannerContainerProps> = () => {
     let isScrolling: number
 
     // Prevent banner auto scroll when scroll the page
-    container.current.closest('.slide-page').addEventListener(
-      'scroll',
-      () => {
-        stopAutoScroll()
+    const slidePage = container.current.closest<HTMLElement>('.slide-page')
 
-        window.clearTimeout(isScrolling)
+    function onScroll() {
+      stopAutoScroll()
 
-        isScrolling = window.setTimeout(function () {
-          // When scroll finished
-          startAutoScroll()
-        }, 66)
-      },
-      false
-    )
+      window.clearTimeout(isScrolling)
+
+      isScrolling = window.setTimeout(function () {
+        // When scroll finished
+        startAutoScroll()
+      }, 66)
+    }
+
+    slidePage.addEventListener('scroll', onScroll, false)
 
     startAutoScroll()
 
     return () => {
+      stopAutoScroll()
+      window.clearTimeout(isScrolling)
       autoScrollInterval.current = null
+      slidePage.removeEventListener('scroll', onScroll)
     }
   }, [])
 
