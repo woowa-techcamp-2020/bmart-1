@@ -5,7 +5,7 @@ import './style.scss'
 
 export type DotsProps = unknown
 
-const Dots: React.FC<DotsProps> = (props) => {
+const Dots: React.FC<DotsProps> = () => {
   const { totalNumber, currentIndex } = useContext(CarouselContext)
 
   return (

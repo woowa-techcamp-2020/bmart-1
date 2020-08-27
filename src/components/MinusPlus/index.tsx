@@ -17,11 +17,17 @@ const MinusPlus: React.FC<MinusPlusProps> = ({ quantity = 1, onChange }) => {
 
   return (
     <div className="minus-plus">
-      <div onClick={() => changeQuantity(quantity - 1)}>
+      <div
+        className="icon-wrapper"
+        onClick={() => changeQuantity(quantity - 1)}
+      >
         <MinusIcon></MinusIcon>
       </div>
-      <div>{quantity}</div>
-      <div onClick={() => changeQuantity(quantity + 1)}>
+      <div className="quantity">{quantity}</div>
+      <div
+        className="icon-wrapper"
+        onClick={() => changeQuantity(quantity + 1)}
+      >
         <PlusIcon></PlusIcon>
       </div>
     </div>
