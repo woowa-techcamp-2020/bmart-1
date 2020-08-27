@@ -72,8 +72,8 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     animateRef.current = requestAnimationFrame(animate)
 
     return () => {
-      animateRef.current = null
       cancelAnimationFrame(animateRef.current)
+      animateRef.current = null
     }
   }, [])
 
@@ -95,8 +95,6 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   function translate(offset) {
-    if (!slot.current) return
-
     slot.current.style.transform = `translateY(${offset - height}px)`
     content.current.style.transform = `translateY(${offset}px)`
   }
@@ -148,7 +146,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
           case PULLING:
             if (action !== NO_ACTION) break
 
-            if ($sel('.slide-page').scrollTop !== 0) break
+            if ($sel('.slide-page')?.scrollTop) break
 
             action = PULLING
 

@@ -1,7 +1,6 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0'
 import React from 'react'
-import Carousel from 'src/components/Carousel'
 import SlotMachine, { SlotMachineProps } from 'src/components/SlotMachine'
 
 export default {
@@ -13,7 +12,7 @@ const Template: Story<SlotMachineProps> = (args) => {
   return (
     <div>
       <SlotMachine {...args}>
-        <Carousel></Carousel>
+        <div>hihi</div>
       </SlotMachine>
     </div>
   )
