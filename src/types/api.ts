@@ -95,3 +95,9 @@ export type GetProductApiResponse =
   | Product
   | ProductWithJjimmedQuantity
   | ErrorResponse
+
+export type EditAddressApiRequestBody = {
+  addresssId: number
+  address1: string
+  address2: string
+}
