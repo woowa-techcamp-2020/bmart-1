@@ -31,6 +31,8 @@
 
     &-right {
       display: flex;
+      flex: 1;
+      margin-left: var(--ordinary-space);
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-end;
