@@ -105,7 +105,10 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
     const slideTabs = $$sel('.slide-tabs .tab-button')
     const header = $sel('.header')
 
-    const bannedElementQueries = ['.carousel', '.topic-container']
+    const bannedElementQueries = [
+      '.carousel',
+      '.topic-container .scroll-container',
+    ]
 
     slidePagesWrapper.current.addEventListener(
       'touchstart',
