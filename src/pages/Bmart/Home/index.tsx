@@ -26,6 +26,9 @@ const Home: React.FC<HomeProps> = () => {
           </div>
         </div>
 
+        <TopicContainer title="🤔 지금 뭐 먹지?" type="now"></TopicContainer>
+        <TopicContainer title="🎉 새로 나왔어요" type="new"></TopicContainer>
+
         <div className="version">
           <a href="https://github.com/woowa-techcamp-2020/bmart-1">
             <div className="label">v{packageJson.version}</div>
