@@ -96,9 +96,12 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     if (action === PULLING) {
       if (y < currentY) {
         // 새로 받은 y가 이전의 currentY보다 작다. (드래그 중 마우스를 위로 올렸을 때)
-        requestedActions.length = 0
-        requestedActions.push({ type: RELEASING, y, startAt, done })
+        requestedActions.push({ type: RESETING, y, startAt, done })
       }
+    }
+
+    if (action === RELEASING && type === PULLING) {
+      requestedActions.push({ type: QUICK_RESETING })
     }
 
     currentY = y
@@ -148,10 +151,6 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
 
   function animate(t) {
     if (animateRef.current == null) return
-
-    if ($sel('.slide-page')?.scrollTop) {
-      requestAction({ type: QUICK_RESETING })
-    }
 
     requestedActions
       .filter((x) => x.startAt == 0 || x.startAt < t)
