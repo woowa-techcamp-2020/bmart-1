@@ -51,7 +51,15 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const history = useHistory()
   const productItemCoverRef = useRef<HTMLDivElement>()
 
+  function initSetting() {
+    clearTimeout(timer)
+    timer = null
+    coordX = coordY = null
+  }
+
   function onPointerDown({ clientX, clientY }) {
+    if (isSkeleton) return
+
     coordX = clientX
     coordY = clientY
     timer = setTimeout(async () => {
@@ -62,22 +70,23 @@ const ProductItem: React.FC<ProductItemProps> = ({
   }
 
   function onPointerUp() {
-    coordX = coordY = null
+    if (isSkeleton || !timer) return
+
     clearTimeout(timer)
 
     if (isLongPress) {
       isLongPress = false
     } else {
-      if (isSkeleton) return
-
+      initSetting()
       history.push(`/products/${id}`)
     }
   }
 
   function onPointerMove({ clientX, clientY }) {
+    if (isSkeleton || !timer) return
+
     if (getDistance({ x: coordX, y: coordY }, { x: clientX, y: clientY }) > 3) {
-      clearTimeout(timer)
-      coordX = coordY = null
+      initSetting()
 
       return
     }
