@@ -2,15 +2,17 @@
 
 .cart {
   width: 100%;
+  max-width: 800px;
+  margin: auto;
 
   &-items {
-    padding: 0 23px;
+    padding: 0 var(--ordinary-space);
 
     @include grid-template(274px, 1fr, 0, 23px);
   }
 
   &-footer {
-    padding: 42px 13px 98px;
+    padding: 42px var(--ordinary-space) 100px;
 
     &-total-price {
       font-size: 20px;
@@ -27,7 +29,6 @@
       font-weight: 600;
       text-align: center;
       color: #fff;
-      margin: 0 13px;
     }
   }
 }
