@@ -255,7 +255,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
         <div className="slot" ref={slot}>
           <div className="slot-body">
             <span className="menu" ref={menu} />
-            <span>땡겨요</span>
+            <span className="pull-label">땡겨요</span>
           </div>
         </div>
         <div className="content" ref={content}>
