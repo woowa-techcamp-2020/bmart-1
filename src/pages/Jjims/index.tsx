@@ -13,7 +13,7 @@ type JjimsState = {
   isLoading: boolean
 }
 
-const Jjims: React.FC<JjimsProps> = (props) => {
+const Jjims: React.FC<JjimsProps> = () => {
   const [state, setState] = useState<JjimsState>({
     products: [],
     isLoading: true,
