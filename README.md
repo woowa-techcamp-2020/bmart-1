@@ -14,7 +14,7 @@ For more information about it, checkout the corresponding [Sass source codes](ht
 
 ### Dark Mode
 
-By considering the dark mode from the beginning, we could easily design, develop, and switch between the light mode and the dark mode.
+Since we considered the dark mode from the beginning, we could easily design, develop, and switch between the light mode and the dark mode.
 
 ### Responsive
 
@@ -30,15 +30,19 @@ By leveraging the power of CSS and thanks to our design system, our B mart looks
 
 ### Global
 
-Create `.env` at the root directory of the project.
+Create a `.env` at the root directory of the project then fill with your values.
 
 ```
-TOKEN_SECRET=fill_with_your_secret_key
+TOKEN_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_CALLBACK_URL=
+CLIENT_FALLBACK=
 ```
 
 ### Prisma
 
-Create `.env` file inside `prisma` directory.
+Also create a `.env` file inside `prisma` directory.
 
 ```
 DATABASE_URL="mysql://user:password@host:3306/db-name"
