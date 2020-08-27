@@ -83,6 +83,7 @@ const Addresses: React.FC<AddressesProps> = () => {
 
   async function onDelete(id) {
     await deleteAddress({ addressId: id })
+    await getAddresses()
   }
 
   return (
@@ -97,7 +98,7 @@ const Addresses: React.FC<AddressesProps> = () => {
         onDefaultSelect={onDefaultSelect}
         onDelete={onDelete}
       ></AddressContainer>
-      <div className="add" onClick={() => onAddressPlus()}>
+      <div className="add" onClick={onAddressPlus}>
         <PlusIcon></PlusIcon>
       </div>
 

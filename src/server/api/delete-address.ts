@@ -28,7 +28,7 @@ deleteAddressRouter.delete(
 
       if (address.userId !== userId) throw new Error(ERROR_MSG.NOT_YOUR_ADDRESS)
 
-      await prisma.address.delete({ where: { id: addressId, userId: userId } })
+      await prisma.address.delete({ where: { id: addressId } })
       res.sendStatus(STATUS_CODE.OK)
     } catch (e) {
       console.error(e)

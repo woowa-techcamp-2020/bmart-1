@@ -33,9 +33,7 @@ const AddressItem: React.FC<AddressItemProps> = ({
   }
 
   function onItemClick() {
-    if (window.getComputedStyle(checkRef.current).opacity == '0.3') {
-      onSelect && onSelect()
-    }
+    onSelect && onSelect()
   }
 
   return (

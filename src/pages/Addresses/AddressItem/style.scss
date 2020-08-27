@@ -11,12 +11,14 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 0 2px none;
 
   .check {
     position: absolute;
     top: $padding;
     right: $padding;
-    display: none;
+    opacity: 0;
+    transition: opacity 200ms;
   }
 
   .row {
@@ -40,16 +42,15 @@
 
   &:hover {
     .check {
-      display: block;
       opacity: 0.3;
     }
   }
 
   &.default {
-    border: 2px solid #9a47ed;
+    box-shadow: 0 0 0 2px #9a47ed;
+    transition: box-shadow 300ms;
 
     .check {
-      display: block;
       opacity: 1;
     }
   }
