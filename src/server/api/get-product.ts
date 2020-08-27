@@ -12,7 +12,8 @@ const getProductRouter = express.Router()
 
 getProductRouter.get(
   '/product',
-  [query('productId').exists({ checkFalsy: true }), requestValidator()],
+  [query('productId').exists({ checkFalsy: true })],
+  requestValidator<{}, GetProductApiRequestQuery>(),
   async (
     req: Request<{}, {}, {}, GetProductApiRequestQuery>,
     res: Response<GetProductApiResponse>
