@@ -5,6 +5,8 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
+import { useLazy } from 'src/utils/hooks'
+import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -68,6 +70,29 @@ const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
   const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
 
+  useLazy(getSaleProducts)
+
+  async function getSaleProducts() {
+    const allProducts = (
+      await Promise.all(
+        DEFAULTS.CATEGORIES.map((category) =>
+          request(
+            `/products-by-category${createQuery({
+              category: category,
+              sortBy: 'discount',
+              direction: 'desc',
+              amount: '1',
+              page: '1',
+            })}`,
+            'GET'
+          )
+        )
+      )
+    ).flat()
+
+    setSaleProducts((prev) => [...prev, ...allProducts])
+  }
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
@@ -85,6 +110,8 @@ const Sale: React.FC<SaleProps> = () => {
       observer.disconnect()
     }
   }, [])
+
+  const salePage = useRef<HTMLDivElement>()
 
   useEffect(() => {
     async function init() {
@@ -106,16 +133,26 @@ const Sale: React.FC<SaleProps> = () => {
       ).flat()
 
       setSaleProducts((prev) => [...prev, ...allProducts])
+      restoreScroll(
+        window.location.pathname,
+        salePage.current.closest('.slide-page')
+      )
     }
 
     init()
   }, [])
 
   return (
-    <div className="sale-page">
+    <div className="sale-page" ref={salePage}>
       <div className="flash" />
       <img src={Lightning} className="lightning" alt="lightning" />
       <div className="lightning-sentinel" ref={lightningSentinelRef} />
+
+      <div className="ment">
+        지금 놓치면
+        <br />
+        후회할걸?
+      </div>
 
       <div className="sale-products">
         {saleProducts.map((product) => (

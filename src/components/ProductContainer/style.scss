@@ -15,9 +15,12 @@
 
   .sentinel {
     position: absolute;
-    border: 1px solid black;
     left: 0;
     right: 0;
     bottom: 10px;
+    width: 100%;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 }

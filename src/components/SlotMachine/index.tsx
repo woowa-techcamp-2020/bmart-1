@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { $sel } from 'src/utils'
+import { $scrollContainer } from 'src/utils'
 import './style.scss'
 
 export type SlotMachineProps = {
@@ -10,6 +10,7 @@ const NO_ACTION = 'NO_ACTION' as const
 const PULLING = 'PUULING' as const
 const RELEASING = 'RELEASING' as const
 const WAITING = 'WAITING' as const
+const QUICK_RESETING = 'QUICK_RESETING' as const
 const RESETING = 'RESETING' as const
 
 type ActionType =
@@ -19,11 +20,12 @@ type ActionType =
   | typeof RELEASING
   | typeof WAITING
   | typeof RESETING
+  | typeof QUICK_RESETING
 
 const MIN_PULL_LENGTH = 100
 const MAX_PULL_LENGTH = 600
 const RELEASING_DURATION = 1000
-const RESETING_DURATION = 100
+const RESETING_DURATION = 200
 const WAITING_DURATION = 500
 const ITEM_LIST = [
   '김치찌개',
@@ -48,26 +50,41 @@ type ActionRequestType = {
   done?: boolean
 }
 
+type SlotMachineState = {
+  action: ActionType
+  requestedActions: ActionRequestType[]
+  height: number
+  startY: number
+  currentY: number
+  slotIdx: number
+  needRefresh: boolean
+}
+
 const SlotMachine: React.FC<SlotMachineProps> = ({
   itemList = ITEM_LIST,
   children,
 }) => {
-  let action: ActionType = NO_ACTION
-  let requestedActions: ActionRequestType[] = []
-  let height = 0
-  let startY,
-    currentY = 0
-  let slotIdx = 0
+  const state = useRef<SlotMachineState>({
+    action: NO_ACTION,
+    requestedActions: [],
+    height: 0,
+    startY: 0,
+    currentY: 0,
+    slotIdx: 0,
+    needRefresh: false,
+  })
+
   const pullable = useRef<HTMLDivElement>()
   const slot = useRef<HTMLDivElement>()
   const content = useRef<HTMLDivElement>()
   const menu = useRef<HTMLSpanElement>()
   const animateRef = useRef<number>(null)
+  const slotRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    height = slot.current.getBoundingClientRect().height
-    slot.current.style.transform = `translatey(${-height}px)`
-    content.current.style.marginTop = `${-height}px`
+    state.current.height = slot.current.getBoundingClientRect().height
+    slot.current.style.transform = `translatey(${-state.current.height}px)`
+    content.current.style.marginTop = `${-state.current.height}px`
     menu.current.innerText = pickRandomItem()
     animateRef.current = requestAnimationFrame(animate)
 
@@ -87,19 +104,46 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     startAt = 0,
     done = false,
   }: ActionRequestType) {
+    const {
+      current: { currentY, action },
+    } = state
+
     if (type !== NO_CHANGE) {
-      requestedActions.push({ type, y, startAt, done })
+      state.current.requestedActions.push({ type, y, startAt, done })
     }
 
-    currentY = y
+    if (action === PULLING) {
+      if (y < currentY) {
+        // 새로 받은 y가 이전의 currentY보다 작다. (드래그 중 마우스를 위로 올렸을 때)
+        state.current.requestedActions.push({
+          type: RESETING,
+          y,
+          startAt,
+          done,
+        })
+      }
+    }
+
+    if (action === RELEASING && type === PULLING) {
+      state.current.requestedActions.push({ type: QUICK_RESETING })
+    }
+
+    state.current.currentY = y
   }
 
   function translate(offset) {
+    const {
+      current: { height },
+    } = state
+
     slot.current.style.transform = `translateY(${offset - height}px)`
     content.current.style.transform = `translateY(${offset}px)`
   }
 
   function moveSlotDown(offset) {
+    const {
+      current: { action },
+    } = state
     let duration = null
 
     if (action === RELEASING) {
@@ -137,71 +181,104 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   function animate(t) {
-    if (animateRef.current == null) return
+    if (animateRef.current === null) return
+
+    const {
+      current: {
+        requestedActions,
+        currentY,
+        needRefresh,
+        startY,
+        height,
+        slotIdx,
+      },
+    } = state
+
+    if (state.current.action === NO_ACTION && needRefresh) {
+      cancelAnimationFrame(animateRef.current)
+
+      window.location.reload()
+
+      return
+    }
 
     requestedActions
-      .filter((x) => x.startAt == 0 || x.startAt < t)
-      .map((requestedAction) => {
+      .filter((x) => x.startAt === 0 || x.startAt < t)
+      .forEach((requestedAction) => {
         switch (requestedAction.type) {
           case PULLING:
-            if (action !== NO_ACTION) break
+            if (state.current.action !== NO_ACTION) break
 
-            if ($sel('.slide-page')?.scrollTop) break
+            if ($scrollContainer(slotRef.current)?.scrollTop) break
 
-            action = PULLING
+            state.current.action = PULLING
 
-            startY = currentY
+            state.current.startY = currentY
             break
 
           case WAITING:
-            action = WAITING
+            state.current.action = WAITING
             requestAction({ type: RESETING, startAt: t + WAITING_DURATION })
             break
 
+          case QUICK_RESETING:
+            state.current.action = QUICK_RESETING
+            moveSlotDown(0) // TODO: REMOVE THIS
+            state.current.action = NO_ACTION
+            break
+
           case NO_ACTION:
-            action = NO_ACTION
+            state.current.action = NO_ACTION
+            state.current.startY = 0
             moveSlotDown(0) // TODO: REMOVE THIS
             break
 
           case RESETING:
-            action = RESETING
+            state.current.action = RESETING
             requestAction({ type: NO_ACTION, startAt: t + RESETING_DURATION })
             moveSlotDown(0) // TODO: REMOVE THIS
             break
 
           case RELEASING:
-            if (action !== PULLING) break
+            if (state.current.action !== PULLING) break
 
             if (Math.abs(currentY - startY) < MIN_PULL_LENGTH) {
               requestAction({ type: RESETING })
               break
             }
 
-            action = RELEASING
+            state.current.action = RELEASING
+            state.current.needRefresh = true
             requestAction({ type: WAITING, startAt: t + RELEASING_DURATION })
             moveSlotDown(height) // TODO: REMOVE THIS
         }
 
         requestedAction.done = true
       })
-    requestedActions = requestedActions.filter(({ done }) => done === false)
+    state.current.requestedActions = requestedActions.filter(
+      ({ done }) => done === false
+    )
 
-    if (action === PULLING) {
-      const offsetY = currentY - startY
+    if (state.current.action === PULLING) {
+      const offsetY = state.current.currentY - state.current.startY
 
       if (offsetY > 0) {
         pullSlotDown(offsetY)
       }
     }
 
-    if (action === PULLING || action === RELEASING || action === RESETING) {
+    if (
+      state.current.action === PULLING ||
+      state.current.action === RELEASING ||
+      state.current.action === RESETING
+    ) {
       const y = getComputedTranslateY(slot.current)
       const menuHeight = height * 0.8
       const newIdx = Math.floor((y + menuHeight / 2) / menuHeight)
 
       if (slotIdx === null || newIdx !== slotIdx) {
         menu.current.innerText = pickRandomItem()
-        slotIdx = newIdx
+        state.current.slotIdx = newIdx
       }
 
       animateSlotMenu(y, menuHeight)
@@ -211,7 +288,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   return (
-    <div className="slot-machine">
+    <div className="slot-machine" ref={slotRef}>
       <div
         className="pullable"
         ref={pullable}

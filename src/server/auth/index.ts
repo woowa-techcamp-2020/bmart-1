@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import express, { Request, Response } from 'express'
+import express from 'express'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import { Strategy } from 'passport-github'
@@ -58,12 +58,10 @@ authRouter.get('/logout', (req, res) => {
   req.logout()
   res.sendStatus(STATUS_CODE.OK).end()
 })
-authRouter.get(
-  '/callback',
-  passport.authenticate('github', { session: false }),
-  (req: Request, res: Response) => {
-    const token = jwt.sign(req.user || '', process.env.TOKEN_SECRET)
+authRouter.get('/callback', (req, res, next) => {
+  passport.authenticate('github', (err, user) => {
+    const token = jwt.sign(user || '', process.env.TOKEN_SECRET)
 
     res.redirect(`${process.env.CLIENT_FALLBACK ?? ''}/verified?token=${token}`)
-  }
-)
+  })(req, res, next)
+})

@@ -1,5 +1,6 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { SignedContext } from './../App'
+import { LazyLoaderContext } from './../components/LazyLoader/index'
 
 export function useSigned() {
   const { isSigned, setSigned } = useContext(SignedContext)
@@ -22,4 +23,14 @@ export function useSigned() {
   }
 
   return { signIn, signOut, initSigned, isSigned }
+}
+
+export function useLazy(callback) {
+  const { isLoaded } = useContext(LazyLoaderContext)
+
+  useEffect(() => {
+    if (isLoaded) {
+      callback && callback()
+    }
+  }, [isLoaded])
 }

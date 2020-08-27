@@ -69,7 +69,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
       isLongPress = true
       await toggleJjim({ productId: id })
-      productItemCoverRef.current.classList.remove('hidden')
+      productItemCoverRef.current?.classList.remove('hidden')
     }, CONSTRAINT.LONG_PRESS_DURATION)
   }
 

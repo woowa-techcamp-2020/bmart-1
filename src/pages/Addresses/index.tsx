@@ -10,6 +10,7 @@ import {
 import ParcelIcon from 'src/components/icons/ParcelICon'
 import PlusIcon from 'src/components/icons/PlusIcon'
 import PageHeader from 'src/components/PageHeader'
+import GoBack from 'src/components/shortcuts/GoBack'
 import AddressModal from './AddressDialog'
 import AddressItem from './AddressItem'
 import './style.scss'
@@ -92,7 +93,7 @@ const Addresses: React.FC<AddressesProps> = () => {
   }
 
   function onEdit(id) {
-    setAddress(addresses.find((x) => x.id == id))
+    setAddress(addresses.find((x) => x.id === id))
     setEditOpen(true)
   }
 
@@ -131,6 +132,7 @@ const Addresses: React.FC<AddressesProps> = () => {
           onSubmit={onEditSubmit}
         ></AddressModal>
       )}
+      <GoBack />
     </div>
   )
 }
