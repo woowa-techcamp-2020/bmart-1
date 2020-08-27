@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './app.style.scss'
+import SearchAndCart from './components/shortcuts/SearchAndCart'
 import Addresses from './pages/Addresses'
 import Bmart from './pages/Bmart'
 import Cart from './pages/Cart'
@@ -65,6 +66,7 @@ const AppRouter: React.FC = () => {
           </Route>
         </Switch>
       </div>
+      <SearchAndCart />
     </Router>
   )
 }
