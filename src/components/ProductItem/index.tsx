@@ -22,9 +22,18 @@ export type ProductItemProps = {
   size?: 'small' | 'big'
 }
 
-let timer
+let timer = null
 let isLongPress = false
 const HEART_DELAY = 100
+let coordX = null
+let coordY = null
+
+function getDistance(
+  from: { x: number; y: number },
+  to: { x: number; y: number }
+): number {
+  return Math.sqrt(Math.abs(from.x - to.x) ** 2 + Math.abs(from.y - to.y) ** 2)
+}
 
 const ProductItem: React.FC<ProductItemProps> = ({
   id = 0,
@@ -42,7 +51,9 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const history = useHistory()
   const productItemCoverRef = useRef<HTMLDivElement>()
 
-  function onPointerDown() {
+  function onPointerDown({ clientX, clientY }) {
+    coordX = clientX
+    coordY = clientY
     timer = setTimeout(async () => {
       isLongPress = true
       await toggleJjim({ productId: id })
@@ -51,6 +62,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   }
 
   function onPointerUp() {
+    coordX = coordY = null
     clearTimeout(timer)
 
     if (isLongPress) {
@@ -60,6 +72,18 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
       history.push(`/products/${id}`)
     }
+  }
+
+  function onPointerMove({ clientX, clientY }) {
+    if (getDistance({ x: coordX, y: coordY }, { x: clientX, y: clientY }) > 3) {
+      clearTimeout(timer)
+      coordX = coordY = null
+
+      return
+    }
+
+    coordX = clientX
+    coordY = clientY
   }
 
   function onAnimationEnd() {
@@ -78,6 +102,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
       }
       onPointerUp={onPointerUp}
       onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
       onAnimationEnd={onAnimationEnd}
     >
       {isJjimmedLocal && (
