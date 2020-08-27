@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
+import Empty from 'src/components/Empty'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import { ProductInCart, ProductsInCart } from 'src/types/api'
-import { addCommaToPrice } from 'src/utils'
+import { Dialog } from 'src/utils/dialog'
 import CartItem from './CartItem'
 import './style.scss'
 
@@ -53,11 +54,16 @@ const Cart: React.FC<CartProps> = (props) => {
             <div className="cart-footer-total-price">
               {totalAmount.toLocaleString()}원
             </div>
-            <div className="cart-footer-confirm-button">결제하기</div>
+            <div
+              className="cart-footer-confirm-button"
+              onClick={() => Dialog().alert('여기까지😉')}
+            >
+              결제하기
+            </div>
           </div>
         </>
       ) : (
-        <div className="cart-empty">텅</div>
+        <Empty />
       )}
     </div>
   )

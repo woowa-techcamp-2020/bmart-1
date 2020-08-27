@@ -2,7 +2,9 @@
 
 This project clones **B mart** web application using TypeScript, React and Express. It is totally redesigned from the ground up while keeping the same functionalities as similar as possible. We worked so hard in every detail to achieve the most unique but familiar user experience whole inside a single web page. Silently in server side, [Prisma](https://www.prisma.io) enables us to develop reliable and type-safe APIs much faster.
 
-## Design System
+## Design
+
+### System
 
 ![Colors](https://user-images.githubusercontent.com/19797697/91301828-7d5a9380-e7e0-11ea-9341-b0db5ca84f2c.png)
 
@@ -14,7 +16,7 @@ For more information about it, checkout the corresponding [Sass source codes](ht
 
 By considering the dark mode from the beginning, we could easily design, develop, and switch between the light mode and the dark mode.
 
-## Responsive Design
+### Responsive
 
 By leveraging the power of CSS and thanks to our design system, our B mart looks nice in every viewport no matter what devices you have.
 

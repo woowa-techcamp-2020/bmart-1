@@ -24,19 +24,23 @@ getProductRouter.get(
     try {
       const product = await prisma.product.findOne({
         where: { id: productId },
-        include: { jjims: userId ? { where: { userId } } : false },
+        include: {
+          jjims: userId ? { where: { userId } } : false,
+          carts: userId ? { where: { userId } } : false,
+        },
       })
 
       if (!product) throw new Error(ERROR_MSG.NO_PRODUCT)
 
       if (userId) {
-        const { jjims, ...productInfo } = product
-        const productWithJjimmed = {
+        const { jjims, carts, ...productInfo } = product
+        const productWithJjimmedQuantity = {
           ...productInfo,
           isJjimmed: jjims.length > 0,
+          quantityInCart: carts ? (carts[0] ? carts[0].quantity : 0) : 0,
         }
 
-        res.json(productWithJjimmed)
+        res.json(productWithJjimmedQuantity)
       }
 
       res.json(product)

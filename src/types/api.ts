@@ -34,6 +34,10 @@ export type GetProductsByCategoryApiRequestQuery = {
 
 export type ProductWithJjimmed = Product & { isJjimmed: boolean }
 
+export type ProductWithJjimmedQuantity = ProductWithJjimmed & {
+  quantityInCart: number
+}
+
 export type GetProductsByCategoryApiResponse =
   | Product[]
   | ProductWithJjimmed[]
@@ -86,4 +90,7 @@ export type GetProductApiRequestQuery = {
   productId: string
 }
 
-export type GetProductApiResponse = Product | ProductWithJjimmed | ErrorResponse
+export type GetProductApiResponse =
+  | Product
+  | ProductWithJjimmedQuantity
+  | ErrorResponse
