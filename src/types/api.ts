@@ -22,7 +22,7 @@ export type DeleteFromCartBody = {
   productIds: number[]
 }
 
-export type GetJjimsApiResponse = Product[] | ErrorResponse
+export type GetJjimsApiResponse = ProductWithJjimmed[] | ErrorResponse
 
 export type GetProductsByCategoryApiRequestQuery = {
   category?: string

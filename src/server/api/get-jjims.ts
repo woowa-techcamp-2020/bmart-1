@@ -20,7 +20,7 @@ getJjimsRouter.get(
         },
       })
 
-      res.send(jjims.map((x) => x.product))
+      res.send(jjims.map(({ product }) => ({ ...product, isJjimmed: true })))
     } catch (e) {
       console.error(e)
       res
