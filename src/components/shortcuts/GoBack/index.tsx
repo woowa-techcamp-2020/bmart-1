@@ -19,7 +19,7 @@ const GoBack: React.FC<GoBackProps> = () => {
           marginRight: '10px',
         }}
       >
-        <ChevronRightIcon width="0.5em" />
+        <ChevronRightIcon width="0.5em" height="1em" />
       </div>
       <span>뒤로 가기</span>
     </button>
