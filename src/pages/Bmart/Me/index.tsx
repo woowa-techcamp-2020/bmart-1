@@ -31,7 +31,7 @@ const Me: React.FC<MeProps> = () => {
     <div className="me">
       {isSigned && user ? (
         <div className="signed-in">
-          <img src={user.profileImg} className="profile-image" />
+          <img src={user.profileImg} className="profile-image" alt="profile" />
           <div className="user-info">
             <p className="opening-ment">좋은 하루 되세요,</p>
             <h1 className="user-name">{user.name}님</h1>
@@ -54,7 +54,10 @@ const Me: React.FC<MeProps> = () => {
             </li>
           </ol>
           <button className="sign-out" onClick={() => signOut()}>
-            로그아웃 하시게요? 😢
+            로그아웃 하시게요?{' '}
+            <span role="img" aria-label="sad face">
+              😢
+            </span>
           </button>
         </div>
       ) : (
