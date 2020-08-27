@@ -60,6 +60,8 @@ export const navigateSlidePageTo = (
   const currentPath = window.location.pathname.replace('/', '')
   const newPath = indexToPath(index)
 
+  if (pushState && currentPath !== newPath) {
+    window.history.pushState(null, null, `/${newPath}`)
   }
 }
 
