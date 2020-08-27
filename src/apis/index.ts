@@ -1,10 +1,11 @@
-import { Jjim, Product, User } from '@prisma/client'
+import { Jjim, Product } from '@prisma/client'
 import type {
   AddAddressApiRequestBody,
   AddToCartRequestBody,
   DeleteAddressRequestBody,
   DeleteFromCartBody,
   EditAddressApiRequestBody,
+  FoundUser,
   GetProductApiRequestQuery,
   GetProductsByCategoryApiRequestQuery,
   GetProductsByTopicResponse,
@@ -158,7 +159,7 @@ export async function addToCart(body: AddToCartRequestBody) {
   return await request('/add-to-cart', 'POST', body)
 }
 
-export async function getUser(): Promise<User> {
+export async function getUser(): Promise<FoundUser> {
   return await request('/me', 'GET')
 }
 

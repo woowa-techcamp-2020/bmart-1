@@ -59,7 +59,7 @@ export type ProductsInCart = ProductInCart[]
 
 export type GetProductsInCartResponse = ProductsInCart | ErrorResponse
 
-type FoundUser = (User & { addresses: Address[] }) | null
+export type FoundUser = (User & { addresses: Address[] }) | null
 
 export type GetUserInfoApiResponse = FoundUser | ErrorResponse
 
