@@ -9,6 +9,7 @@ import ColorfulHeartIcon from 'src/components/icons/ColorfulHeartIcon'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import MinusPlus from 'src/components/MinusPlus'
+import GoBack from 'src/components/shortcuts/GoBack'
 import { Dialog } from 'src/utils/dialog'
 import { useSigned } from 'src/utils/hooks'
 import './style.scss'
@@ -69,7 +70,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
     <div className="product-details">
       {product && (
         <>
-          <img className="product-details-image" src={product.imgH}></img>
+          <GoBack />
+          <img className="product-details-image" src={product.imgH} />
           <div className="product-details-info">
             <div className="product-details-info-category">
               {product.category}
