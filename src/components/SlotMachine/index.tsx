@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { $scrollContainer } from 'src/utils'
 import './style.scss'
 
 export type SlotMachineProps = {
@@ -180,7 +181,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   function animate(t) {
-    if (animateRef.current == null) return
+    if (animateRef.current === null) return
 
     const {
       current: {
@@ -202,15 +203,13 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     }
 
     requestedActions
-      .filter((x) => x.startAt == 0 || x.startAt < t)
-      .map((requestedAction) => {
+      .filter((x) => x.startAt === 0 || x.startAt < t)
+      .forEach((requestedAction) => {
         switch (requestedAction.type) {
           case PULLING:
             if (state.current.action !== NO_ACTION) break
 
-            if (slotRef.current.parentElement.parentElement.scrollTop) break
-
-            // if ($sel('.slide-page')?.scrollTop) break
+            if ($scrollContainer(slotRef.current)?.scrollTop) break
 
             state.current.action = PULLING
 

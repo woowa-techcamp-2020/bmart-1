@@ -11,6 +11,7 @@ import ParcelIcon from 'src/components/icons/ParcelICon'
 import PlusIcon from 'src/components/icons/PlusIcon'
 import PageHeader from 'src/components/PageHeader'
 import GoBack from 'src/components/shortcuts/GoBack'
+import { Dialog } from 'src/utils/dialog'
 import AddressModal from './AddressDialog'
 import AddressItem from './AddressItem'
 import './style.scss'
@@ -70,13 +71,25 @@ const Addresses: React.FC<AddressesProps> = () => {
     setAddOpen(true)
   }
 
+  function isValidate(address) {
+    const isValid = address.trim()
+
+    if (!isValid) Dialog().alert('주 주소는 꼭 필요해요 😰')
+
+    return address.trim()
+  }
+
   async function onAddSubmit(address1, address2) {
+    if (!isValidate(address1)) return
+
     await addAddress({ address1, address2 })
     setAddOpen(false)
     await getAddresses()
   }
 
   async function onEditSubmit(address1, address2) {
+    if (!isValidate(address1)) return
+
     await editAddress({ addressId: address.id, address1, address2 })
     setEditOpen(false)
     await getAddresses()
@@ -93,7 +106,7 @@ const Addresses: React.FC<AddressesProps> = () => {
   }
 
   function onEdit(id) {
-    setAddress(addresses.find((x) => x.id == id))
+    setAddress(addresses.find((x) => x.id === id))
     setEditOpen(true)
   }
 

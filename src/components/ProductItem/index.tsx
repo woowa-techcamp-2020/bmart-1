@@ -6,6 +6,7 @@ import DiscountLabel from 'src/components/icons/DiscountLabel'
 import HeartIcon from 'src/components/icons/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
 import { toPriceLabel } from 'src/utils'
+import { useSigned } from 'src/utils/hooks'
 import ColorfulBrokenHeartIcon from '../icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
@@ -47,14 +48,25 @@ const ProductItem: React.FC<ProductItemProps> = ({
   size = 'small',
 }) => {
   const [isJjimmedLocal, setIsJjimmedLocal] = useState(isJjimmed)
+  const { isSigned } = useSigned()
 
   const history = useHistory()
   const productItemCoverRef = useRef<HTMLDivElement>()
 
+  function initSetting() {
+    clearTimeout(timer)
+    timer = null
+    coordX = coordY = null
+  }
+
   function onPointerDown({ clientX, clientY }) {
+    if (isSkeleton) return
+
     coordX = clientX
     coordY = clientY
     timer = setTimeout(async () => {
+      if (!isSigned) return
+
       isLongPress = true
       await toggleJjim({ productId: id })
       productItemCoverRef.current?.classList.remove('hidden')
@@ -62,22 +74,23 @@ const ProductItem: React.FC<ProductItemProps> = ({
   }
 
   function onPointerUp() {
-    coordX = coordY = null
+    if (isSkeleton || !timer) return
+
     clearTimeout(timer)
 
     if (isLongPress) {
       isLongPress = false
     } else {
-      if (isSkeleton) return
-
+      initSetting()
       history.push(`/products/${id}`)
     }
   }
 
   function onPointerMove({ clientX, clientY }) {
+    if (isSkeleton || !timer) return
+
     if (getDistance({ x: coordX, y: coordY }, { x: clientX, y: clientY }) > 3) {
-      clearTimeout(timer)
-      coordX = coordY = null
+      initSetting()
 
       return
     }

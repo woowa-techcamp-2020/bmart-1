@@ -4,7 +4,7 @@
   position: relative;
   box-sizing: border-box;
   margin-top: var(--ordinary-space);
-  background: #f3f3f5;
+  background: var(--layered-element);
   border-radius: 10px;
   padding: $padding;
   max-width: 272px;
@@ -26,7 +26,7 @@
       margin-right: 0.8em;
 
       &.edit {
-        color: #aaa;
+        color: var(--universal-gray);
       }
 
       &.delete {

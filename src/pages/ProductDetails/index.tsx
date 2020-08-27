@@ -60,6 +60,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
   async function onConfirm() {
     await addToCart({ productId: product.id, quantity: quantityTemp })
     setQuantityInCart(quantityTemp)
+    setIsCartOpened(false)
   }
 
   async function onToggleJjim() {
