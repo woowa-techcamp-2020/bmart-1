@@ -33,7 +33,10 @@ const Jjims: React.FC<JjimsProps> = (props) => {
 
   return (
     <div className="jjims">
-      <PageHeader Icon={HeartIcon} title="찜 목록"></PageHeader>
+      <PageHeader
+        Icon={HeartIcon.bind({}, { size: 'big' })}
+        title="찜 목록"
+      ></PageHeader>
       <ProductContainer
         products={state.products}
         isSkeletonOn={state.isLoading}
