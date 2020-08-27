@@ -93,7 +93,7 @@ const Addresses: React.FC<AddressesProps> = () => {
   }
 
   function onEdit(id) {
-    setAddress(addresses.find((x) => x.id == id))
+    setAddress(addresses.find((x) => x.id === id))
     setEditOpen(true)
   }
 

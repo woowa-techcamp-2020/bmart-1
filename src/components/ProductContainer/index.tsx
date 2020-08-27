@@ -45,7 +45,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
   useEffect(() => {
     if (gridRef.current)
       setItemNumbersInRow(getItemNumbersInRow(gridRef.current))
-  }, [gridRef.current])
+  }, [gridRef.current, products])
 
   // useEffect(() => {
   //   if (isSkeletonOn) {
@@ -96,7 +96,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
 
         {products.map((result, idx) => (
           <div
-            key={idx}
+            key={result.id}
             className="product-container-product"
             // style={{
             //   animationDelay: `${
