@@ -10,6 +10,7 @@ export function useSigned() {
   }
 
   function signOut() {
+    localStorage.removeItem('recentTerms')
     localStorage.removeItem('token')
     setSigned(false)
   }
