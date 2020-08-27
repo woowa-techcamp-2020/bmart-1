@@ -22,8 +22,8 @@ type ActionType =
   | typeof RESETING
   | typeof QUICK_RESETING
 
-const MIN_PULL_LENGTH = 100
-const MAX_PULL_LENGTH = 600
+const MIN_PULL_LENGTH = 150
+const MAX_PULL_LENGTH = 500
 const RELEASING_DURATION = 1000
 const RESETING_DURATION = 200
 const WAITING_DURATION = 500
@@ -166,7 +166,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
       y = MAX_PULL_LENGTH * formula(y / MAX_PULL_LENGTH)
     }
 
-    moveSlotDown(y / 4)
+    moveSlotDown(y / 3)
   }
 
   function animateSlotMenu(y, height) {
