@@ -10,8 +10,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--distinct);
 
   @include foundation-translucent;
 
   box-shadow: var(--shortcut-shadow);
+
+  @include dark-mode {
+    border: 1px solid rgba(#fff, 0.15);
+  }
 }
