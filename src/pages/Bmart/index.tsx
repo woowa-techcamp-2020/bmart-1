@@ -128,6 +128,7 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
     let isVerticalScrollLocked = false
 
     const onTouchStart = async (e: TouchEvent) => {
+      isVerticalScrollLocked = false
       touchStartEvent = e
 
       const target = e.target
@@ -179,6 +180,7 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
       const slope = sanitizeNan(Math.abs(diffY / diffX))
 
       if (slope < 1 || isVerticalScrollLocked) {
+        console.log('hori')
         // Horizontal scroll
         isVerticalScrollLocked = true
 
