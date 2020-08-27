@@ -1,14 +1,17 @@
 import { Jjim, Product, User } from '@prisma/client'
 import type {
+  AddAddressApiRequestBody,
   AddToCartRequestBody,
   DeleteAddressRequestBody,
   DeleteFromCartBody,
+  EditAddressApiRequestBody,
   GetProductApiRequestQuery,
   GetProductsByCategoryApiRequestQuery,
   GetProductsByTopicResponse,
   GetProductsInCartResponse,
   ProductWithJjimmed,
   SearchApiRequestQuery,
+  SetDefaultAddressApiRequestBody,
   ToggleJjimRequestBody,
 } from 'src/types/api'
 import { isDev } from 'src/utils'
@@ -173,7 +176,7 @@ export async function setDefaultAddressId(
   return await request('/set-default-address', 'PATCH', body)
 }
 
-export async function addAddresss(body: AddAddressApiRequestBody) {
+export async function addAddress(body: AddAddressApiRequestBody) {
   return await request('/add-address', 'POST', body)
 }
 

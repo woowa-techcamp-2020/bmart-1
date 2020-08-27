@@ -1,7 +1,7 @@
 import { Address } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
 import {
-  addAddresss,
+  addAddress,
   deleteAddress,
   editAddress,
   getUser,
@@ -70,7 +70,7 @@ const Addresses: React.FC<AddressesProps> = () => {
   }
 
   async function onAddSubmit(address1, address2) {
-    await addAddresss({ address1, address2 })
+    await addAddress({ address1, address2 })
     setAddOpen(false)
     await getAddresses()
   }
