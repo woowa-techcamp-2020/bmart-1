@@ -72,6 +72,8 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
     if (subCategory === '') return
 
     setPage(0)
+
+    setProducts([])
   }, [subCategory, sortBy])
 
   useEffect(() => {
