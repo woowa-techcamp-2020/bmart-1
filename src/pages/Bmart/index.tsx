@@ -9,11 +9,11 @@ import Sale from './Sale'
 import SlidePage from './SlidePage'
 import './style.scss'
 
-function pathToIndex(path: string): number {
+export function pathToIndex(path: string): number {
   return path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
 }
 
-function indexToPath(index: number): string {
+export function indexToPath(index: number): string {
   return index === 0 ? '' : index === 1 ? 'sale' : index === 2 ? 'me' : ''
 }
 
@@ -57,12 +57,12 @@ export const navigateSlidePageTo = (
     correctIndex.toString()
   )
 
-  const currentPath = window.location.pathname.replace('/', '')
-  const newPath = indexToPath(index)
+  // const currentPath = window.location.pathname.replace('/', '')
+  // const newPath = indexToPath(index)
 
-  if (pushState && currentPath !== newPath) {
-    window.history.pushState(null, null, `/${newPath}`)
-  }
+  // if (pushState && currentPath !== newPath) {
+  //   window.history.pushState(null, null, `/${newPath}`)
+  // }
 }
 
 export function interpolate(
@@ -294,6 +294,7 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
         `${transitionTime}ms`,
         'cubic-bezier(0, 0.05, 0.38, 1)'
       )
+      history.push(indexToPath(newIndex))
     }
 
     slidePagesWrapper.current.addEventListener('touchstart', onTouchStart)

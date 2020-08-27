@@ -45,12 +45,12 @@ const AddressDialog: React.FC<AddressDialogProps> = ({
             onChange={({ target: { value } }) => setAddress2(value)}
             value={address2}
           />
-          <a
+          <div
             className="button item"
             onClick={() => onSubmit && onSubmit(address1, address2)}
           >
             {buttonText}
-          </a>
+          </div>
         </div>
       </div>
     </div>

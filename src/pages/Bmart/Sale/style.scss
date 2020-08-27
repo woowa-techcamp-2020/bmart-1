@@ -52,6 +52,14 @@
     z-index: 9998;
   }
 
+  .ment {
+    font-size: 25px;
+    font-weight: $bold;
+    margin-bottom: 50px;
+    text-align: center;
+    color: #fff;
+  }
+
   .sale-products {
     display: grid;
     gap: calc(var(--ordinary-space) * 2);

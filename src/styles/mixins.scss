@@ -16,10 +16,10 @@
 }
 
 @mixin grid-template(
-  $item-min-width: 120px,
+  $item-min-width: 150px,
   $item-max-width: 1fr,
   $gap-vertical: 20px,
-  $gap-horizontal: 10px
+  $gap-horizontal: 20px
 ) {
   display: grid;
   grid-template-columns: repeat(

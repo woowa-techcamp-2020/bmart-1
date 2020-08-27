@@ -3,7 +3,9 @@ body {
 }
 
 .category-details {
-  padding: 25px;
+  max-width: 800px;
+  margin: auto;
+  padding: 25px var(--ordinary-space);
   font-weight: 600;
   user-select: none;
   height: 100vh;

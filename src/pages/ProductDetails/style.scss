@@ -93,16 +93,34 @@
       @include dark-mode {
         border-top: 1px solid rgba($color: #fff, $alpha: 0.1);
       }
+
+      &-cart {
+        position: relative;
+
+        &-marker {
+          position: absolute;
+          right: -12px;
+          top: -15px;
+          background-color: var(--distinct);
+          padding: 2px 4px;
+          line-height: 1;
+          color: var(--foundation);
+          font-size: 14px;
+          border-radius: $circle;
+        }
+      }
     }
   }
 
   &-cart {
     padding: 0 30px 27px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
 
     &-image {
-      width: 83px;
+      width: 130px;
       height: auto;
       border-radius: 10px;
     }
@@ -117,9 +135,15 @@
         background-color: #2ac1bc;
         border-radius: 9999px;
         color: #fff;
-        font-size: 20px;
+        font-size: 17px;
         font-weight: 600;
-        padding: 11px 57px;
+        height: 45px;
+        width: 100%;
+        max-width: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: var(--ordinary-space);
       }
     }
   }

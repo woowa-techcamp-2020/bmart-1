@@ -4,6 +4,7 @@ import HeartIcon from 'src/components/icons/HeartIcon'
 import PageHeader from 'src/components/PageHeader'
 import ProductContainer from 'src/components/ProductContainer'
 import SlotMachine from 'src/components/SlotMachine'
+import GoBack from 'src/components/shortcuts/GoBack'
 import { ProductWithJjimmed } from 'src/types/api'
 import './style.scss'
 
@@ -14,7 +15,7 @@ type JjimsState = {
   isLoading: boolean
 }
 
-const Jjims: React.FC<JjimsProps> = (props) => {
+const Jjims: React.FC<JjimsProps> = () => {
   const [state, setState] = useState<JjimsState>({
     products: [],
     isLoading: true,
@@ -44,6 +45,7 @@ const Jjims: React.FC<JjimsProps> = (props) => {
           isSkeletonOn={state.isLoading}
         ></ProductContainer>
       </SlotMachine>
+      <GoBack />
     </div>
   )
 }

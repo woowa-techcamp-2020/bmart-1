@@ -87,7 +87,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ type }) => {
 
   return (
     <div className="category-item" onClick={pushHistory}>
-      <img src={categoryNames[type].img} className="category-image" />
+      <img
+        src={categoryNames[type].img}
+        className="category-image"
+        alt="category"
+      />
       <h1
         className="category-name"
         style={{

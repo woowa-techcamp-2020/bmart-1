@@ -3,6 +3,7 @@ import { getProductsInCart } from 'src/apis'
 import Empty from 'src/components/Empty'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import PageHeader from 'src/components/PageHeader'
+import GoBack from 'src/components/shortcuts/GoBack'
 import { ProductInCart, ProductsInCart } from 'src/types/api'
 import { Dialog } from 'src/utils/dialog'
 import CartItem from './CartItem'
@@ -36,6 +37,7 @@ const Cart: React.FC<CartProps> = (props) => {
 
   return (
     <div className="cart">
+      <GoBack />
       <PageHeader Icon={ResizableCartIcon} title="장바구니"></PageHeader>
       {productsInCart.length > 0 ? (
         <>

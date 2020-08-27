@@ -1,5 +1,8 @@
 .jjims {
-  height: 100vh;
   overflow: scroll;
   padding: var(--ordinary-space);
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding-bottom: 100px;
 }

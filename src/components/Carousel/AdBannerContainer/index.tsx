@@ -74,8 +74,6 @@ const bannerInfo = [
   },
 ]
 
-let tec
-
 function moveBannerTo(index: number, isAfterSwipe = false, max = 8) {
   const bannerContainer = $sel('.banner-container')
 
