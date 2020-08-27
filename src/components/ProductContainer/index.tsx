@@ -8,6 +8,7 @@ import './style.scss'
 
 export type ProductContainerProps = {
   isSkeletonOn: boolean
+  isEmpty?: boolean
   products: (Product | ProductWithJjimmed)[]
   onLoadMore?: () => void
 }
@@ -17,6 +18,7 @@ export type ProductContainerProps = {
 const ProductContainer: React.FC<ProductContainerProps> = ({
   isSkeletonOn,
   products,
+  isEmpty,
   onLoadMore,
 }) => {
   const gridRef = useRef<HTMLDivElement>()
@@ -28,7 +30,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          onLoadMore()
+          onLoadMore && onLoadMore()
         }
       }
     })
@@ -67,7 +69,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
 
   return (
     <>
-      {!isSkeletonOn && products.length === 0 && <Empty />}
+      {isEmpty && <Empty />}
 
       <div className="product-container" ref={gridRef}>
         {/* {isSkeletonOn
@@ -105,6 +107,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
             <ProductItem {...result} />
           </div>
         ))}
+
         <div className="sentinel" ref={sentinel}></div>
       </div>
     </>
