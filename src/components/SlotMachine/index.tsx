@@ -60,6 +60,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   let startY,
     currentY = 0
   let slotIdx = 0
+  let needRefresh = false
   const pullable = useRef<HTMLDivElement>()
   const slot = useRef<HTMLDivElement>()
   const content = useRef<HTMLDivElement>()
@@ -152,6 +153,14 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   function animate(t) {
     if (animateRef.current == null) return
 
+    if (action === NO_ACTION && needRefresh) {
+      cancelAnimationFrame(animateRef.current)
+
+      window.location.reload()
+
+      return
+    }
+
     requestedActions
       .filter((x) => x.startAt == 0 || x.startAt < t)
       .map((requestedAction) => {
@@ -197,6 +206,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
             }
 
             action = RELEASING
+            needRefresh = true
             requestAction({ type: WAITING, startAt: t + RELEASING_DURATION })
             moveSlotDown(height) // TODO: REMOVE THIS
         }
