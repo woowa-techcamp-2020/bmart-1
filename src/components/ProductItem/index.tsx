@@ -1,5 +1,5 @@
 import $ from 'classnames'
-import React, { CSSProperties, useEffect, useRef, useState } from 'react'
+import React, { CSSProperties, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { toggleJjim } from 'src/apis'
 import DiscountLabel from 'src/components/icons/DiscountLabel'
@@ -26,7 +26,6 @@ let timer
 let isLongPress = false
 const HEART_DELAY = 100
 
-// TODO: scroll & pointermove conflict 해결
 const ProductItem: React.FC<ProductItemProps> = ({
   id = 0,
   name = '',
@@ -41,55 +40,35 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const [isJjimmedLocal, setIsJjimmedLocal] = useState(isJjimmed)
 
   const history = useHistory()
-  const productItem = useRef<HTMLDivElement>()
-  const productItemCover = useRef<HTMLDivElement>()
+  const productItemCoverRef = useRef<HTMLDivElement>()
 
-  useEffect(() => {
-    const { current: productItemElem } = productItem
-    const { current: productItemCoverElem } = productItemCover
+  function onPointerDown() {
+    timer = setTimeout(async () => {
+      isLongPress = true
+      await toggleJjim({ productId: id })
+      productItemCoverRef.current.classList.remove('hidden')
+    }, CONSTRAINT.LONG_PRESS_DURATION)
+  }
 
-    productItemCoverElem.addEventListener('animationend', () => {
-      productItemCoverElem.classList.add('hidden')
-      setTimeout(
-        () =>
-          setIsJjimmedLocal((previousState) => {
-            return !previousState
-          }),
-        HEART_DELAY
-      )
-    })
+  function onPointerUp() {
+    clearTimeout(timer)
 
-    productItemElem.addEventListener('pointerdown', () => {
-      timer = setTimeout(async () => {
-        await toggleJjim({ productId: id })
-        productItemCoverElem.classList.remove('hidden')
+    if (isLongPress) {
+      isLongPress = false
+    } else {
+      if (isSkeleton) return
 
-        isLongPress = true
-      }, CONSTRAINT.LONG_PRESS_DURATION)
-    })
+      history.push(`/products/${id}`)
+    }
+  }
 
-    productItemElem.addEventListener('pointerup', () => {
-      if (isLongPress) {
-        isLongPress = false
-      } else {
-        // TODO: 상품 디테일 페이지로
-      }
-
-      clearTimeout(timer)
-    })
-
-    return clearTimeout(timer)
-  }, [])
-
-  function toProductDetail() {
-    if (isSkeleton) return
-
-    history.push(`/products/${id}`)
+  function onAnimationEnd() {
+    productItemCoverRef.current.classList.add('hidden')
+    setTimeout(() => setIsJjimmedLocal(!isJjimmedLocal), HEART_DELAY)
   }
 
   return (
     <div
-      ref={productItem}
       className={$('product-item', { skeleton: isSkeleton })}
       style={
         {
@@ -97,7 +76,9 @@ const ProductItem: React.FC<ProductItemProps> = ({
           '--zoom': size === 'small' ? '1' : '1.7',
         } as CSSProperties
       }
-      onClick={toProductDetail}
+      onPointerUp={onPointerUp}
+      onPointerDown={onPointerDown}
+      onAnimationEnd={onAnimationEnd}
     >
       {isJjimmedLocal && (
         <HeartIcon size={size} isBroken={false} isAttached={true} />
@@ -118,7 +99,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
           </span>
         </div>
       </div>
-      <div ref={productItemCover} className="product-item-cover hidden">
+      <div ref={productItemCoverRef} className="product-item-cover hidden">
         {isJjimmedLocal ? (
           <ColorfulBrokenHeartIcon color="white" width="100%" />
         ) : (
