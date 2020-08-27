@@ -55,7 +55,7 @@ const Drawer: React.FC<DrawerProps> = ({
   // Init background oapcity to 0 without transition
   useEffect(() => {
     backgroundRef.current.style.transition = 'none'
-    backgroundRef.current.style.opacity = '0.3'
+    backgroundRef.current.style.opacity = '0'
 
     setTimeout(() => {
       backgroundRef.current.style.transition = ''
