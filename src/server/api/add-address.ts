@@ -15,7 +15,7 @@ addAddressRouter.post(
     requestValidator(),
   ],
   async (req: Request<{}, {}, AddAddressApiRequestBody>, res: Response) => {
-    const userId = req.auth?.userId ?? 18
+    const userId = req.auth?.userId
     const address1 = req.body.address1.trim()
     const address2 = req.body.address2?.trim()
 
