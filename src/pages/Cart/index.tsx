@@ -36,7 +36,7 @@ const Cart: React.FC<CartProps> = (props) => {
 
   return (
     <div className="cart">
-      <PageHeader icon={ResizableCartIcon} title="장바구니"></PageHeader>
+      <PageHeader Icon={ResizableCartIcon} title="장바구니"></PageHeader>
       {productsInCart.length > 0 ? (
         <>
           <div className="cart-items">

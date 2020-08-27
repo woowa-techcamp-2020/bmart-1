@@ -2,14 +2,16 @@ import React from 'react'
 import './style.scss'
 
 export type PageHeaderProps = {
-  icon: React.FC
+  Icon: React.FC
   title: string
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ icon, title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ Icon, title }) => {
   return (
     <div className="page-header">
-      <div className="icon">{icon}</div>
+      <div className="icon">
+        <Icon></Icon>
+      </div>
       <div className="title">{title}</div>
     </div>
   )
