@@ -39,7 +39,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const [isCategoryOpened, setCategoryOpened] = useState<boolean>(false)
   const [isSortByOpened, setSortByOpened] = useState(false)
   const [products, setProducts] = useState<ProductWithJjimmed[]>([])
-  const [isLoading, setLoading] = useState<boolean>(false)
+  const [isLoading, setLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(0)
 
   function onLoadMore() {
