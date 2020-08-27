@@ -72,7 +72,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
         {product && (
           <>
             <GoBack />
-            <img className="product-details-image" src={product.imgH} />
+            <img
+              className="product-details-image"
+              src={product.imgH}
+              alt="product"
+            />
             <div className="product-details-info">
               <div className="product-details-info-category">
                 {product.category}
@@ -122,6 +126,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
                 <img
                   className="product-details-cart-image"
                   src={product.imgV}
+                  alt="product"
                 ></img>
                 <div className="product-details-cart-buttons">
                   <MinusPlus quantity={quantity} onChange={setQuantity} />
