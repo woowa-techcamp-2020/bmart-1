@@ -161,3 +161,7 @@ export async function getUser(): Promise<User> {
 export async function getProduct(query: GetProductApiRequestQuery) {
   return await request(`/product?productId=${query.productId}`, 'GET')
 }
+
+export async function getJJims() {
+  return await request('/jjims', 'GET')
+}
