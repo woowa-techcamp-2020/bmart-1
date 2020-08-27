@@ -1,4 +1,5 @@
 import React from 'react'
+import SearchIcon from 'src/components/icons/SearchIcon'
 import { Dispatcher } from 'src/types/react-helper'
 import './style.scss'
 
@@ -43,7 +44,7 @@ const SearchInputContainer: React.FC<SearchInputContainerProps> = ({
 
   return (
     <div className="search-input-container">
-      <div className="search-input-icon"></div>
+      <SearchIcon />
       <input
         value={inputValue}
         className="search-input"

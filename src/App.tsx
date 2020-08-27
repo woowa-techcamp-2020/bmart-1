@@ -4,6 +4,7 @@ import './app.style.scss'
 import Bmart from './pages/Bmart'
 import CategoryDetails from './pages/CategoryDetails'
 import Jjims from './pages/Jjims'
+import ProductDetails from './pages/ProductDetails'
 import { Dispatcher } from './types/react-helper'
 import { useSigned } from './utils/hooks'
 
@@ -47,6 +48,9 @@ const AppRouter: React.FC = () => {
           </Route>
           <Route path="/category/:category">
             <CategoryDetails />
+          </Route>
+          <Route path="/products/:productId">
+            <ProductDetails />
           </Route>
           <Route path="/verified">
             <Bmart />

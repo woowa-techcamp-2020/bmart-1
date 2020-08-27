@@ -6,7 +6,7 @@ export type PlusIconProps = {
 }
 
 const PlusIcon: React.FC<PlusIconProps> = ({
-  color = 'black',
+  color = 'var(--distinct)',
   width = '17px',
 }) => {
   return (
