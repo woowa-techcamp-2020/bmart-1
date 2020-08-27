@@ -18,8 +18,8 @@
 @mixin grid-template(
   $item-min-width: 150px,
   $item-max-width: 1fr,
-  $gap-vertical: 15px,
-  $gap-horizontal: 15px
+  $gap-vertical: 20px,
+  $gap-horizontal: 20px
 ) {
   display: grid;
   grid-template-columns: repeat(
