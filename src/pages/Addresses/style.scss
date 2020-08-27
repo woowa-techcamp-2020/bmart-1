@@ -1,5 +1,20 @@
 .addresses {
-  padding: --ordinary-space;
+  padding: var(--ordinary-space);
   height: 100vh;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .add {
+    margin-top: var(--ordinary-space);
+    background: #f3f3f5;
+    border-radius: 10px;
+    height: 98px;
+    max-width: 272px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

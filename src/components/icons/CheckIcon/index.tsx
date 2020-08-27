@@ -1,8 +1,7 @@
-import { ExecFileOptionsWithStringEncoding } from 'child_process'
 import React from 'react'
 
 export type CheckIconProps = {
-  width?: ExecFileOptionsWithStringEncoding
+  width?: string
 }
 
 const CheckIcon: React.FC<CheckIconProps> = ({ width = '20px' }) => {

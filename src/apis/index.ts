@@ -167,7 +167,9 @@ export async function getJJims() {
   return await request('/jjims', 'GET')
 }
 
-export async function setDefaultAddress(body: SetDefaultAddressApiRequestBody) {
+export async function setDefaultAddressId(
+  body: SetDefaultAddressApiRequestBody
+) {
   return await request('/set-default-address', 'PATCH', body)
 }
 

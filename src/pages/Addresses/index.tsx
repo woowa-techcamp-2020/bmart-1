@@ -1,21 +1,30 @@
 import { Address } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
-import { getUser } from 'src/apis'
+import {
+  addAddresss,
+  deleteAddress,
+  getUser,
+  setDefaultAddressId,
+} from 'src/apis'
 import ParcelIcon from 'src/components/icons/ParcelICon'
 import PlusIcon from 'src/components/icons/PlusIcon'
 import PageHeader from 'src/components/PageHeader'
+import AddressModal from './AddressDialog'
 import AddressItem from './AddressItem'
-import AddressModal from './AddressModal'
 import './style.scss'
 
 type AddressContainerProps = {
   addresses: Address[]
   defaultAddress: number
+  onDefaultSelect?: (id: number) => void
+  onDelete?: (id: number) => void
 }
 
 const AddressContainer: React.FC<AddressContainerProps> = ({
   addresses,
   defaultAddress,
+  onDelete,
+  onDefaultSelect,
 }) => {
   return (
     <>
@@ -24,6 +33,8 @@ const AddressContainer: React.FC<AddressContainerProps> = ({
           {...x}
           key={idx}
           isDefault={x.id === defaultAddress}
+          onDelete={() => onDelete(x.id)}
+          onSelect={() => onDefaultSelect(x.id)}
         ></AddressItem>
       ))}
     </>
@@ -53,14 +64,25 @@ const Addresses: React.FC<AddressesProps> = () => {
     setAddOpen(true)
   }
 
-  function onAddSubmit(address1, address2) {
+  async function onAddSubmit(address1, address2) {
     console.log(address1, address2)
+    await addAddresss({ address1, address2 })
     setAddOpen(false)
+    await getAddresses()
   }
 
   function onEditSubmit(address1, address2) {
     console.log(address1, address2)
     setEditOpen(false)
+  }
+
+  async function onDefaultSelect(id) {
+    await setDefaultAddressId({ defaultAddressId: id })
+    setDefaultAddress(id)
+  }
+
+  async function onDelete(id) {
+    await deleteAddress({ addressId: id })
   }
 
   return (
@@ -72,8 +94,10 @@ const Addresses: React.FC<AddressesProps> = () => {
       <AddressContainer
         addresses={addresses}
         defaultAddress={defaultAddress}
+        onDefaultSelect={onDefaultSelect}
+        onDelete={onDelete}
       ></AddressContainer>
-      <div onClick={() => onAddressPlus()}>
+      <div className="add" onClick={() => onAddressPlus()}>
         <PlusIcon></PlusIcon>
       </div>
 
