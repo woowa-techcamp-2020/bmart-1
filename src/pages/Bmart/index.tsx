@@ -297,6 +297,14 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
     )
   }, [])
 
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      const path = location.pathname.replace('/', '')
+
+      navigateSlidePageTo(pathToIndex(path))
+    })
+  }, [])
+
   return (
     <div className="bmart">
       <Header />
