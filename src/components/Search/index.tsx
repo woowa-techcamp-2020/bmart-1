@@ -5,7 +5,9 @@ import SearchInputContainer from './SearchInputContainer'
 import SearchTerms from './SearchTerms'
 import './style.scss'
 
-export type SearchProps = unknown
+export type SearchProps = {
+  topMargin?: string
+}
 
 function saveSearchTerm(term) {
   if (!term.trim()) return
@@ -35,7 +37,7 @@ let lastSearchTerm = ''
 let page = 0
 let timer = null
 
-const Search: React.FC<SearchProps> = () => {
+const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [isSkeletonOn, setIsSkeletonOn] = useState(true)
@@ -104,7 +106,7 @@ const Search: React.FC<SearchProps> = () => {
   }
 
   return (
-    <div className="search">
+    <div className="search" style={{ height: `calc(85vh - ${topMargin})` }}>
       <SearchInputContainer
         inputValue={inputValue}
         onInputChange={onInputChange}
