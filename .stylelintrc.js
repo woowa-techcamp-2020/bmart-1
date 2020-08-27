@@ -11,5 +11,6 @@ module.exports = {
     'declaration-colon-newline-after': null,
     'function-name-case': null,
     'value-keyword-case': null,
+    indentation: null,
   },
 }
