@@ -1,0 +1,30 @@
+@use '~src/styles/design-system' as *;
+
+.search-and-cart {
+  button {
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    right: 20px;
+    border-radius: 9999px;
+
+    @include foundation-translucent;
+
+    box-shadow: var(--shortcut-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include dark-mode {
+      border: 1px solid rgba(#fff, 0.15);
+    }
+
+    &.search {
+      bottom: 85px;
+    }
+
+    &.cart {
+      bottom: 20px;
+    }
+  }
+}
