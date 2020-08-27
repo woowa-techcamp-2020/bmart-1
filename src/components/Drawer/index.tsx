@@ -190,7 +190,9 @@ function getFirstTouchY(event: React.TouchEvent) {
 function getRefHeight(ref: RefObject<HTMLDivElement>): number {
   if (!ref?.current) return 0
 
-  return ref.current.getBoundingClientRect().height
+  return ref.current.clientHeight
+
+  // return ref.current.getBoundingClientRect().height
 }
 
 function moveRef(
@@ -201,7 +203,12 @@ function moveRef(
 
   const { position, smooth = false } = options
 
-  ref.current.style.transform = `translateX(-50%) translateY(${position}px)`
+  if (position === -1) {
+    ref.current.style.transform = `translateX(-50%) translateY(110%)`
+  } else {
+    ref.current.style.transform = `translateX(-50%) translateY(${position}px)`
+  }
+
   ref.current.style.transition = smooth ? `transform 500ms ease` : ``
 }
 

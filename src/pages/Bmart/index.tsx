@@ -328,7 +328,9 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
       <Header />
       <div className="slide-pages-scroll-wrapper" ref={slidePagesWrapper}>
         <SlidePage pageName="home">
-          <Home />
+          <LazyLoader>
+            <Home />
+          </LazyLoader>
         </SlidePage>
         <SlidePage pageName="sale">
           <LazyLoader>

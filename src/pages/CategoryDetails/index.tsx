@@ -51,7 +51,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   }
 
   function setCategory(category) {
-    history.push(`/category/${category}`)
+    history.replace(`/category/${category}`)
   }
 
   async function getProducts() {
@@ -79,6 +79,8 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
     if (subCategory === '') return
 
     setPage(0)
+
+    setProducts([])
   }, [subCategory, sortBy])
 
   useEffect(() => {

@@ -7,8 +7,6 @@ import CategoryItem, {
 } from 'src/components/CategoryItem'
 import LazyLoader from 'src/components/LazyLoader'
 import SlotMachine from 'src/components/SlotMachine'
-import { $sel } from 'src/utils'
-import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 import TopicContainer from './TopicContainer'
 
@@ -28,25 +26,11 @@ const Home: React.FC<HomeProps> = () => {
             )}
           </div>
         </div>
-
         <LazyLoader>
-          <TopicContainer
-            title="🤔 지금 뭐 먹지?"
-            type="now"
-            onFinished={() => {
-              restoreScroll(window.location.pathname, $sel('.slide-page'))
-            }}
-          />
+          <TopicContainer title="🤔 지금 뭐 먹지?" type="now" />
         </LazyLoader>
-
         <LazyLoader>
-          <TopicContainer
-            title="🎉 새로 나왔어요"
-            type="new"
-            onFinished={() => {
-              restoreScroll(window.location.pathname, $sel('.slide-page'))
-            }}
-          />
+          <TopicContainer title="🎉 새로 나왔어요" type="new" />
         </LazyLoader>
 
         <div className="version">

@@ -6,12 +6,38 @@
   margin: auto;
   text-align: center;
 
+  .mock {
+    font-size: 20px;
+    border-radius: 7px;
+    height: 1.2em;
+    line-height: 140%;
+    background-color: #bbb;
+    color: #bbb;
+    margin-right: 0.7rem;
+  }
+
   .signed-in {
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     .profile-image {
       width: 100%;
       max-width: 400px;
+      height: auto;
       margin: auto;
       border-radius: 20px;
+    }
+
+    .profile-image-fake {
+      display: inline-block;
+      width: 100%;
+      min-height: 335px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 20px;
+      background-color: #bbb;
     }
 
     .user-info {

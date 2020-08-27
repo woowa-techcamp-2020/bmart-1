@@ -5,8 +5,7 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
-import { useLazy } from 'src/utils/hooks'
-import { restoreScroll } from 'src/utils/scroll-manager'
+import { useLazy, useSigned } from 'src/utils/hooks'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -69,29 +68,7 @@ export type SaleProps = unknown
 const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
   const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
-
-  useLazy(getSaleProducts)
-
-  async function getSaleProducts() {
-    const allProducts = (
-      await Promise.all(
-        DEFAULTS.CATEGORIES.map((category) =>
-          request(
-            `/products-by-category${createQuery({
-              category: category,
-              sortBy: 'discount',
-              direction: 'desc',
-              amount: '1',
-              page: '1',
-            })}`,
-            'GET'
-          )
-        )
-      )
-    ).flat()
-
-    setSaleProducts((prev) => [...prev, ...allProducts])
-  }
+  const { isSigned } = useSigned()
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -113,34 +90,38 @@ const Sale: React.FC<SaleProps> = () => {
 
   const salePage = useRef<HTMLDivElement>()
 
-  useEffect(() => {
-    async function init() {
-      const allProducts = (
-        await Promise.all(
-          DEFAULTS.CATEGORIES.map((category) =>
-            request(
-              `/products-by-category${createQuery({
-                category: category,
-                sortBy: 'discount',
-                direction: 'desc',
-                amount: '1',
-                page: '1',
-              })}`,
-              'GET'
-            )
+  async function init() {
+    const allProducts = (
+      await Promise.all(
+        DEFAULTS.CATEGORIES.map((category) =>
+          request(
+            `/products-by-category${createQuery({
+              category: category,
+              sortBy: 'discount',
+              direction: 'desc',
+              amount: '1',
+              page: '1',
+            })}`,
+            'GET'
           )
         )
-      ).flat()
-
-      setSaleProducts((prev) => [...prev, ...allProducts])
-      restoreScroll(
-        window.location.pathname,
-        salePage.current.closest('.slide-page')
       )
-    }
+    ).flat()
 
+    // setSaleProducts((prev) => [...prev, ...allProducts])
+    setSaleProducts(allProducts)
+    // restoreScroll(
+    //   window.location.pathname,
+    //   salePage.current?.closest('.slide-page')
+    // )
+  }
+
+  useLazy(init)
+
+  useEffect(() => {
+    setSaleProducts([])
     init()
-  }, [])
+  }, [isSigned])
 
   return (
     <div className="sale-page" ref={salePage}>

@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState, useEffect } from 'react'
 import { search } from 'src/apis'
 import ProductContainer from 'src/components/ProductContainer'
 import { useSigned } from 'src/utils/hooks'
+import { DrawerContext } from '../Drawer'
 import SearchInputContainer from './SearchInputContainer'
 import SearchTerms from './SearchTerms'
 import './style.scss'
@@ -45,6 +46,7 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   const [recentTerms, setRecentTerms] = useState(getRecentTerms())
   const [isKeywordsOn, setIsKeywordsOn] = useState(true)
   const { isSigned } = useSigned()
+  const { closeDrawer } = useContext(DrawerContext)
 
   const self = useRef<HTMLDivElement>()
 
@@ -150,6 +152,7 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
           products={foundProducts}
           onLoadMore={onLoadMore}
           onClickToTop={toTop}
+          onClick={closeDrawer}
         />
       )}
     </div>

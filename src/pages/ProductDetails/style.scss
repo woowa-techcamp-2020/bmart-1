@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 100px;
 
   &-image {
     width: calc(100% - var(--ordinary-space) * 2);
@@ -99,14 +100,15 @@
 
         &-marker {
           position: absolute;
-          right: -12px;
-          top: -15px;
+          right: -17px;
+          top: -20px;
           background-color: var(--distinct);
           padding: 2px 5px;
           line-height: 1;
           text-align: center;
           color: var(--foundation);
-          font-size: 14px;
+          font-size: 16px;
+          font-weight: 600;
           border-radius: $circle;
         }
       }
