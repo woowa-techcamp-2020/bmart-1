@@ -23,7 +23,7 @@ const SearchAndCart: React.FC<SearchAndCartProps> = () => {
 
   return (
     <div className="search-and-cart">
-      {visibility[0] && (
+      {visibility[0] === 1 && (
         <button className="search">
           <svg
             width="22"
@@ -40,7 +40,7 @@ const SearchAndCart: React.FC<SearchAndCartProps> = () => {
         </button>
       )}
       {/* TODO: 아직 000원 이렇게 표시 */}
-      {visibility[1] && (
+      {visibility[1] === 1 && (
         <Link to="/cart">
           <button className="cart">
             <svg
