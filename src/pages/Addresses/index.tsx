@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import {
   addAddresss,
   deleteAddress,
+  editAddress,
   getUser,
   setDefaultAddressId,
 } from 'src/apis'
@@ -18,6 +19,7 @@ type AddressContainerProps = {
   defaultAddress: number
   onDefaultSelect?: (id: number) => void
   onDelete?: (id: number) => void
+  onEdit?: (id: number) => void
 }
 
 const AddressContainer: React.FC<AddressContainerProps> = ({
@@ -25,6 +27,7 @@ const AddressContainer: React.FC<AddressContainerProps> = ({
   defaultAddress,
   onDelete,
   onDefaultSelect,
+  onEdit,
 }) => {
   return (
     <>
@@ -35,6 +38,7 @@ const AddressContainer: React.FC<AddressContainerProps> = ({
           isDefault={x.id === defaultAddress}
           onDelete={() => onDelete(x.id)}
           onSelect={() => onDefaultSelect(x.id)}
+          onEdit={() => onEdit(x.id)}
         ></AddressItem>
       ))}
     </>
@@ -44,6 +48,7 @@ const AddressContainer: React.FC<AddressContainerProps> = ({
 export type AddressesProps = unknown
 
 const Addresses: React.FC<AddressesProps> = () => {
+  const [address, setAddress] = useState<Address>()
   const [addresses, setAddresses] = useState([])
   const [defaultAddress, setDefaultAddress] = useState<number>(0)
   const [isEditOpen, setEditOpen] = useState(false)
@@ -65,15 +70,15 @@ const Addresses: React.FC<AddressesProps> = () => {
   }
 
   async function onAddSubmit(address1, address2) {
-    console.log(address1, address2)
     await addAddresss({ address1, address2 })
     setAddOpen(false)
     await getAddresses()
   }
 
-  function onEditSubmit(address1, address2) {
-    console.log(address1, address2)
+  async function onEditSubmit(address1, address2) {
+    await editAddress({ addressId: address.id, address1, address2 })
     setEditOpen(false)
+    await getAddresses()
   }
 
   async function onDefaultSelect(id) {
@@ -84,6 +89,11 @@ const Addresses: React.FC<AddressesProps> = () => {
   async function onDelete(id) {
     await deleteAddress({ addressId: id })
     await getAddresses()
+  }
+
+  function onEdit(id) {
+    setAddress(addresses.find((x) => x.id == id))
+    setEditOpen(true)
   }
 
   return (
@@ -97,6 +107,7 @@ const Addresses: React.FC<AddressesProps> = () => {
         defaultAddress={defaultAddress}
         onDefaultSelect={onDefaultSelect}
         onDelete={onDelete}
+        onEdit={onEdit}
       ></AddressContainer>
       <div className="add" onClick={onAddressPlus}>
         <PlusIcon></PlusIcon>
@@ -114,6 +125,8 @@ const Addresses: React.FC<AddressesProps> = () => {
         <AddressModal
           title="배송지 수정"
           buttonText="수정"
+          address1={address.address1}
+          address2={address.address2}
           onCancel={() => setEditOpen(false)}
           onSubmit={onEditSubmit}
         ></AddressModal>

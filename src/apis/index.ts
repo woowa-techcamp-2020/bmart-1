@@ -180,3 +180,7 @@ export async function addAddresss(body: AddAddressApiRequestBody) {
 export async function deleteAddress(body: DeleteAddressRequestBody) {
   return await request('/delete-address', 'DELETE', body)
 }
+
+export async function editAddress(body: EditAddressApiRequestBody) {
+  return await request('/edit-address', 'PUT', body)
+}

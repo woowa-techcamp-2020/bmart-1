@@ -7,8 +7,8 @@ import { prisma } from '../utils/prisma'
 
 const editAddressRouter = express.Router()
 
-editAddressRouter.post(
-  '/add-address',
+editAddressRouter.put(
+  '/edit-address',
   [
     body('addressId').isInt().toInt(),
     body('address1').trim().exists({ checkFalsy: true }).isString(),
@@ -25,6 +25,7 @@ editAddressRouter.post(
       await prisma.address.update({
         where: {
           id: addressId,
+          userId,
         },
         data: {
           address1,
