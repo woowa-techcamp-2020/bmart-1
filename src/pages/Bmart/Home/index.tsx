@@ -28,18 +28,12 @@ const Home: React.FC<HomeProps> = () => {
           </div>
         </div>
 
-        <TopicContainer
-          title="🤔 지금 뭐 먹지?"
-          type="now"
-          onFinished={() => {
-            restoreScroll(window.location.pathname, $sel('.slide-page'))
-          }}
-        />
+        <TopicContainer title="🤔 지금 뭐 먹지?" type="now" />
         <TopicContainer
           title="🎉 새로 나왔어요"
           type="new"
           onFinished={() => {
-            restoreScroll(window.location.pathname, $sel('.slide-page'))
+            restoreScroll('/home', $sel('.slide-page'))
           }}
         />
 
