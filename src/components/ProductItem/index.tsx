@@ -6,6 +6,7 @@ import DiscountLabel from 'src/components/icons/DiscountLabel'
 import HeartIcon from 'src/components/icons/HeartIcon'
 import { CONSTRAINT } from 'src/constants'
 import { toPriceLabel } from 'src/utils'
+import { useSigned } from 'src/utils/hooks'
 import ColorfulBrokenHeartIcon from '../icons/ColorfulBrokenHeartIcon'
 import ColorfulHeartIcon from '../icons/ColorfulHeartIcon'
 import './style.scss'
@@ -47,6 +48,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   size = 'small',
 }) => {
   const [isJjimmedLocal, setIsJjimmedLocal] = useState(isJjimmed)
+  const { isSigned } = useSigned()
 
   const history = useHistory()
   const productItemCoverRef = useRef<HTMLDivElement>()
@@ -63,6 +65,8 @@ const ProductItem: React.FC<ProductItemProps> = ({
     coordX = clientX
     coordY = clientY
     timer = setTimeout(async () => {
+      if (!isSigned) return
+
       isLongPress = true
       await toggleJjim({ productId: id })
       productItemCoverRef.current.classList.remove('hidden')
