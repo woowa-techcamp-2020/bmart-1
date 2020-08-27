@@ -53,7 +53,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
   ) : (
     <div className="product-container" ref={gridRef}>
       {isSkeletonOn
-        ? Array(8)
+        ? Array(Math.max(8, products.length))
             .fill(undefined)
             .map((_, idx) => (
               <div key={idx} className="product-container-product">
@@ -62,7 +62,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
             ))
         : products.map((result, idx) => (
             <div
-              key={result.id}
+              key={idx}
               className="product-container-product"
               style={{
                 animationDelay: `${getRowNumber(idx, itemNumsInRow) * 200}ms`,

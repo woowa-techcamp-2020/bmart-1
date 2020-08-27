@@ -14,7 +14,10 @@ export function tokenVerifier() {
     try {
       if (!token) throw new Error(ERROR_MSG.NO_TOKEN)
 
-      const { userId } = jwt.verify(token, process.env.TOKEN_SECRET) as DecodedData
+      const { userId } = jwt.verify(
+        token,
+        process.env.TOKEN_SECRET
+      ) as DecodedData
 
       req.auth = {
         userId,
@@ -45,16 +48,25 @@ export function needToken() {
   }
 }
 
-export function requestValidator() {
-  return (req: Request, res: Response, next: NextFunction) => {
+export function requestValidator<B = {}, Q = {}>() {
+  return (
+    req: Request<{}, {}, B, Q>,
+    res: Response,
+    next: NextFunction
+  ): void => {
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-      return res.status(STATUS_CODE.BAD_REQUEST).json({
-        message: `${ERROR_MSG.BAD_REQUEST} ${errors
-          .array()
-          .map(({ value, msg, param }) => `${msg} ${value} for ${param}`)}`,
-      })
+      res
+        .status(STATUS_CODE.BAD_REQUEST)
+        .json({
+          message: `${ERROR_MSG.BAD_REQUEST} ${errors
+            .array()
+            .map(({ value, msg, param }) => `${msg} ${value} for ${param}`)}`,
+        })
+        .end()
+
+      return
     }
 
     next()

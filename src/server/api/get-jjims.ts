@@ -5,21 +5,26 @@ import { prisma } from '../utils/prisma'
 
 const getJjimsRouter = express.Router()
 
-getJjimsRouter.get('/jjims', async (req: Request, res: Response<GetJjimsApiResponse>) => {
-  const userId = req.auth?.userId
+getJjimsRouter.get(
+  '/jjims',
+  async (req: Request, res: Response<GetJjimsApiResponse>) => {
+    const userId = req.auth?.userId
 
-  try {
-    const jjims = await prisma.jjim.findMany({
-      where: {
-        userId,
-      },
-    })
+    try {
+      const jjims = await prisma.jjim.findMany({
+        where: {
+          userId,
+        },
+      })
 
-    res.send(jjims)
-  } catch (e) {
-    console.error(e)
-    res.status(STATUS_CODE.INTERNAL_ERROR).send({ message: ERROR_MSG.INTERNAL_ERROR })
+      res.send(jjims)
+    } catch (e) {
+      console.error(e)
+      res
+        .status(STATUS_CODE.INTERNAL_ERROR)
+        .send({ message: ERROR_MSG.INTERNAL_ERROR })
+    }
   }
-})
+)
 
 export { getJjimsRouter }

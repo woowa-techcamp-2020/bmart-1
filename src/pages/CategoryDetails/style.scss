@@ -6,6 +6,9 @@ body {
   padding: 25px;
   font-weight: 600;
   user-select: none;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-anchor: none;
 
   .title {
     display: flex;
