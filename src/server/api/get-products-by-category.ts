@@ -2,12 +2,10 @@ import { ProductOrderByInput } from '@prisma/client'
 import express, { Request, Response } from 'express'
 import { query } from 'express-validator'
 import { ERROR_MSG, STATUS_CODE } from '~/../constants'
-import {
-  GetProductsByCategoryApiRequestQuery,
-  GetProductsByCategoryApiResponse,
-} from '~/../types/api'
+import { GetProductsByCategoryApiResponse } from '~/../types/api'
 import { requestValidator } from '~/middlewares'
 import { prisma } from '../utils/prisma'
+import { GetProductsByCategoryApiRequestQuery } from './../../types/api'
 
 const getProductsByCategoryRouter = express.Router()
 
@@ -21,8 +19,8 @@ getProductsByCategoryRouter.get(
     query('amount').optional().toInt().isInt(),
     query('sortBy').optional().isString(),
     query('direction').optional().isString(),
-    requestValidator(),
   ],
+  requestValidator<{}, GetProductsByCategoryApiRequestQuery>(),
   async (
     req: Request<{}, {}, {}, GetProductsByCategoryApiRequestQuery>,
     res: Response<GetProductsByCategoryApiResponse>
@@ -67,12 +65,12 @@ getProductsByCategoryRouter.get(
           return { ...productInfo, isJjimmed: jjims.length > 0 }
         })
 
-        res.json(productsWithJjimmed)
+        res.json(productsWithJjimmed).end()
 
         return
       }
 
-      res.json(products)
+      res.json(products).end()
     } catch (e) {
       console.log(e)
 
