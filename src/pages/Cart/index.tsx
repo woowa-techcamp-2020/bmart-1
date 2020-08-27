@@ -23,11 +23,17 @@ function getTotalAmount(products: ProductsInCart) {
 const Cart: React.FC<CartProps> = (props) => {
   const [productsInCart, setProductsInCart] = useState<ProductInCart[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
+  const [isEmpty, setEmpty] = useState(false)
 
   async function loadProductsInCart() {
     const productsInCart = (await getProductsInCart()) as ProductInCart[]
 
     setProductsInCart(productsInCart)
+
+    if (productsInCart.length == 0) {
+      setEmpty(true)
+    }
+
     setTotalAmount(getTotalAmount(productsInCart))
   }
 
@@ -39,7 +45,7 @@ const Cart: React.FC<CartProps> = (props) => {
     <div className="cart">
       <GoBack />
       <PageHeader Icon={ResizableCartIcon} title="장바구니"></PageHeader>
-      {productsInCart.length > 0 ? (
+      {!isEmpty ? (
         <>
           <div className="cart-items">
             {productsInCart.map((product) => (
