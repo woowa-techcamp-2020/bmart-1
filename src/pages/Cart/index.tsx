@@ -5,8 +5,10 @@ import Empty from 'src/components/Empty'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import PageHeader from 'src/components/PageHeader'
 import GoBack from 'src/components/shortcuts/GoBack'
+import { getCartLS } from 'src/pages/ProductDetails'
 import { ProductInCart, ProductsInCart } from 'src/types/api'
 import { Dialog } from 'src/utils/dialog'
+import { useSigned } from 'src/utils/hooks'
 import CartItem from './CartItem'
 import './style.scss'
 
@@ -21,14 +23,21 @@ function getTotalAmount(products: ProductsInCart) {
   return totalAmount
 }
 
-const Cart: React.FC<CartProps> = (props) => {
+const Cart: React.FC<CartProps> = () => {
   const [productsInCart, setProductsInCart] = useState<ProductInCart[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
+  const { isSigned } = useSigned()
   const [isEmpty, setEmpty] = useState(false)
   const [isLoading, setLoading] = useState(true)
 
   async function loadProductsInCart() {
-    const productsInCart = (await getProductsInCart()) as ProductInCart[]
+    let productsInCart
+
+    if (!isSigned) {
+      productsInCart = getCartLS()
+    } else {
+      productsInCart = (await getProductsInCart()) as ProductInCart[]
+    }
 
     setLoading(false)
     setProductsInCart(productsInCart)

@@ -2,12 +2,39 @@ import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { deleteFromCart, PatchProductQuantityInCart } from 'src/apis'
 import MinusPlus from 'src/components/MinusPlus'
+import { getCartLS } from 'src/pages/ProductDetails'
 import { ProductInCart } from 'src/types/api'
+import { useSigned } from 'src/utils/hooks'
 import './style.scss'
 
 export type CartItemProps = {
   productInCart: ProductInCart
   onChange: () => void
+}
+
+function updateCartLS(productId, quantity) {
+  const currentCartLS = getCartLS()
+
+  const newCartLS = currentCartLS.map((elem) => {
+    if (elem.product.productId === productId) {
+      elem.quantity = quantity
+      elem.product.quantityInCart = quantity
+    }
+
+    return elem
+  })
+
+  localStorage.setItem('cartTemp', JSON.stringify(newCartLS))
+}
+
+function removeFromCartLS(productId) {
+  const currentCartLS = getCartLS()
+
+  const newCartLS = currentCartLS.filter(
+    (elem) => elem.product.productId !== productId
+  )
+
+  localStorage.setItem('cartTemp', JSON.stringify(newCartLS))
 }
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -18,6 +45,7 @@ const CartItem: React.FC<CartItemProps> = ({
   onChange,
 }) => {
   const cartItem = useRef<HTMLDivElement>()
+  const { isSigned } = useSigned()
 
   // TODO: 넓은 화면일 때 이동 핸들링
   function shrinkCartItem() {
@@ -31,15 +59,25 @@ const CartItem: React.FC<CartItemProps> = ({
   }
 
   async function onQuantityChange(changedQuantity) {
-    await PatchProductQuantityInCart({
-      productId: id,
-      quantity: changedQuantity,
-    })
+    if (!isSigned) {
+      updateCartLS(id, changedQuantity)
+    } else {
+      await PatchProductQuantityInCart({
+        productId: id,
+        quantity: changedQuantity,
+      })
+    }
+
     onChange()
   }
 
   async function onDeleteTransitionEnd() {
-    await deleteFromCart({ productIds: [id] })
+    if (!isSigned) {
+      removeFromCartLS(id)
+    } else {
+      await deleteFromCart({ productIds: [id] })
+    }
+
     onChange()
   }
 

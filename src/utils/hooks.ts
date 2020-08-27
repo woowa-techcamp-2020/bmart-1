@@ -13,6 +13,7 @@ export function useSigned() {
   function signOut() {
     localStorage.removeItem('recentTerms')
     localStorage.removeItem('token')
+    localStorage.removeItem('cartTemp')
     setSigned(false)
   }
 

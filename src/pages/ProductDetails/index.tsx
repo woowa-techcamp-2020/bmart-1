@@ -16,6 +16,53 @@ import './style.scss'
 
 export type ProductDetailsProps = unknown
 
+function findFromCartLS(id) {
+  const currentCartLS = getCartLS()
+
+  if (!currentCartLS.length) return null
+
+  const foundProduct = currentCartLS.filter(
+    (elem) => elem.product.id === parseInt(id)
+  )[0]
+
+  return foundProduct && foundProduct.product
+}
+
+function pushToCartLS({ id: productId, ...rest }, quantity) {
+  const productProcessed = {
+    quantity,
+    productId,
+    product: {
+      id: productId,
+      productId,
+      ...rest,
+      quantityInCart: quantity,
+    },
+  }
+  const currentCartLS = getCartLS()
+
+  const idx = currentCartLS.findIndex(
+    (elem) => elem.product.productId === productId
+  )
+
+  let newCartLS
+
+  if (idx === -1) {
+    newCartLS = [productProcessed, ...currentCartLS]
+  } else {
+    newCartLS = currentCartLS
+    newCartLS.splice(idx, 1, productProcessed)
+  }
+
+  localStorage.setItem('cartTemp', JSON.stringify(newCartLS))
+}
+
+export function getCartLS() {
+  const currentCartLS = localStorage.getItem('cartTemp')
+
+  return JSON.parse(currentCartLS) ?? []
+}
+
 const ProductDetails: React.FC<ProductDetailsProps> = () => {
   const [product, setProduct] = useState<Product>(null)
   const [isCartOpened, setIsCartOpened] = useState<boolean>(false)
@@ -26,7 +73,18 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
   const { productId } = useParams()
 
   async function loadProductDetail() {
-    const loadedProduct = await getProduct({ productId })
+    let loadedProduct
+
+    loadedProduct = await getProduct({ productId })
+
+    if (!isSigned) {
+      const productLS = findFromCartLS(productId)
+
+      if (productLS) {
+        loadedProduct = productLS
+        console.log(productLS)
+      }
+    }
 
     setProduct(loadedProduct)
     setIsJjimmed(loadedProduct.isJjimmed ?? false)
@@ -48,17 +106,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
   }
 
   function onCartClick() {
-    if (!isSigned) {
-      loginAlert()
-
-      return
-    }
-
     setIsCartOpened(true)
   }
 
   async function onConfirm() {
-    await addToCart({ productId: product.id, quantity: quantityTemp })
+    if (!isSigned) {
+      pushToCartLS(product, quantityTemp)
+    } else {
+      await addToCart({ productId: product.id, quantity: quantityTemp })
+    }
+
     setQuantityInCart(quantityTemp)
     setIsCartOpened(false)
   }

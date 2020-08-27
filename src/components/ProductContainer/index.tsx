@@ -12,6 +12,7 @@ export type ProductContainerProps = {
   onClick?: () => void
   products: (Product | ProductWithJjimmed)[]
   onLoadMore?: () => void
+  onClickToTop?: () => void
 }
 
 // let previousIntersectingStatus
@@ -22,11 +23,14 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
   onClick,
   isEmpty,
   onLoadMore,
+  onClickToTop,
 }) => {
   const gridRef = useRef<HTMLDivElement>()
+  const topButton = useRef<HTMLDivElement>()
   const [itemNumsInRow, setItemNumbersInRow] = useState<number>()
 
   const sentinel = useRef<HTMLDivElement>()
+  const topSentinel = useRef<HTMLDivElement>()
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -39,8 +43,21 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
 
     observer.observe(sentinel.current)
 
+    const topObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) {
+          topButton.current.classList.remove('hidden')
+        } else {
+          topButton.current.classList.add('hidden')
+        }
+      }
+    })
+
+    topObserver.observe(topSentinel.current)
+
     return () => {
       observer.disconnect()
+      topObserver.disconnect()
     }
   }, [])
 
@@ -72,9 +89,17 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
   return (
     <>
       {isEmpty && <Empty />}
-
-      <div className="product-container" ref={gridRef}>
-        {/* {isSkeletonOn
+      <div className="grid-wrapper">
+        <div className="top-sentinel" ref={topSentinel}></div>
+        <div
+          className="to-top-button hidden"
+          onClick={onClickToTop}
+          ref={topButton}
+        >
+          TOP
+        </div>
+        <div className="product-container" ref={gridRef}>
+          {/* {isSkeletonOn
           ? Array(Math.max(8, products.length))
               .fill(undefined)
               .map((_, idx) => (
@@ -96,21 +121,24 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
               </div>
             ))} */}
 
-        {products.map((result, idx) => (
-          <div
-            key={result.id}
-            className="product-container-product"
-            // style={{
-            //   animationDelay: `${
-            //     (getRowNumber(idx, itemNumsInRow) % 10) * 200
-            //   }ms`,
-            // }}
-          >
-            <ProductItem {...result} onClick={onClick} />
-          </div>
-        ))}
 
-        <div className="sentinel" ref={sentinel}></div>
+          {!isSkeletonOn &&
+            products.map((result, idx) => (
+              <div
+                key={result.id}
+                className="product-container-product"
+                // style={{
+                //   animationDelay: `${
+                //     (getRowNumber(idx, itemNumsInRow) % 10) * 200
+                //   }ms`,
+                // }}
+              >
+                <ProductItem {...result} />
+              </div>
+            ))}
+
+          <div className="sentinel" ref={sentinel}></div>
+        </div>
       </div>
     </>
   )

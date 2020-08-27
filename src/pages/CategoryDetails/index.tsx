@@ -3,6 +3,7 @@ import React, {
   Dispatch,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
@@ -43,6 +44,8 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const [isLoading, setLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(0)
 
+  const self = useRef<HTMLDivElement>()
+
   function onLoadMore() {
     setPage((page) => page + 1)
   }
@@ -68,6 +71,10 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
     }
   }
 
+  function toTop() {
+    self.current.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     if (subCategory === '') return
 
@@ -88,7 +95,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   }, [page])
 
   return (
-    <div className="category-details">
+    <div className="category-details" ref={self}>
       <div className="title" onClick={() => setCategoryOpened(true)}>
         {category}
         <ChevronDownIcon />
@@ -106,6 +113,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
         isSkeletonOn={isLoading}
         products={products}
         onLoadMore={onLoadMore}
+        onClickToTop={toTop}
       ></ProductContainer>
       <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>
         <OptionSelector

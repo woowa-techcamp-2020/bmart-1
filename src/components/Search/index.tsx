@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useEffect } from 'react'
 import { search } from 'src/apis'
 import ProductContainer from 'src/components/ProductContainer'
 import { useSigned } from 'src/utils/hooks'
@@ -42,11 +42,17 @@ let timer = null
 const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   const [foundProducts, setFoundProducts] = useState([])
   const [inputValue, setInputValue] = useState('')
-  const [isSkeletonOn, setIsSkeletonOn] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [recentTerms, setRecentTerms] = useState(getRecentTerms())
   const [isKeywordsOn, setIsKeywordsOn] = useState(true)
   const { isSigned } = useSigned()
   const { closeDrawer } = useContext(DrawerContext)
+
+  const self = useRef<HTMLDivElement>()
+
+  function toTop() {
+    self.current.closest('.container').scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     if (!isSigned) {
@@ -71,7 +77,7 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   }, [inputValue])
 
   function onInputChange(value) {
-    setIsSkeletonOn(true)
+    setIsLoading(true)
     setInputValue(value)
     debounce(value)
   }
@@ -94,7 +100,7 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
     if (!term.trim()) return
 
     if (term === lastSearchTerm) {
-      setIsSkeletonOn(false)
+      setIsLoading(false)
       const copiedProducts = foundProducts.slice()
 
       setFoundProducts(copiedProducts)
@@ -103,9 +109,11 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
     }
 
     page = 0
+
+    setIsLoading(true)
     const searchResults = await search({ term, page })
 
-    setIsSkeletonOn(false)
+    setIsLoading(false)
 
     setFoundProducts(searchResults)
     saveSearchTerm(term)
@@ -118,7 +126,11 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
   }
 
   return (
-    <div className="search" style={{ height: `calc(85vh - ${topMargin})` }}>
+    <div
+      className="search"
+      style={{ height: `calc(85vh - ${topMargin})` }}
+      ref={self}
+    >
       <SearchInputContainer
         inputValue={inputValue}
         onInputChange={onInputChange}
@@ -135,9 +147,11 @@ const Search: React.FC<SearchProps> = ({ topMargin = '20px' }) => {
         />
       ) : (
         <ProductContainer
-          isSkeletonOn={isSkeletonOn}
+          isEmpty={!isLoading && !foundProducts.length}
+          isSkeletonOn={isLoading}
           products={foundProducts}
           onLoadMore={onLoadMore}
+          onClickToTop={toTop}
           onClick={closeDrawer}
         />
       )}
