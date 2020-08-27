@@ -30,7 +30,7 @@ export function useLazy(callback) {
 
   useEffect(() => {
     if (isLoaded) {
-      callback()
+      callback && callback()
     }
   }, [isLoaded])
 }
