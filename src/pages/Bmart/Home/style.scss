@@ -10,7 +10,7 @@
     .categories-container {
       display: grid;
       gap: var(--ordinary-space);
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
       max-width: 800px;
       margin: auto;
     }
