@@ -10,6 +10,7 @@ const NO_ACTION = 'NO_ACTION' as const
 const PULLING = 'PUULING' as const
 const RELEASING = 'RELEASING' as const
 const WAITING = 'WAITING' as const
+const QUICK_RESETING = 'QUICK_RESETING' as const
 const RESETING = 'RESETING' as const
 
 type ActionType =
@@ -19,6 +20,7 @@ type ActionType =
   | typeof RELEASING
   | typeof WAITING
   | typeof RESETING
+  | typeof QUICK_RESETING
 
 const MIN_PULL_LENGTH = 100
 const MAX_PULL_LENGTH = 600
@@ -94,6 +96,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     if (action === PULLING) {
       if (y < currentY) {
         // 새로 받은 y가 이전의 currentY보다 작다. (드래그 중 마우스를 위로 올렸을 때)
+        requestedActions.length = 0
         requestedActions.push({ type: RELEASING, y, startAt, done })
       }
     }
@@ -146,6 +149,10 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   function animate(t) {
     if (animateRef.current == null) return
 
+    if ($sel('.slide-page')?.scrollTop) {
+      requestAction({ type: QUICK_RESETING })
+    }
+
     requestedActions
       .filter((x) => x.startAt == 0 || x.startAt < t)
       .map((requestedAction) => {
@@ -163,6 +170,12 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
           case WAITING:
             action = WAITING
             requestAction({ type: RESETING, startAt: t + WAITING_DURATION })
+            break
+
+          case QUICK_RESETING:
+            action = QUICK_RESETING
+            moveSlotDown(0) // TODO: REMOVE THIS
+            action = NO_ACTION
             break
 
           case NO_ACTION:
