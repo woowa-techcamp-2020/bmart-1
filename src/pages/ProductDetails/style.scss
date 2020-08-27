@@ -1,6 +1,10 @@
 .product-details {
   width: 100%;
   text-align: center;
+  min-height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   &-image {
     width: calc(100% - var(--ordinary-space) * 2);
