@@ -10,34 +10,37 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    // background-color: var(--element);
-    // padding: 5px 9px;
-    // border-radius: 9999px;
-    // transition: transform 100ms ease;
+    background-color: var(--element);
+    border-radius: 9999px;
+    transition: transform 100ms ease;
+    padding: 0 5px;
 
     &.traveling {
       transform: scale(1.5);
+      cursor: pointer;
     }
 
-    .dot {
-      $dot-color: #b0b0b0;
-      $dot-size: 3px;
+    .dot-wrapper {
+      height: 15px;
+      width: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      width: $dot-size;
-      height: $dot-size;
-      background-color: $dot-color;
-      border-radius: 9999px;
-      margin-right: 11px;
-      transition: background-color 200ms ease, box-shadow 200ms ease;
+      .dot {
+        $dot-color: #b0b0b0;
+        $dot-size: 3px;
 
-      &:last-child {
-        margin-right: 0;
-      }
+        width: $dot-size;
+        height: $dot-size;
+        background-color: $dot-color;
+        border-radius: 9999px;
+        transition: background-color 200ms ease, box-shadow 200ms ease;
 
-      &.current {
-        box-shadow: 0 0 0 1px var(--distinct);
-        background-color: var(--distinct);
-        background-color: var(--distinct);
+        &.current {
+          box-shadow: 0 0 0 1px var(--distinct);
+          background-color: var(--distinct);
+        }
       }
     }
   }
