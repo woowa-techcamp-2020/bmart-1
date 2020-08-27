@@ -2,8 +2,10 @@ import { Address } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
 import { getUser } from 'src/apis'
 import ParcelIcon from 'src/components/icons/ParcelICon'
+import PlusIcon from 'src/components/icons/PlusIcon'
 import PageHeader from 'src/components/PageHeader'
 import AddressItem from './AddressItem'
+import AddressModal from './AddressModal'
 import './style.scss'
 
 type AddressContainerProps = {
@@ -33,6 +35,8 @@ export type AddressesProps = unknown
 const Addresses: React.FC<AddressesProps> = () => {
   const [addresses, setAddresses] = useState([])
   const [defaultAddress, setDefaultAddress] = useState<number>(0)
+  const [isEditOpen, setEditOpen] = useState(false)
+  const [isAddOpen, setAddOpen] = useState(false)
 
   async function getAddresses() {
     const user = await getUser()
@@ -45,6 +49,20 @@ const Addresses: React.FC<AddressesProps> = () => {
     getAddresses()
   }, [])
 
+  function onAddressPlus() {
+    setAddOpen(true)
+  }
+
+  function onAddSubmit(address1, address2) {
+    console.log(address1, address2)
+    setAddOpen(false)
+  }
+
+  function onEditSubmit(address1, address2) {
+    console.log(address1, address2)
+    setEditOpen(false)
+  }
+
   return (
     <div className="addresses">
       <PageHeader
@@ -55,6 +73,26 @@ const Addresses: React.FC<AddressesProps> = () => {
         addresses={addresses}
         defaultAddress={defaultAddress}
       ></AddressContainer>
+      <div onClick={() => onAddressPlus()}>
+        <PlusIcon></PlusIcon>
+      </div>
+
+      {isAddOpen && (
+        <AddressModal
+          title="배송지 추가"
+          buttonText="추가"
+          onCancel={() => setAddOpen(false)}
+          onSubmit={onAddSubmit}
+        ></AddressModal>
+      )}
+      {isEditOpen && (
+        <AddressModal
+          title="배송지 수정"
+          buttonText="수정"
+          onCancel={() => setEditOpen(false)}
+          onSubmit={onEditSubmit}
+        ></AddressModal>
+      )}
     </div>
   )
 }

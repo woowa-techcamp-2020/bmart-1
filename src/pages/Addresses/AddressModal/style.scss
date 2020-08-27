@@ -1,0 +1,12 @@
+.address-modal {
+  .background {
+    position: fixed;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .body {
+    position: fixed;
+    z-index: 2;
+  }
+}

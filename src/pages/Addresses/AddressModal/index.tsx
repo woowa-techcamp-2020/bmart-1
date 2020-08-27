@@ -4,16 +4,16 @@ import './style.scss'
 export type AddressModalProps = {
   title: string
   buttonText: string
-  address1: string
-  address2: string
-  onSubmit?: () => void
+  address1?: string
+  address2?: string
+  onSubmit?: (address1: string, address2: string) => void
   onCancel?: () => void
 }
 
 const AddressModal: React.FC<AddressModalProps> = ({
   title,
-  address1: _address1,
-  address2: _address2,
+  address1: _address1 = '',
+  address2: _address2 = '',
   buttonText = '완료',
   onSubmit,
   onCancel,
@@ -39,8 +39,11 @@ const AddressModal: React.FC<AddressModalProps> = ({
           />
         </div>
         <div>
-          <a className="button" onClick={() => onSubmit && onSubmit()}>
-            완료
+          <a
+            className="button"
+            onClick={() => onSubmit && onSubmit(address1, address2)}
+          >
+            {buttonText}
           </a>
         </div>
       </div>
