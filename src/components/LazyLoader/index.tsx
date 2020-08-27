@@ -41,7 +41,7 @@ const LazyLoader: React.FC<LazyLoaderProps> = ({
     <div className="lazy-loader">
       <LazyLoaderContext.Provider value={{ isLoaded, setLoaded }}>
         <div className="sentinel" ref={sentinelRef}></div>
-        {(!hasCallback || isLoaded) && children}
+        {children}
       </LazyLoaderContext.Provider>
     </div>
   )

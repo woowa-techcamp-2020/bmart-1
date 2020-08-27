@@ -5,6 +5,7 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
+import { useLazy } from 'src/utils/hooks'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -68,6 +69,29 @@ const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
   const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
 
+  useLazy(getSaleProducts)
+
+  async function getSaleProducts() {
+    const allProducts = (
+      await Promise.all(
+        DEFAULTS.CATEGORIES.map((category) =>
+          request(
+            `/products-by-category${createQuery({
+              category: category,
+              sortBy: 'discount',
+              direction: 'desc',
+              amount: '1',
+              page: '1',
+            })}`,
+            'GET'
+          )
+        )
+      )
+    ).flat()
+
+    setSaleProducts((prev) => [...prev, ...allProducts])
+  }
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
@@ -84,31 +108,6 @@ const Sale: React.FC<SaleProps> = () => {
     return () => {
       observer.disconnect()
     }
-  }, [])
-
-  useEffect(() => {
-    async function init() {
-      const allProducts = (
-        await Promise.all(
-          DEFAULTS.CATEGORIES.map((category) =>
-            request(
-              `/products-by-category${createQuery({
-                category: category,
-                sortBy: 'discount',
-                direction: 'desc',
-                amount: '1',
-                page: '1',
-              })}`,
-              'GET'
-            )
-          )
-        )
-      ).flat()
-
-      setSaleProducts((prev) => [...prev, ...allProducts])
-    }
-
-    init()
   }, [])
 
   return (
