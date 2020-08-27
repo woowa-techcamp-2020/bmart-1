@@ -35,10 +35,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
 
     return setProduct(null)
   }, [])
+                 
+  function loginAlert() {
+    Dialog().alert('로그인을 해주세요 😂')
+  }
 
   function onCartClick() {
     if (!isSigned) {
-      Dialog().alert('로그인을 해주세요😂')
+      loginAlert()
 
       return
     }
@@ -52,7 +56,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
 
   async function onToggleJjim() {
     if (!isSigned) {
-      Dialog().alert('로그인을 해주세요😂')
+      loginAlert()
 
       return
     }
