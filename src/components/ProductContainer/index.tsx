@@ -121,7 +121,6 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
               </div>
             ))} */}
 
-
           {!isSkeletonOn &&
             products.map((result, idx) => (
               <div

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useEffect } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { search } from 'src/apis'
 import ProductContainer from 'src/components/ProductContainer'
 import { useSigned } from 'src/utils/hooks'
