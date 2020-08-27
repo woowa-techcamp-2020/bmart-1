@@ -48,11 +48,11 @@
     &-name {
       display: block;
       font-size: calc(14px * var(--zoom));
-      line-height: 1;
+      line-height: 1.2;
       font-weight: 600;
       color: #fff;
       margin-bottom: calc(5px * var(--zoom));
-      max-height: calc(20px * var(--zoom));
+      max-height: calc(14px * 1.2 * var(--zoom) * 2);
       overflow: hidden;
       text-overflow: ellipsis;
     }
