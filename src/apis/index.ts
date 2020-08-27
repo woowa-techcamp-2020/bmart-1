@@ -2,8 +2,8 @@ import { Jjim, Product, User } from '@prisma/client'
 import type {
   AddToCartRequestBody,
   DeleteFromCartBody,
-  GetProductsByCategoryApiRequestQuery,
   GetProductApiRequestQuery,
+  GetProductsByCategoryApiRequestQuery,
   GetProductsByTopicResponse,
   GetProductsInCartResponse,
   ProductWithJjimmed,
@@ -120,6 +120,22 @@ export async function getProductsByCategory(
   return await request(
     `/products-by-category${createQuery({
       category,
+      page: page.toString(),
+      sortBy,
+      direction,
+    })}`,
+    'GET'
+  )
+}
+
+export async function getProductsBySubCategory(
+  query: GetProductsByCategoryApiRequestQuery
+): Promise<Product[] | ProductWithJjimmed[]> {
+  const { subCategory, page, sortBy, direction } = query
+
+  return await request(
+    `/products-by-category${createQuery({
+      subCategory,
       page: page.toString(),
       sortBy,
       direction,
