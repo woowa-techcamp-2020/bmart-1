@@ -3,6 +3,7 @@ import { getJJims } from 'src/apis'
 import HeartIcon from 'src/components/icons/HeartIcon'
 import PageHeader from 'src/components/PageHeader'
 import ProductContainer from 'src/components/ProductContainer'
+import GoBack from 'src/components/shortcuts/GoBack'
 import { ProductWithJjimmed } from 'src/types/api'
 import './style.scss'
 
@@ -41,6 +42,7 @@ const Jjims: React.FC<JjimsProps> = () => {
         products={state.products}
         isSkeletonOn={state.isLoading}
       ></ProductContainer>
+      <GoBack />
     </div>
   )
 }
