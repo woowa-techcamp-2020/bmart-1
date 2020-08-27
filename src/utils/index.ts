@@ -52,6 +52,16 @@ export function $$sel<T extends HTMLElement>(query: string): T[] {
   )
 }
 
+export function $scrollContainer(elem: HTMLElement) {
+  if (elem === document.body) {
+    return null
+  }
+
+  if (elem.clientHeight < elem.scrollHeight) {
+    return elem
+  } else return $scrollContainer(elem.parentElement)
+}
+
 declare global {
   interface HTMLElement {
     $sel: typeof $sel
