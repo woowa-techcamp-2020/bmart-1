@@ -115,10 +115,12 @@
   &-cart {
     padding: 0 30px 27px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
 
     &-image {
-      width: 83px;
+      width: 130px;
       height: auto;
       border-radius: 10px;
     }
@@ -141,6 +143,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: var(--ordinary-space);
       }
     }
   }
