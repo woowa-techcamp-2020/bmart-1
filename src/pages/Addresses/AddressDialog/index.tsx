@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './style.scss'
 
-export type AddressModalProps = {
+export type AddressDialogProps = {
   title: string
   buttonText: string
   address1?: string
@@ -10,7 +10,7 @@ export type AddressModalProps = {
   onCancel?: () => void
 }
 
-const AddressModal: React.FC<AddressModalProps> = ({
+const AddressDialog: React.FC<AddressDialogProps> = ({
   title,
   address1: _address1 = '',
   address2: _address2 = '',
@@ -22,7 +22,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
   const [address2, setAddress2] = useState(_address2)
 
   return (
-    <div className="address-modal">
+    <div className="address-dialog">
       <div className="background" onClick={() => onCancel && onCancel()}></div>
       <div className="body">
         <div className="title">{title}</div>
@@ -51,4 +51,4 @@ const AddressModal: React.FC<AddressModalProps> = ({
   )
 }
 
-export default AddressModal
+export default AddressDialog
