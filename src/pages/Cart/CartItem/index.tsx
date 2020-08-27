@@ -18,7 +18,10 @@ function updateCartLS(productId, quantity) {
   const newCartLS = currentCartLS.map((elem) => {
     if (elem.product.productId === productId) {
       elem.quantity = quantity
+      elem.product.quantityInCart = quantity
     }
+
+    return elem
   })
 
   localStorage.setItem('cartTemp', JSON.stringify(newCartLS))

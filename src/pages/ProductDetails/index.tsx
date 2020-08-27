@@ -19,13 +19,19 @@ export type ProductDetailsProps = unknown
 function findFromCartLS(id) {
   const currentCartLS = getCartLS()
 
-  return currentCartLS.filter((elem) => elem.product.id === parseInt(id))[0]
-    .product
+  if (!currentCartLS.length) return null
+
+  const foundProduct = currentCartLS.filter(
+    (elem) => elem.product.id === parseInt(id)
+  )[0]
+
+  return foundProduct && foundProduct.product
 }
 
 function pushToCartLS({ id: productId, ...rest }, quantity) {
   const productProcessed = {
     quantity,
+    productId,
     product: {
       id: productId,
       productId,
