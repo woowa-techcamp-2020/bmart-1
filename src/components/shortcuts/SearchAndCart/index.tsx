@@ -8,7 +8,7 @@ export type SearchAndCartProps = unknown
 
 const SearchAndCart: React.FC<SearchAndCartProps> = () => {
   const [isSearchOpened, setIsSearchOpened] = useState(false)
-        
+
   const [visibility, setVisibility] = useState<[1 | 0, 1 | 0]>([1, 1])
 
   const location = useLocation()
