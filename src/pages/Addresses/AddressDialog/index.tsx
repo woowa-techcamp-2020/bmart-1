@@ -35,11 +35,13 @@ const AddressDialog: React.FC<AddressDialogProps> = ({
           <div className="title">{title}</div>
           <input
             className="item"
+            placeholder="주 주소"
             onChange={({ target: { value } }) => setAddress1(value)}
             value={address1}
           />
           <input
             className="item"
+            placeholder="상세 주소"
             onChange={({ target: { value } }) => setAddress2(value)}
             value={address2}
           />
