@@ -10,8 +10,6 @@ const SearchAndCart: React.FC<SearchAndCartProps> = () => {
   const location = useLocation()
 
   useEffect(() => {
-    console.log(location.pathname)
-
     if (location.pathname === '/me' || location.pathname === '/cart') {
       setVisibility([0, 0])
     } else if (location.pathname === '/addresses') {
