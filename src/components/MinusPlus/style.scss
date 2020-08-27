@@ -1,21 +1,27 @@
 @use '~src/styles/design-system' as *;
 
 .minus-plus {
-  $height: 44.79px;
+  $height: 45px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 #{$height / 2};
-  width: 142.28px;
+  width: 100%;
   height: $height;
   left: 154.8px;
   top: 30.02px;
   background: var(--layered-element);
   border-radius: $circle;
 
-  div {
+  .icon-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+  }
+
+  .quantity {
+    flex: 1;
   }
 }
