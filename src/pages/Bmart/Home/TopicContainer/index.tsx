@@ -26,12 +26,13 @@ const TopicContainer: React.FC<TopicContainerProps> = ({
     setLoading(false)
   }
 
-
-  useLazy(loadProducts().then(() => {
+  useLazy(
+    loadProducts().then(() => {
       setTimeout(() => {
         onFinished && onFinished()
       }, 0)
-    }))
+    })
+  )
   const [scrollEnd, setScrollEnd] = useState<'left' | 'right' | 'middle'>(
     'left'
   )
