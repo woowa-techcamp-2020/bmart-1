@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { getUser } from 'src/apis'
 import ChevronRightIcon from 'src/components/icons/ChevronRightIcon'
-import { $$sel } from 'src/utils'
 import { useSigned } from 'src/utils/hooks'
-import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 export type MeProps = unknown
@@ -20,7 +18,7 @@ const Me: React.FC<MeProps> = () => {
 
     setUser(user)
 
-    restoreScroll(window.location.pathname, $$sel('.slide-page')[2])
+    // restoreScroll(window.location.pathname, $$sel('.slide-page')[2])
   }
 
   useEffect(() => {
