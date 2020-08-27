@@ -5,8 +5,8 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
-import { restoreScroll } from 'src/utils/scroll-manager'
 import { useLazy } from 'src/utils/hooks'
+import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -90,34 +90,32 @@ const Sale: React.FC<SaleProps> = () => {
 
   const salePage = useRef<HTMLDivElement>()
 
-  // useEffect(() => {
-  //   async function init() {
-  //     const allProducts = (
-  //       await Promise.all(
-  //         DEFAULTS.CATEGORIES.map((category) =>
-  //           request(
-  //             `/products-by-category${createQuery({
-  //               category: category,
-  //               sortBy: 'discount',
-  //               direction: 'desc',
-  //               amount: '1',
-  //               page: '1',
-  //             })}`,
-  //             'GET'
-  //           )
-  //         )
-  //       )
-  //     ).flat()
+  async function init() {
+    const allProducts = (
+      await Promise.all(
+        DEFAULTS.CATEGORIES.map((category) =>
+          request(
+            `/products-by-category${createQuery({
+              category: category,
+              sortBy: 'discount',
+              direction: 'desc',
+              amount: '1',
+              page: '1',
+            })}`,
+            'GET'
+          )
+        )
+      )
+    ).flat()
 
-  //     setSaleProducts((prev) => [...prev, ...allProducts])
-  //     restoreScroll(
-  //       window.location.pathname,
-  //       salePage.current.closest('.slide-page')
-  //     )
-  //   }
+    setSaleProducts((prev) => [...prev, ...allProducts])
+    restoreScroll(
+      window.location.pathname,
+      salePage.current.closest('.slide-page')
+    )
+  }
 
-  //   init()
-  // }, [])
+  useLazy(init)
 
   return (
     <div className="sale-page" ref={salePage}>

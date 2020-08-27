@@ -18,11 +18,11 @@ export const restoreScroll = (key: string, element: HTMLElement): void => {
   )
 
   if (memory.direction === 'top') {
-    element.scrollTo({
+    element?.scrollTo({
       top: memory.scrollPosition ?? 0,
     })
   } else if (memory.direction === 'left') {
-    element.scrollTo({
+    element?.scrollTo({
       left: memory.scrollPosition ?? 0,
     })
   }
