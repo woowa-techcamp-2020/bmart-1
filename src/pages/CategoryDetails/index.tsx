@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import Drawer from 'src/components/Drawer'
 import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
 import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
+import GoBack from 'src/components/shortcuts/GoBack'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
 import OptionSelector from './OptionSelector'
@@ -62,6 +63,8 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
           setOption={setSortBy}
         ></OptionSelector>
       </Drawer>
+
+      <GoBack />
     </div>
   )
 }
