@@ -52,6 +52,16 @@ const Drawer: React.FC<DrawerProps> = ({
     containerRef.current.style.maxHeight = `calc(${maxHeight} - var(--holder-height) - 15px)`
   }, [])
 
+  // Init background oapcity to 0 without transition
+  useEffect(() => {
+    backgroundRef.current.style.transition = 'none'
+    backgroundRef.current.style.opacity = '0.3'
+
+    setTimeout(() => {
+      backgroundRef.current.style.transition = ''
+    }, 0)
+  }, [])
+
   useEffect(() => {
     moveRef(bodyRef, {
       position: isOpened ? 0 : getRefHeight(bodyRef),
@@ -191,7 +201,7 @@ function moveRef(
 
   const { position, smooth = false } = options
 
-  ref.current.style.transform = `translateY(${position}px)`
+  ref.current.style.transform = `translateX(-50%) translateY(${position}px)`
   ref.current.style.transition = smooth ? `transform 500ms ease` : ``
 }
 
