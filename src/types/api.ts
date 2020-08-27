@@ -97,7 +97,7 @@ export type GetProductApiResponse =
   | ErrorResponse
 
 export type EditAddressApiRequestBody = {
-  addresssId: number
+  addressId: number
   address1: string
   address2: string
 }

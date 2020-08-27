@@ -17,7 +17,7 @@ editAddressRouter.put(
   requestValidator(),
   async (req: Request<{}, {}, EditAddressApiRequestBody>, res: Response) => {
     const userId = req.auth?.userId
-    const addressId = req.body.addresssId
+    const addressId = req.body.addressId
     const address1 = req.body.address1.trim()
     const address2 = req.body.address2?.trim()
 
