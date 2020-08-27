@@ -5,6 +5,7 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
+import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -86,6 +87,8 @@ const Sale: React.FC<SaleProps> = () => {
     }
   }, [])
 
+  const salePage = useRef<HTMLDivElement>()
+
   useEffect(() => {
     async function init() {
       const allProducts = (
@@ -106,13 +109,17 @@ const Sale: React.FC<SaleProps> = () => {
       ).flat()
 
       setSaleProducts((prev) => [...prev, ...allProducts])
+      restoreScroll(
+        window.location.pathname,
+        salePage.current.closest('.slide-page')
+      )
     }
 
     init()
   }, [])
 
   return (
-    <div className="sale-page">
+    <div className="sale-page" ref={salePage}>
       <div className="flash" />
       <img src={Lightning} className="lightning" alt="lightning" />
       <div className="lightning-sentinel" ref={lightningSentinelRef} />
