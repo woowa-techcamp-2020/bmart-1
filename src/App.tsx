@@ -1,5 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
 import './app.style.scss'
 import SearchAndCart from './components/shortcuts/SearchAndCart'
 import Addresses from './pages/Addresses'
@@ -27,7 +32,7 @@ const SignedContextProvider: React.FC = ({ children }) => {
 }
 
 const AppRouter: React.FC = () => {
-  const { initSigned } = useSigned()
+  const { isSigned, initSigned } = useSigned()
 
   useEffect(() => {
     initSigned()
@@ -47,13 +52,13 @@ const AppRouter: React.FC = () => {
             <Bmart path="me" />
           </Route>
           <Route path="/jjims">
-            <Jjims />
+            {isSigned ? <Jjims /> : <Redirect to="/me" />}
           </Route>
           <Route path="/cart">
-            <Cart></Cart>
+            {isSigned ? <Cart /> : <Redirect to="/me" />}
           </Route>
           <Route path="/addresses">
-            <Addresses></Addresses>
+            {isSigned ? <Addresses /> : <Redirect to="/me" />}
           </Route>
           <Route path="/category/:category">
             <CategoryDetails />
