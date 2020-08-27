@@ -20,6 +20,7 @@ const SearchAndCart: React.FC<SearchAndCartProps> = () => {
           />
         </svg>
       </button>
+      {/* TODO: 아직 000원 이렇게 표시 */}
       <button className="cart">
         <svg
           width="27"
