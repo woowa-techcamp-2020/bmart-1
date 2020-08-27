@@ -1,13 +1,21 @@
 .product-details {
   width: 100%;
+  text-align: center;
 
   &-image {
-    width: 100%;
+    width: calc(100% - var(--ordinary-space) * 2);
+    max-width: 700px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: var(--ordinary-space);
     height: auto;
   }
 
   &-info {
     padding: 25px 15px 0;
+    text-align: left;
+    max-width: 500px;
+    margin: auto;
 
     &-category {
       font-size: 12px;
