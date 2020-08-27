@@ -5,6 +5,15 @@
   max-width: 800px;
   margin: auto;
 
+  .mock {
+    border-radius: 7px;
+    height: 0.8em;
+    line-height: 140%;
+    background-color: #aaa;
+    color: #aaa;
+    margin-right: 0.7em;
+  }
+
   &-items {
     padding: 0 var(--ordinary-space);
 
@@ -29,6 +38,11 @@
       font-weight: 600;
       text-align: center;
       color: #fff;
+
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
     }
   }
 }

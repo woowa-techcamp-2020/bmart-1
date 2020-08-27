@@ -20,6 +20,7 @@ export type ProductItemProps = {
   imgV?: string
   isJjimmed?: boolean
   isSkeleton?: boolean
+  onClick?: () => void
   size?: 'small' | 'big'
 }
 
@@ -43,6 +44,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   price = 0,
   discount = 0,
   imgV = '',
+  onClick,
   isJjimmed = false,
   isSkeleton = false,
   size = 'small',
@@ -82,6 +84,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
       isLongPress = false
     } else {
       initSetting()
+      onClick && onClick()
       history.push(`/products/${id}`)
     }
   }

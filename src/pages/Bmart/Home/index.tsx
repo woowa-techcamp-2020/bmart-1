@@ -26,11 +26,9 @@ const Home: React.FC<HomeProps> = () => {
             )}
           </div>
         </div>
-
         <LazyLoader>
           <TopicContainer title="🤔 지금 뭐 먹지?" type="now" />
         </LazyLoader>
-
         <LazyLoader>
           <TopicContainer title="🎉 새로 나왔어요" type="new" />
         </LazyLoader>

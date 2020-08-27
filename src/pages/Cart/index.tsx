@@ -1,3 +1,4 @@
+import $ from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { getProductsInCart } from 'src/apis'
 import Empty from 'src/components/Empty'
@@ -23,11 +24,19 @@ function getTotalAmount(products: ProductsInCart) {
 const Cart: React.FC<CartProps> = (props) => {
   const [productsInCart, setProductsInCart] = useState<ProductInCart[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
+  const [isEmpty, setEmpty] = useState(false)
+  const [isLoading, setLoading] = useState(true)
 
   async function loadProductsInCart() {
     const productsInCart = (await getProductsInCart()) as ProductInCart[]
 
+    setLoading(false)
     setProductsInCart(productsInCart)
+
+    if (productsInCart.length == 0) {
+      setEmpty(true)
+    }
+
     setTotalAmount(getTotalAmount(productsInCart))
   }
 
@@ -39,7 +48,7 @@ const Cart: React.FC<CartProps> = (props) => {
     <div className="cart">
       <GoBack />
       <PageHeader Icon={ResizableCartIcon} title="장바구니"></PageHeader>
-      {productsInCart.length > 0 ? (
+      {!isEmpty ? (
         <>
           <div className="cart-items">
             {productsInCart.map((product) => (
@@ -51,11 +60,16 @@ const Cart: React.FC<CartProps> = (props) => {
             ))}
           </div>
           <div className="cart-footer">
-            <div className="cart-footer-total-price">
-              {totalAmount.toLocaleString()}원
-            </div>
+            {!isLoading && (
+              <div className="cart-footer-total-price">
+                {totalAmount.toLocaleString()}원
+              </div>
+            )}
             <div
-              className="cart-footer-confirm-button"
+              className={$([
+                'cart-footer-confirm-button',
+                { disabled: isLoading },
+              ])}
               onClick={() => Dialog().alert('여기까지😉')}
             >
               결제하기

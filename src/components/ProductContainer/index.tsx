@@ -9,6 +9,7 @@ import './style.scss'
 export type ProductContainerProps = {
   isSkeletonOn: boolean
   isEmpty?: boolean
+  onClick?: () => void
   products: (Product | ProductWithJjimmed)[]
   onLoadMore?: () => void
 }
@@ -18,6 +19,7 @@ export type ProductContainerProps = {
 const ProductContainer: React.FC<ProductContainerProps> = ({
   isSkeletonOn,
   products,
+  onClick,
   isEmpty,
   onLoadMore,
 }) => {
@@ -104,7 +106,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
             //   }ms`,
             // }}
           >
-            <ProductItem {...result} />
+            <ProductItem {...result} onClick={onClick} />
           </div>
         ))}
 

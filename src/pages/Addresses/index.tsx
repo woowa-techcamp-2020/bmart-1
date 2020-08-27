@@ -55,10 +55,12 @@ const Addresses: React.FC<AddressesProps> = () => {
   const [defaultAddress, setDefaultAddress] = useState<number>(0)
   const [isEditOpen, setEditOpen] = useState(false)
   const [isAddOpen, setAddOpen] = useState(false)
+  const [isLoading, setLoading] = useState(true)
 
   async function getAddresses() {
     const user = await getUser()
 
+    setLoading(false)
     setDefaultAddress(user.defaultAddressId)
     setAddresses(user.addresses)
   }
@@ -116,13 +118,20 @@ const Addresses: React.FC<AddressesProps> = () => {
         Icon={ParcelIcon.bind({}, { widith: '46px' })}
         title="배송지 관리"
       ></PageHeader>
-      <AddressContainer
-        addresses={addresses}
-        defaultAddress={defaultAddress}
-        onDefaultSelect={onDefaultSelect}
-        onDelete={onDelete}
-        onEdit={onEdit}
-      ></AddressContainer>
+      {isLoading ? (
+        <>
+          <AddressItem isSkeleton={true}></AddressItem>
+          <AddressItem isSkeleton={true}></AddressItem>
+        </>
+      ) : (
+        <AddressContainer
+          addresses={addresses}
+          defaultAddress={defaultAddress}
+          onDefaultSelect={onDefaultSelect}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        ></AddressContainer>
+      )}
       <div className="add" onClick={onAddressPlus}>
         <PlusIcon></PlusIcon>
       </div>

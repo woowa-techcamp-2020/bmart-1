@@ -5,7 +5,7 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
-import { useLazy } from 'src/utils/hooks'
+import { useLazy, useSigned } from 'src/utils/hooks'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -68,29 +68,7 @@ export type SaleProps = unknown
 const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
   const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
-
-  async function getSaleProducts() {
-    const allProducts = (
-      await Promise.all(
-        DEFAULTS.CATEGORIES.map((category) =>
-          request(
-            `/products-by-category${createQuery({
-              category: category,
-              sortBy: 'discount',
-              direction: 'desc',
-              amount: '1',
-              page: '1',
-            })}`,
-            'GET'
-          )
-        )
-      )
-    ).flat()
-
-    setSaleProducts((prev) => [...prev, ...allProducts])
-  }
-
-  useLazy(getSaleProducts)
+  const { isSigned } = useSigned()
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -112,34 +90,38 @@ const Sale: React.FC<SaleProps> = () => {
 
   const salePage = useRef<HTMLDivElement>()
 
-  // useEffect(() => {
-  //   async function init() {
-  //     const allProducts = (
-  //       await Promise.all(
-  //         DEFAULTS.CATEGORIES.map((category) =>
-  //           request(
-  //             `/products-by-category${createQuery({
-  //               category: category,
-  //               sortBy: 'discount',
-  //               direction: 'desc',
-  //               amount: '1',
-  //               page: '1',
-  //             })}`,
-  //             'GET'
-  //           )
-  //         )
-  //       )
-  //     ).flat()
+  async function init() {
+    const allProducts = (
+      await Promise.all(
+        DEFAULTS.CATEGORIES.map((category) =>
+          request(
+            `/products-by-category${createQuery({
+              category: category,
+              sortBy: 'discount',
+              direction: 'desc',
+              amount: '1',
+              page: '1',
+            })}`,
+            'GET'
+          )
+        )
+      )
+    ).flat()
 
-  //     setSaleProducts((prev) => [...prev, ...allProducts])
-  //     restoreScroll(
-  //       window.location.pathname,
-  //       salePage.current.closest('.slide-page')
-  //     )
-  //   }
+    // setSaleProducts((prev) => [...prev, ...allProducts])
+    setSaleProducts(allProducts)
+    // restoreScroll(
+    //   window.location.pathname,
+    //   salePage.current?.closest('.slide-page')
+    // )
+  }
 
-  //   init()
-  // }, [])
+  useLazy(init)
+
+  useEffect(() => {
+    setSaleProducts([])
+    init()
+  }, [isSigned])
 
   return (
     <div className="sale-page" ref={salePage}>
