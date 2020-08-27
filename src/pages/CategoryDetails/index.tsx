@@ -10,6 +10,7 @@ import { getProductsBySubCategory } from 'src/apis'
 import Drawer from 'src/components/Drawer'
 import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
 import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
+import GoBack from 'src/components/shortcuts/GoBack'
 import ProductContainer from 'src/components/ProductContainer'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
@@ -117,6 +118,8 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
           setOption={setSortBy}
         ></OptionSelector>
       </Drawer>
+
+      <GoBack />
     </div>
   )
 }

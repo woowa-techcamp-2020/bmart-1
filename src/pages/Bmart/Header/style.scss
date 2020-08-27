@@ -6,6 +6,7 @@
   left: 0;
   width: 100%;
   z-index: 1;
+  pointer-events: none;
 
   @include foundation-translucent;
 
@@ -39,6 +40,7 @@
       color: #fff;
       mix-blend-mode: difference;
       line-height: 1;
+      pointer-events: all;
     }
 
     .indicator {

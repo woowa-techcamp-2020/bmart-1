@@ -13,6 +13,10 @@ function thunder(reset = false) {
   const lightning = $sel('.lightning')
   const flash = $sel('.flash')
 
+  if (!lightning || !flash) {
+    return
+  }
+
   if (reset) {
     timeouts.forEach((timeout) => window.clearTimeout(timeout))
 
@@ -76,6 +80,10 @@ const Sale: React.FC<SaleProps> = () => {
     })
 
     observer.observe(lightningSentinelRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
   }, [])
 
   useEffect(() => {

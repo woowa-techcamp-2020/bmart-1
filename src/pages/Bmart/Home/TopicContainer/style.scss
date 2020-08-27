@@ -1,5 +1,12 @@
+@use '~src/styles/design-system' as *;
+
 .topic-container {
-  background: linear-gradient(180deg, #efefef 0%, #fff 100%);
+  background: linear-gradient(to bottom, var(--bmart-light-blue), var(--white));
+
+  @include dark-mode {
+    background: linear-gradient(to bottom, var(--soft-black), var(--black));
+  }
+
   padding: var(--ordinary-space) var(--ordinary-space);
   margin-top: var(--home-gap);
   display: flex;
@@ -13,20 +20,75 @@
   }
 
   .scroll-container {
+    position: relative;
     width: 100vw;
     max-width: 800px;
     margin-top: 20px;
-    overflow: scroll;
 
-    &::-webkit-scrollbar {
-      display: none;
+    .shadow {
+      width: 50px;
+      position: absolute;
+      height: 100%;
+
+      &.left {
+        left: 0;
+        top: 0;
+        background-image: linear-gradient(
+          to right,
+          rgba(243, 243, 245, 1),
+          rgba(243, 243, 245, 0)
+        );
+
+        @include dark-mode {
+          background-image: linear-gradient(
+            to right,
+            rgba(51, 51, 51, 1),
+            rgba(51, 51, 51, 0)
+          );
+        }
+      }
+
+      &.right {
+        right: 0;
+        top: 0;
+        background-image: linear-gradient(
+          to left,
+          rgba(243, 243, 245, 1),
+          rgba(243, 243, 245, 0)
+        );
+
+        @include dark-mode {
+          background-image: linear-gradient(
+            to left,
+            rgba(51, 51, 51, 1),
+            rgba(51, 51, 51, 0)
+          );
+        }
+      }
     }
 
     .container {
       display: grid;
       gap: var(--ordinary-space);
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-auto-flow: column;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-rows: 1fr 1fr;
       margin: auto;
+      padding: 0 var(--ordinary-space);
+      overflow-x: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .product-item {
+        min-width: 150px;
+        max-width: 250px;
+      }
+
+      .dummy {
+        width: 1px;
+      }
     }
   }
 }

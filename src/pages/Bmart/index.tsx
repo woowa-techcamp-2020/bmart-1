@@ -9,6 +9,14 @@ import Sale from './Sale'
 import SlidePage from './SlidePage'
 import './style.scss'
 
+function pathToIndex(path: string): number {
+  return path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+}
+
+function indexToPath(index: number): string {
+  return index === 0 ? '' : index === 1 ? 'sale' : index === 2 ? 'me' : ''
+}
+
 export const navigateSlidePageTo = (
   index: number,
   time = '400ms',
@@ -49,12 +57,11 @@ export const navigateSlidePageTo = (
     correctIndex.toString()
   )
 
-  if (pushState) {
-    window.history.pushState(
-      null,
-      null,
-      `/${index === 0 ? '' : index === 1 ? 'sale' : index === 2 ? 'me' : ''}`
-    )
+  const currentPath = window.location.pathname.replace('/', '')
+  const newPath = indexToPath(index)
+
+  if (pushState && currentPath !== newPath) {
+    window.history.pushState(null, null, `/${newPath}`)
   }
 }
 
@@ -87,15 +94,16 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
 
       signIn(token)
 
+      // TODO: replace to lastly visited page
       history.replace('/')
 
       return
     }
 
-    const index = path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+    const index = pathToIndex(path)
 
     navigateSlidePageTo(index, '0', undefined, false)
-  }, [path])
+  }, [location])
 
   useEffect(() => {
     const logoWrapper = $sel('.logo-wrapper')
@@ -105,7 +113,10 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
     const slideTabs = $$sel('.slide-tabs .tab-button')
     const header = $sel('.header')
 
-    const bannedElementQueries = ['.carousel', '.topic-container']
+    const bannedElementQueries = [
+      '.carousel',
+      '.topic-container .scroll-container',
+    ]
 
     slidePagesWrapper.current.addEventListener(
       'touchstart',
@@ -284,6 +295,20 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
         window.addEventListener('touchend', onTouchEnd)
       }
     )
+  }, [])
+
+  useEffect(() => {
+    const onResize = () => {
+      const path = window.location.pathname.replace('/', '')
+
+      navigateSlidePageTo(pathToIndex(path))
+    }
+
+    window.addEventListener('resize', onResize)
+
+    return () => {
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
   return (

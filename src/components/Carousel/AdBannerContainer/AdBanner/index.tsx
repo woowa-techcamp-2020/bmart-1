@@ -39,6 +39,10 @@ const AdBanner: React.FC<AdBannerProps> = ({
     })
 
     observer.observe(sentinel.current)
+
+    return () => {
+      observer.disconnect()
+    }
   }, [])
 
   return (

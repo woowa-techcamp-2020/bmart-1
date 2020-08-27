@@ -1,4 +1,5 @@
 import React from 'react'
+import packageJson from 'src/../package.json'
 import Carousel from 'src/components/Carousel'
 import CategoryItem, {
   CategoryItemType,
@@ -24,7 +25,19 @@ const Home: React.FC<HomeProps> = () => {
             )}
           </div>
         </div>
-        <TopicContainer title="신상임ㅋ" type="new"></TopicContainer>
+
+        <TopicContainer title="🤔 지금 뭐 먹지?" type="now"></TopicContainer>
+        <TopicContainer title="🎉 새로 나왔어요" type="new"></TopicContainer>
+
+        <div className="version">
+          <a
+            href="https://github.com/woowa-techcamp-2020/bmart-1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="label">v{packageJson.version}</div>
+          </a>
+        </div>
       </SlotMachine>
     </div>
   )

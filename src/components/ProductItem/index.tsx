@@ -97,7 +97,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
       style={
         {
           backgroundImage: `url(${imgV})`,
-          '--zoom': size === 'small' ? '1' : '1.7',
+          '--zoom': size === 'small' ? '1' : '1.4',
         } as CSSProperties
       }
       onPointerUp={onPointerUp}
