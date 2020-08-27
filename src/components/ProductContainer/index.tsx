@@ -132,7 +132,7 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
                 //   }ms`,
                 // }}
               >
-                <ProductItem {...result} />
+                <ProductItem {...result} onClick={onClick} />
               </div>
             ))}
 
