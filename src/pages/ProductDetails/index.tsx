@@ -19,7 +19,8 @@ export type ProductDetailsProps = unknown
 const ProductDetails: React.FC<ProductDetailsProps> = () => {
   const [product, setProduct] = useState<Product>(null)
   const [isCartOpened, setIsCartOpened] = useState<boolean>(false)
-  const [quantity, setQuantity] = useState<number>(1)
+  const [quantityInCart, setQuantityInCart] = useState<number>(0)
+  const [quantityTemp, setQuantityTemp] = useState<number>(1)
   const [isJjimmed, setIsJjimmed] = useState<boolean>(false)
   const { isSigned } = useSigned()
   const { productId } = useParams()
@@ -29,6 +30,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
 
     setProduct(loadedProduct)
     setIsJjimmed(loadedProduct.isJjimmed ?? false)
+
+    if (loadedProduct.quantityInCart) {
+      setQuantityInCart(loadedProduct.quantityInCart)
+      setQuantityTemp(loadedProduct.quantityInCart)
+    }
   }
 
   useEffect(() => {
@@ -52,7 +58,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
   }
 
   async function onConfirm() {
-    await addToCart({ productId: product.id, quantity: quantity })
+    await addToCart({ productId: product.id, quantity: quantityTemp })
+    setQuantityInCart(quantityTemp)
   }
 
   async function onToggleJjim() {
@@ -117,6 +124,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
                   className="product-details-info-options-cart"
                   onClick={onCartClick}
                 >
+                  {Boolean(quantityInCart) && (
+                    <div className="product-details-info-options-cart-marker">
+                      {quantityInCart}
+                    </div>
+                  )}
                   <ResizableCartIcon width="50px" />
                 </div>
               </div>
@@ -129,7 +141,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
                   alt="product"
                 ></img>
                 <div className="product-details-cart-buttons">
-                  <MinusPlus quantity={quantity} onChange={setQuantity} />
+                  <MinusPlus
+                    quantity={quantityTemp}
+                    onChange={setQuantityTemp}
+                  />
                   <div
                     className="product-details-cart-buttons-confirm"
                     onClick={onConfirm}
