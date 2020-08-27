@@ -9,6 +9,8 @@ body {
 .slot-machine {
   font-size: 22px;
   font-weight: 600px;
+  display: flex;
+  justify-content: center;
 
   .pullable {
     overflow: scroll;
@@ -17,8 +19,8 @@ body {
   .slot {
     transition-property: transform;
     display: inline-block;
+    max-width: 800px;
     width: 100%;
-    margin-top: 0;
 
     .slot-body {
       height: 40px;
