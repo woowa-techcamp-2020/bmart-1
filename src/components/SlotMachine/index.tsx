@@ -209,11 +209,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
           case PULLING:
             if (state.current.action !== NO_ACTION) break
 
-            console.log($scrollContainer(slotRef.current))
-
             if ($scrollContainer(slotRef.current)?.scrollTop) break
-
-            // if ($sel('.slide-page')?.scrollTop) break
 
             state.current.action = PULLING
 

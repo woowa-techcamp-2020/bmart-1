@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
+import LazyLoader from 'src/components/LazyLoader'
 import { $$sel, $sel, sanitizeNan } from 'src/utils'
 import { useSigned } from 'src/utils/hooks'
 import Header from './Header'
@@ -326,13 +327,19 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
       <Header />
       <div className="slide-pages-scroll-wrapper" ref={slidePagesWrapper}>
         <SlidePage pageName="home">
-          <Home />
+          <LazyLoader>
+            <Home />
+          </LazyLoader>
         </SlidePage>
         <SlidePage pageName="sale">
-          <Sale />
+          <LazyLoader>
+            <Sale />
+          </LazyLoader>
         </SlidePage>
         <SlidePage pageName="me">
-          <Me />
+          <LazyLoader>
+            <Me />
+          </LazyLoader>
         </SlidePage>
       </div>
     </div>
