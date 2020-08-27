@@ -69,29 +69,6 @@ const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
   const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
 
-  async function getSaleProducts() {
-    const allProducts = (
-      await Promise.all(
-        DEFAULTS.CATEGORIES.map((category) =>
-          request(
-            `/products-by-category${createQuery({
-              category: category,
-              sortBy: 'discount',
-              direction: 'desc',
-              amount: '1',
-              page: '1',
-            })}`,
-            'GET'
-          )
-        )
-      )
-    ).flat()
-
-    setSaleProducts((prev) => [...prev, ...allProducts])
-  }
-
-  useLazy(getSaleProducts)
-
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
