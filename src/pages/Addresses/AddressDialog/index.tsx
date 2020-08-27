@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './style.scss'
 
 export type AddressDialogProps = {
@@ -20,27 +20,31 @@ const AddressDialog: React.FC<AddressDialogProps> = ({
 }) => {
   const [address1, setAddress1] = useState(_address1)
   const [address2, setAddress2] = useState(_address2)
+  const bodyRef = useRef<HTMLDivElement>(null)
+
+  function onBackgroundClick({ target }) {
+    if (target.closest('.body')) return
+
+    onCancel && onCancel()
+  }
 
   return (
-    <div className="address-dialog">
-      <div className="background" onClick={() => onCancel && onCancel()}></div>
-      <div className="body">
-        <div className="title">{title}</div>
-        <div>
+    <div className="address-dialog" onClick={onBackgroundClick}>
+      <div className="body" ref={bodyRef}>
+        <div className="container">
+          <div className="title">{title}</div>
           <input
+            className="item"
             onChange={({ target: { value } }) => setAddress1(value)}
             value={address1}
           />
-        </div>
-        <div>
           <input
+            className="item"
             onChange={({ target: { value } }) => setAddress2(value)}
             value={address2}
           />
-        </div>
-        <div>
           <a
-            className="button"
+            className="button item"
             onClick={() => onSubmit && onSubmit(address1, address2)}
           >
             {buttonText}
