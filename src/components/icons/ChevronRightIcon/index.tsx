@@ -8,7 +8,7 @@ export type ChevronRightIconProps = {
 }
 
 const ChevronRightIcon: React.FC<ChevronRightIconProps> = ({
-  color = 'black',
+  color = 'var(--distinct)',
   width = '5px',
   height = 'auto',
 }) => {

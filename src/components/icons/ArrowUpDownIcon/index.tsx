@@ -6,7 +6,7 @@ export type ArrowUpDownIconProps = {
 }
 
 const ArrowUpDownIcon: React.FC<ArrowUpDownIconProps> = ({
-  color = 'black',
+  color = 'var(--distinct)',
   width = '17px',
 }) => {
   return (

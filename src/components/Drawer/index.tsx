@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { Dispatcher } from 'src/types/react-helper'
+import DrawerHandle from '../icons/DrawerHandleIcon'
 import './style.scss'
 
 export type DrawerProps = {
@@ -135,7 +136,7 @@ const Drawer: React.FC<DrawerProps> = ({
             onTouchStart={(event) => onCursorDown(state, getFirstTouchY(event))}
             onMouseDown={({ clientY }) => onCursorDown(state, clientY)}
           >
-            <div className="handle" />
+            <DrawerHandle />
           </div>
           <div className="container" ref={containerRef}>
             <DrawerContext.Provider

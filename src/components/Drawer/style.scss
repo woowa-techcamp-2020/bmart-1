@@ -20,7 +20,7 @@
     z-index: 2;
     bottom: 0;
     width: 100vw;
-    background-color: var(--element);
+    background-color: var(--layered-foundation);
     border-radius: 20px 20px 0 0;
 
     &.active {
@@ -32,15 +32,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
-      .handle {
-        display: inline-block;
-        background-image: url('~src/assets/images/drawer-handle.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        height: 3px;
-        width: 36px;
-      }
     }
 
     .container {

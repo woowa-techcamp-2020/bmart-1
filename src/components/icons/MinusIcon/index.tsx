@@ -6,7 +6,7 @@ export type MinusIconProps = {
 }
 
 const MinusIcon: React.FC<MinusIconProps> = ({
-  color = 'black',
+  color = 'var(--distinct)',
   width = '17px',
 }) => {
   return (
