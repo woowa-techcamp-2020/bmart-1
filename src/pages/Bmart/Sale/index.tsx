@@ -5,7 +5,7 @@ import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
-import { useLazy } from 'src/utils/hooks'
+import { useLazy, useSigned } from 'src/utils/hooks'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -68,6 +68,7 @@ export type SaleProps = unknown
 const Sale: React.FC<SaleProps> = () => {
   const lightningSentinelRef = useRef<HTMLDivElement>()
   const [saleProducts, setSaleProducts] = useState<ProductWithJjimmed[]>([])
+  const { isSigned } = useSigned()
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -107,7 +108,8 @@ const Sale: React.FC<SaleProps> = () => {
       )
     ).flat()
 
-    setSaleProducts((prev) => [...prev, ...allProducts])
+    // setSaleProducts((prev) => [...prev, ...allProducts])
+    setSaleProducts(allProducts)
     // restoreScroll(
     //   window.location.pathname,
     //   salePage.current?.closest('.slide-page')
@@ -115,6 +117,11 @@ const Sale: React.FC<SaleProps> = () => {
   }
 
   useLazy(init)
+
+  useEffect(() => {
+    setSaleProducts([])
+    init()
+  }, [isSigned])
 
   return (
     <div className="sale-page" ref={salePage}>
