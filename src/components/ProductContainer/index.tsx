@@ -9,7 +9,7 @@ import './style.scss'
 export type ProductContainerProps = {
   isSkeletonOn: boolean
   products: (Product | ProductWithJjimmed)[]
-  onLoadMore: () => void
+  onLoadMore?: () => void
 }
 
 // let previousIntersectingStatus
