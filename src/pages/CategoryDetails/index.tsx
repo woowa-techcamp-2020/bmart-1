@@ -10,8 +10,8 @@ import { getProductsBySubCategory } from 'src/apis'
 import Drawer from 'src/components/Drawer'
 import ArrowUpDownIcon from 'src/components/icons/ArrowUpDownIcon'
 import ChevronDownIcon from 'src/components/icons/ChevronDownIcon'
-import GoBack from 'src/components/shortcuts/GoBack'
 import ProductContainer from 'src/components/ProductContainer'
+import GoBack from 'src/components/shortcuts/GoBack'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
 import { ProductWithJjimmed } from 'src/types/api'
@@ -48,7 +48,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   }
 
   function setCategory(category) {
-    history.push(`/category/${category}`)
+    history.replace(`/category/${category}`)
   }
 
   async function getProducts() {

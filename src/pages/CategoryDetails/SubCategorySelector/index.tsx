@@ -1,5 +1,5 @@
 import $ from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getSubCategories } from 'src/apis'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType } from 'src/types'
@@ -28,6 +28,7 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
 }) => {
   const [subCategories, setSubCategories] = useState([])
   const [isLoading, setLoading] = useState<boolean>(isInitLoading)
+  const timer = useRef<ReturnType<typeof setTimeout>>()
 
   useEffect(() => {
     setSubCategory && setSubCategory(null)
@@ -38,12 +39,18 @@ const SubCategorySelector: React.FC<SubCategorySelectorProps> = ({
     if (subCategory === null) setSubCategory && loadSubCategories()
   }, [subCategory])
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current)
+    }
+  }, [])
+
   async function loadSubCategories() {
     shuffle()
     setLoading(true)
     const newSubCategories = await getSubCategories(category)
 
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false)
     }, 200)
 
