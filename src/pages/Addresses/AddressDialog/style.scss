@@ -15,7 +15,7 @@
     font-size: 18px;
 
     .container {
-      background: #fff;
+      background: var(--layered-foundation);
       border-radius: 20px;
       padding: 20px;
 
@@ -35,9 +35,13 @@
       }
 
       input {
-        background: #f3f3f5;
-        color: #808080;
+        background: var(--layered-element);
+        color: var(--distinct);
         border: none;
+
+        &::placeholder {
+          color: var(--universal-gray);
+        }
       }
 
       .button {
