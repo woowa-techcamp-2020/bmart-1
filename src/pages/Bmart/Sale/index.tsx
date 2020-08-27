@@ -117,6 +117,12 @@ const Sale: React.FC<SaleProps> = () => {
       <img src={Lightning} className="lightning" alt="lightning" />
       <div className="lightning-sentinel" ref={lightningSentinelRef} />
 
+      <div className="ment">
+        지금 놓치면
+        <br />
+        후회할걸?
+      </div>
+
       <div className="sale-products">
         {saleProducts.map((product) => (
           <ProductItem key={product.id} {...product} size="big" />
