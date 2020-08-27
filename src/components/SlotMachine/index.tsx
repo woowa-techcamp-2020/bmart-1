@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { $sel } from 'src/utils'
 import './style.scss'
 
 export type SlotMachineProps = {
@@ -79,6 +78,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   const content = useRef<HTMLDivElement>()
   const menu = useRef<HTMLSpanElement>()
   const animateRef = useRef<number>(null)
+  const slotRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     state.current.height = slot.current.getBoundingClientRect().height
@@ -208,7 +208,9 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
           case PULLING:
             if (state.current.action !== NO_ACTION) break
 
-            if ($sel('.slide-page')?.scrollTop) break
+            if (slotRef.current.parentElement.parentElement.scrollTop) break
+
+            // if ($sel('.slide-page')?.scrollTop) break
 
             state.current.action = PULLING
 
@@ -228,6 +230,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
 
           case NO_ACTION:
             state.current.action = NO_ACTION
+            state.current.startY = 0
             moveSlotDown(0) // TODO: REMOVE THIS
             break
 
@@ -258,7 +261,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
     )
 
     if (state.current.action === PULLING) {
-      const offsetY = currentY - startY
+      const offsetY = state.current.currentY - state.current.startY
 
       if (offsetY > 0) {
         pullSlotDown(offsetY)
@@ -286,7 +289,7 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }
 
   return (
-    <div className="slot-machine">
+    <div className="slot-machine" ref={slotRef}>
       <div
         className="pullable"
         ref={pullable}
