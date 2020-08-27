@@ -3,26 +3,6 @@
 .cart {
   width: 100%;
 
-  &-header {
-    width: 100%;
-    height: 190px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    &-icon {
-      margin-bottom: 15px;
-    }
-
-    &-title {
-      font-weight: 700;
-      font-size: 30px;
-      line-height: 36px;
-      text-align: center;
-    }
-  }
-
   &-items {
     padding: 0 23px;
 
