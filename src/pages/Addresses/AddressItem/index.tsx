@@ -1,5 +1,6 @@
 import $ from 'classnames'
-import React from 'react'
+import React, { useRef } from 'react'
+import CheckIcon from 'src/components/icons/CheckIcon'
 import './style.scss'
 
 export type AddressItemProps = {
@@ -8,6 +9,7 @@ export type AddressItemProps = {
   isDefault?: boolean
   onEdit?: () => void
   onDelete?: () => void
+  onSelect?: () => void
 }
 
 const AddressItem: React.FC<AddressItemProps> = ({
@@ -16,15 +18,44 @@ const AddressItem: React.FC<AddressItemProps> = ({
   isDefault = false,
   onEdit,
   onDelete,
+  onSelect,
 }) => {
+  const checkRef = useRef<HTMLDivElement>(null)
+
+  function onEditClick(event: React.MouseEvent) {
+    event.stopPropagation()
+    onEdit && onEdit()
+  }
+
+  function onDeleteClick(event: React.MouseEvent) {
+    event.stopPropagation()
+    onDelete && onDelete()
+  }
+
+  function onItemClick() {
+    if (window.getComputedStyle(checkRef.current).opacity == '0.3') {
+      onSelect && onSelect()
+    }
+  }
+
   return (
-    <div className={$(['address-item', { default: isDefault }])}>
-      <div className="row">
-        <a onClick={() => onEdit && onEdit()}>수정</a>
-        <a onClick={() => onDelete && onDelete()}>삭제</a>
+    <div
+      className={$(['address-item', { default: isDefault }])}
+      onClick={onItemClick}
+    >
+      <div className="check" ref={checkRef}>
+        <CheckIcon width="20px"></CheckIcon>
       </div>
-      <div className="address1">{address1}</div>
-      <div className="address1">{address2}</div>
+      <div className="row">
+        <span className="edit" onClick={onEditClick}>
+          수정
+        </span>
+        <span className="delete" onClick={onDeleteClick}>
+          삭제
+        </span>
+      </div>
+      <div className="address">{address1}</div>
+      <div className="address">{address2}</div>
     </div>
   )
 }

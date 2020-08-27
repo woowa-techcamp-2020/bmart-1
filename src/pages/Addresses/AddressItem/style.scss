@@ -1,0 +1,55 @@
+.address-item {
+  $padding: 15px;
+
+  position: relative;
+  margin-top: var(--ordinary-space);
+  background: #f3f3f5;
+  border-radius: 10px;
+  padding: $padding;
+  max-width: 272px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .check {
+    position: absolute;
+    top: $padding;
+    right: $padding;
+    display: none;
+  }
+
+  .row {
+    span {
+      margin-right: 0.8em;
+
+      &.edit {
+        color: #aaa;
+      }
+
+      &.delete {
+        color: red;
+      }
+    }
+  }
+
+  .address {
+    display: block;
+    margin-top: 0.6em;
+  }
+
+  &:hover {
+    .check {
+      display: block;
+      opacity: 0.3;
+    }
+  }
+
+  &.default {
+    border: 2px solid #9a47ed;
+
+    .check {
+      display: block;
+      opacity: 1;
+    }
+  }
+}
