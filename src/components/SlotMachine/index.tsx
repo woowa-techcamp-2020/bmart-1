@@ -23,7 +23,7 @@ type ActionType =
 const MIN_PULL_LENGTH = 100
 const MAX_PULL_LENGTH = 600
 const RELEASING_DURATION = 1000
-const RESETING_DURATION = 100
+const RESETING_DURATION = 200
 const WAITING_DURATION = 500
 const ITEM_LIST = [
   '김치찌개',
@@ -89,6 +89,13 @@ const SlotMachine: React.FC<SlotMachineProps> = ({
   }: ActionRequestType) {
     if (type !== NO_CHANGE) {
       requestedActions.push({ type, y, startAt, done })
+    }
+
+    if (action === PULLING) {
+      if (y < currentY) {
+        // 새로 받은 y가 이전의 currentY보다 작다. (드래그 중 마우스를 위로 올렸을 때)
+        requestedActions.push({ type: RELEASING, y, startAt, done })
+      }
     }
 
     currentY = y
