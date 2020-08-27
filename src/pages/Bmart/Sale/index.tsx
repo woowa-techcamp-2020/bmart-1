@@ -6,7 +6,6 @@ import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
 import { $sel } from 'src/utils'
 import { useLazy } from 'src/utils/hooks'
-import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -109,10 +108,10 @@ const Sale: React.FC<SaleProps> = () => {
     ).flat()
 
     setSaleProducts((prev) => [...prev, ...allProducts])
-    restoreScroll(
-      window.location.pathname,
-      salePage.current.closest('.slide-page')
-    )
+    // restoreScroll(
+    //   window.location.pathname,
+    //   salePage.current?.closest('.slide-page')
+    // )
   }
 
   useLazy(init)

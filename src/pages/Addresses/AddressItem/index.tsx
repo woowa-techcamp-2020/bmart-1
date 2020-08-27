@@ -4,18 +4,44 @@ import CheckIcon from 'src/components/icons/CheckIcon'
 import './style.scss'
 
 export type AddressItemProps = {
-  address1: string
-  address2: string
+  address1?: string
+  address2?: string
   isDefault?: boolean
   onEdit?: () => void
   onDelete?: () => void
   onSelect?: () => void
+  isSkeleton?: boolean
+}
+
+const SkeletonUI: React.FC = () => {
+  return (
+    <div className="address-item">
+      <div className="check">
+        <CheckIcon width="20px"></CheckIcon>
+      </div>
+      <div className="row">
+        <span className="edit">
+          <span className="mock">수정</span>
+        </span>
+        <span className="delete">
+          <span className="mock red">삭제</span>
+        </span>
+      </div>
+      <div className="address">
+        <span className="mock">dfdfddddd</span>
+      </div>
+      <div className="address">
+        <span className="mock">dfdfdaaa</span>
+      </div>
+    </div>
+  )
 }
 
 const AddressItem: React.FC<AddressItemProps> = ({
   address1,
   address2,
   isDefault = false,
+  isSkeleton = false,
   onEdit,
   onDelete,
   onSelect,
@@ -36,7 +62,9 @@ const AddressItem: React.FC<AddressItemProps> = ({
     onSelect && onSelect()
   }
 
-  return (
+  return isSkeleton ? (
+    <SkeletonUI></SkeletonUI>
+  ) : (
     <div
       className={$(['address-item', { default: isDefault }])}
       onClick={onItemClick}
