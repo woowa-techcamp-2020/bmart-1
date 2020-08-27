@@ -35,7 +35,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
 
     return setProduct(null)
   }, [])
-                 
+
   function loginAlert() {
     Dialog().alert('로그인을 해주세요 😂')
   }

@@ -25,8 +25,9 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
   // const sentinel = useRef<HTMLDivElement>()
 
   useEffect(() => {
-    setItemNumbersInRow(getItemNumbersInRow(gridRef.current))
-  }, [])
+    if (gridRef.current)
+      setItemNumbersInRow(getItemNumbersInRow(gridRef.current))
+  }, [gridRef.current])
 
   // useEffect(() => {
   //   if (isSkeletonOn) {
