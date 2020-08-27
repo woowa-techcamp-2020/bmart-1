@@ -180,7 +180,6 @@ const Bmart: React.FC<BmartProps> = ({ path }) => {
       const slope = sanitizeNan(Math.abs(diffY / diffX))
 
       if (slope < 1 || isVerticalScrollLocked) {
-        console.log('hori')
         // Horizontal scroll
         isVerticalScrollLocked = true
 
