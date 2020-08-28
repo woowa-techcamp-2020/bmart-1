@@ -62,7 +62,13 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   }
 
   async function getProducts() {
-    if (window.localStorage.getItem('previousPage').startsWith('/products')) {
+    const previousPage = window.localStorage.getItem('previousPage')
+
+    if (
+      previousPage &&
+      typeof previousPage === 'string' &&
+      previousPage.startsWith('/products')
+    ) {
       const cached = loadProductsFromCache(window.location.pathname)
 
       setProducts(cached.products)

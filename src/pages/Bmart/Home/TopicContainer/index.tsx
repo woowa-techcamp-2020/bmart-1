@@ -29,8 +29,10 @@ const TopicContainer: React.FC<TopicContainerProps> = ({
     const previousPage = window.localStorage.getItem('currentPage')
 
     if (
-      previousPage.startsWith('/products') ||
-      previousPage.startsWith('/category')
+      previousPage &&
+      typeof previousPage === 'string' &&
+      (previousPage.startsWith('/products') ||
+        previousPage.startsWith('/category'))
     ) {
       const cached = loadProductsFromCache('topic-' + type)
 
