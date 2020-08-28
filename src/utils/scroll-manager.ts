@@ -13,6 +13,10 @@ export const memoScroll = (
 }
 
 export const restoreScroll = (key: string, element: HTMLElement): void => {
+  if (!element) {
+    return
+  }
+
   const memory = JSON.parse(
     window.localStorage.getItem(`scroll-${key}`) ?? '{}'
   )

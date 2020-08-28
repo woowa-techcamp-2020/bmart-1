@@ -4,8 +4,10 @@ import Lightning from 'src/assets/images/thunder/lightning.png'
 import ProductItem from 'src/components/ProductItem'
 import { DEFAULTS } from 'src/constants'
 import { ProductWithJjimmed } from 'src/types/api'
-import { $sel } from 'src/utils'
+import { $$sel, $sel } from 'src/utils'
+import { cacheProducts, loadProductsFromCache } from 'src/utils/cache-products'
 import { useLazy, useSigned } from 'src/utils/hooks'
+import { restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 const timeouts: number[] = []
@@ -91,6 +93,15 @@ const Sale: React.FC<SaleProps> = () => {
   const salePage = useRef<HTMLDivElement>()
 
   async function init() {
+    const cahced = loadProductsFromCache('sale')
+
+    if (cahced) {
+      setSaleProducts(cahced.products)
+      restoreScroll('/sale', $$sel('.slide-page')[1])
+
+      return
+    }
+
     const allProducts = (
       await Promise.all(
         DEFAULTS.CATEGORIES.map((category) =>
@@ -107,6 +118,8 @@ const Sale: React.FC<SaleProps> = () => {
         )
       )
     ).flat()
+
+    cacheProducts('sale', allProducts)
 
     // setSaleProducts((prev) => [...prev, ...allProducts])
     setSaleProducts(allProducts)
