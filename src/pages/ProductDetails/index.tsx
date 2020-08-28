@@ -174,8 +174,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
                 >
                   {isJjimmed ? (
                     <ColorfulBrokenHeartIcon width="75px" />
-                  ) : (
+                  ) : isSigned ? (
                     <ColorfulHeartIcon width="75px" />
+                  ) : (
+                    <ColorfulHeartIcon
+                      width="75px"
+                      color="var(--universal-gray)"
+                    />
                   )}
                 </div>
                 <div
