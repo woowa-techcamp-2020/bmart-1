@@ -47,7 +47,7 @@ const Drawer: React.FC<DrawerProps> = ({
 
   useEffect(() => {
     moveRef(bodyRef, {
-      position: getRefHeight(bodyRef),
+      position: -1,
     })
     containerRef.current.style.maxHeight = `calc(${maxHeight} - var(--holder-height) - 15px)`
   }, [])
@@ -63,11 +63,13 @@ const Drawer: React.FC<DrawerProps> = ({
   }, [])
 
   useEffect(() => {
-    moveRef(bodyRef, {
-      position: isOpened ? 0 : getRefHeight(bodyRef),
-      smooth: true,
-    })
-    focus()
+    setTimeout(() => {
+      moveRef(bodyRef, {
+        position: isOpened ? 0 : -1,
+        smooth: true,
+      })
+      focus()
+    }, 100)
 
     backgroundRef.current.style.pointerEvents = isOpened ? 'all' : 'none'
     backgroundRef.current.style.opacity = isOpened ? '0.3' : '0'

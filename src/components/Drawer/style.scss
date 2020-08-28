@@ -17,7 +17,7 @@
   .body {
     position: fixed;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(110%);
     z-index: 2;
     bottom: 0;
     width: 100%;
