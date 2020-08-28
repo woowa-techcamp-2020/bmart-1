@@ -1,6 +1,7 @@
+import { Address } from '@prisma/client'
 import $ from 'classnames'
 import React, { useEffect, useState } from 'react'
-import { getProductsInCart } from 'src/apis'
+import { getProductsInCart, getUser } from 'src/apis'
 import Empty from 'src/components/Empty'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import PageHeader from 'src/components/PageHeader'
@@ -29,6 +30,8 @@ const Cart: React.FC<CartProps> = () => {
   const { isSigned } = useSigned()
   const [isEmpty, setEmpty] = useState(false)
   const [isLoading, setLoading] = useState(true)
+  const [isAddressEmpty, setAddressEmpty] = useState(false)
+  const [address, setAddress] = useState<Address>()
 
   async function loadProductsInCart() {
     let productsInCart
@@ -49,8 +52,17 @@ const Cart: React.FC<CartProps> = () => {
     setTotalAmount(getTotalAmount(productsInCart))
   }
 
+  async function loadDefaultAddress() {
+    const user = await getUser()
+
+    setAddress(user.defaultAddress)
+
+    if (!user.defaultAddress) setAddressEmpty(true)
+  }
+
   useEffect(() => {
     loadProductsInCart()
+    loadDefaultAddress()
   }, [])
 
   return (
@@ -67,6 +79,20 @@ const Cart: React.FC<CartProps> = () => {
                 onChange={loadProductsInCart}
               />
             ))}
+          </div>
+          <div className="default-address">
+            <div className="address-box">
+              기본 배달지
+              {isAddressEmpty ? (
+                <div className="address">기본 주소가 없습니다</div>
+              ) : address ? (
+                <div className="address">
+                  {address.address1} {address.address2}
+                </div>
+              ) : (
+                <div>로딩 중</div>
+              )}
+            </div>
           </div>
           <div className="cart-footer">
             {!isLoading && (

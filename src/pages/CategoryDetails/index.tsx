@@ -45,7 +45,11 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const [isSortByOpened, setSortByOpened] = useState(false)
   const [products, setProducts] = useState<ProductWithJjimmed[]>([])
   const [isLoading, setLoading] = useState<boolean>(true)
+  const [isCategoryRender, setCategoryRender] = useState(false)
+  const [isSortByRender, setSortByRender] = useState(false)
   const [page, setPage] = useState<number>(0)
+  const categoryRenderTimer = useRef<ReturnType<typeof setTimeout>>(null)
+  const sortByRenderTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
   useEffect(() => {
     cacheProducts(window.location.pathname, products, page)
@@ -120,6 +124,34 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
     else setPage(1)
   }, [page])
 
+  useEffect(() => {
+    if (isCategoryOpened) {
+      setCategoryRender(true)
+
+      if (categoryRenderTimer.current) {
+        clearTimeout(categoryRenderTimer.current)
+      }
+    } else {
+      categoryRenderTimer.current = setTimeout(() => {
+        setCategoryRender && setCategoryRender(false)
+      }, 1500)
+    }
+  }, [isCategoryOpened])
+
+  useEffect(() => {
+    if (isSortByOpened) {
+      setSortByRender(true)
+
+      if (sortByRenderTimer.current) {
+        clearTimeout(sortByRenderTimer.current)
+      }
+    } else {
+      sortByRenderTimer.current = setTimeout(() => {
+        setSortByRender && setSortByRender(false)
+      }, 1500)
+    }
+  }, [isSortByOpened])
+
   return (
     <div
       className="category-details"
@@ -147,19 +179,24 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
         onLoadMore={onLoadMore}
         onClickToTop={toTop}
       ></ProductContainer>
-      <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>
-        <OptionSelector
-          options={DEFAULTS.CATEGORIES.slice()}
-          option={category}
-          setOption={setCategory}
-        ></OptionSelector>
-      </Drawer>
-      <Drawer isOpened={isSortByOpened} setOpened={setSortByOpened}>
-        <OptionSelector
-          options={DEFAULTS.SORT_OPTIONS.slice()}
-          setOption={setSortBy}
-        ></OptionSelector>
-      </Drawer>
+      {isCategoryRender && (
+        <Drawer isOpened={isCategoryOpened} setOpened={setCategoryOpened}>
+          <OptionSelector
+            options={DEFAULTS.CATEGORIES.slice()}
+            option={category}
+            setOption={setCategory}
+          ></OptionSelector>
+        </Drawer>
+      )}
+      {isSortByRender && (
+        <Drawer isOpened={isSortByOpened} setOpened={setSortByOpened}>
+          <OptionSelector
+            options={DEFAULTS.SORT_OPTIONS.slice()}
+            option={sortBy}
+            setOption={setSortBy}
+          ></OptionSelector>
+        </Drawer>
+      )}
 
       <GoBack />
     </div>

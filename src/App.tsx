@@ -60,7 +60,7 @@ const AppRouter: React.FC = () => {
             {isSigned ? <Jjims /> : <Redirect to="/me" />}
           </Route>
           <Route path="/cart">
-            {isSigned ? <Cart /> : <Redirect to="/me" />}
+            <Cart />
           </Route>
           <Route path="/addresses">
             {isSigned ? <Addresses /> : <Redirect to="/me" />}

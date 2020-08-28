@@ -17,6 +17,7 @@ getUserInfoRouter.get(
         },
         include: {
           addresses: true,
+          defaultAddress: true,
         },
       })
 
