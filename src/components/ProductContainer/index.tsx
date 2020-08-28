@@ -121,20 +121,19 @@ const ProductContainer: React.FC<ProductContainerProps> = ({
               </div>
             ))} */}
 
-          {!isSkeletonOn &&
-            products.map((result, idx) => (
-              <div
-                key={result.id}
-                className="product-container-product"
-                // style={{
-                //   animationDelay: `${
-                //     (getRowNumber(idx, itemNumsInRow) % 10) * 200
-                //   }ms`,
-                // }}
-              >
-                <ProductItem {...result} />
-              </div>
-            ))}
+          {products.map((result, idx) => (
+            <div
+              key={result.id}
+              className="product-container-product"
+              // style={{
+              //   animationDelay: `${
+              //     (getRowNumber(idx, itemNumsInRow) % 10) * 200
+              //   }ms`,
+              // }}
+            >
+              <ProductItem {...result} />
+            </div>
+          ))}
 
           <div className="sentinel" ref={sentinel}></div>
         </div>
