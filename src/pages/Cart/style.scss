@@ -22,11 +22,25 @@
 
   .default-address {
     padding: var(--ordinary-space);
+    max-width: 500px;
+    margin: auto;
 
     .address-box {
       border-radius: 10px;
       padding: var(--ordinary-space);
-      background-color: var(--universal-gray);
+      background-color: var(--element);
+      text-align: center;
+
+      .title {
+        font-size: 20px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+
+        @include dark-mode {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+      }
     }
 
     .address {
@@ -36,6 +50,8 @@
 
   &-footer {
     padding: 42px var(--ordinary-space) 100px;
+    max-width: 500px;
+    margin: auto;
 
     &-total-price {
       font-size: 20px;

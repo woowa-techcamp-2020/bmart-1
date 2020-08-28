@@ -82,12 +82,14 @@ const Cart: React.FC<CartProps> = () => {
           </div>
           <div className="default-address">
             <div className="address-box">
-              기본 배달지
+              <h1 className="title">기본 배송지</h1>
               {isAddressEmpty ? (
                 <div className="address">기본 주소가 없습니다</div>
               ) : address ? (
                 <div className="address">
-                  {address.address1} {address.address2}
+                  {address.address1}
+                  <br />
+                  {address.address2}
                 </div>
               ) : (
                 <div>로딩 중</div>
