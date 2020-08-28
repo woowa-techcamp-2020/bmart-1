@@ -11,7 +11,13 @@ import SlidePage from './SlidePage'
 import './style.scss'
 
 export function pathToIndex(path: string): number {
-  return path === '' ? 0 : path === 'sale' ? 1 : path === 'me' ? 2 : 0
+  return path === '' || path === 'home'
+    ? 0
+    : path === 'sale'
+    ? 1
+    : path === 'me'
+    ? 2
+    : 0
 }
 
 export function indexToPath(index: number): string {

@@ -16,6 +16,12 @@ const SlidePage: React.FC<SlidePageProps> = ({ children, pageName }) => {
     const logoWrapper = $sel('.logo-wrapper')
 
     function onScroll() {
+      const path = window.location.pathname.replace('/', '') || 'home'
+
+      if (path !== pageName) {
+        return
+      }
+
       header.style.transition = ''
       header.style.transform = `translateY(${-Math.max(
         Math.min(slidePageRef.current.scrollTop, logoWrapper.clientHeight),
