@@ -20,6 +20,20 @@
     @include grid-template(274px, 1fr, 0, 23px);
   }
 
+  .default-address {
+    padding: var(--ordinary-space);
+
+    .address-box {
+      border-radius: 10px;
+      padding: var(--ordinary-space);
+      background-color: var(--universal-gray);
+    }
+
+    .address {
+      margin-top: 12px;
+    }
+  }
+
   &-footer {
     padding: 42px var(--ordinary-space) 100px;
 
