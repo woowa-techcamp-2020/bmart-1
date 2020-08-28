@@ -36,6 +36,8 @@ const Cart: React.FC<CartProps> = () => {
   async function loadProductsInCart() {
     let productsInCart
 
+    setEmpty(false)
+
     if (!isSigned) {
       productsInCart = getCartLS()
     } else {
@@ -44,6 +46,7 @@ const Cart: React.FC<CartProps> = () => {
 
     setLoading(false)
     setProductsInCart(productsInCart)
+    console.log(productsInCart)
 
     if (productsInCart.length == 0) {
       setEmpty(true)
@@ -63,7 +66,7 @@ const Cart: React.FC<CartProps> = () => {
   useEffect(() => {
     loadProductsInCart()
     loadDefaultAddress()
-  }, [])
+  }, [isSigned])
 
   return (
     <div className="cart">
