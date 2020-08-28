@@ -76,7 +76,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
 
       setTimeout(() => {
         restoreScroll(window.location.pathname, $sel('.category-details'))
-      }, 1000)
+      }, 800)
 
       return
     }
