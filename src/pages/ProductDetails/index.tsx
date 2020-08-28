@@ -10,6 +10,7 @@ import DiscountLabel from 'src/components/icons/DiscountLabel'
 import ResizableCartIcon from 'src/components/icons/ResizableCartIcon'
 import MinusPlus from 'src/components/MinusPlus'
 import GoBack from 'src/components/shortcuts/GoBack'
+import { $sel } from 'src/utils'
 import { Dialog } from 'src/utils/dialog'
 import { useSigned } from 'src/utils/hooks'
 import './style.scss'
@@ -115,6 +116,45 @@ const ProductDetails: React.FC<ProductDetailsProps> = () => {
     } else {
       await addToCart({ productId: product.id, quantity: quantityTemp })
     }
+
+    // Animation
+    const productImg = $sel('.product-details-cart-image')
+    const productImgRect = productImg.getBoundingClientRect()
+    const productImgClone = productImg.cloneNode(true) as HTMLElement
+
+    productImgClone.style.position = 'fixed'
+    productImgClone.style.left = productImgRect.left + 'px'
+    productImgClone.style.top = productImgRect.top + 'px'
+    productImgClone.style.width = productImgRect.width + 'px'
+    productImgClone.style.height = productImgRect.height + 'px'
+    productImgClone.style.transition =
+      'transform 600ms ease, border-radius 400ms ease, width 600ms ease, height 600ms ease'
+    productImgClone.style.zIndex = '9999999999'
+
+    document.body.appendChild(productImgClone)
+
+    const cartElmRect = $sel(
+      '.product-details-info-options-cart'
+    ).getBoundingClientRect()
+
+    productImgClone.style.width = cartElmRect.width + 'px'
+    productImgClone.style.height = cartElmRect.width + 'px'
+    productImgClone.style.borderRadius = '9999px'
+    productImgClone.style.transform = `translateX(${
+      cartElmRect.left - productImgRect.left
+    }px) translateY(${cartElmRect.top - productImgRect.top - 50}px)`
+
+    setTimeout(() => {
+      productImgClone.style.transformOrigin = '50% 50%'
+      productImgClone.style.transition = 'transform 300ms ease'
+      productImgClone.style.transform = `translateX(${
+        cartElmRect.left - productImgRect.left
+      }px) translateY(${cartElmRect.top - productImgRect.top}px) scale(0)`
+
+      setTimeout(() => {
+        productImgClone.remove()
+      }, 300)
+    }, 600)
 
     setQuantityInCart(quantityTemp)
     setIsCartOpened(false)
