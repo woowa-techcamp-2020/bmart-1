@@ -25,7 +25,6 @@ editAddressRouter.put(
       await prisma.address.update({
         where: {
           id: addressId,
-          userId,
         },
         data: {
           address1,
