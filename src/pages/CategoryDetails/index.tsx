@@ -16,6 +16,9 @@ import GoBack from 'src/components/shortcuts/GoBack'
 import { DEFAULTS } from 'src/constants'
 import { CategoryType, SortByType } from 'src/types'
 import { ProductWithJjimmed } from 'src/types/api'
+import { $sel } from 'src/utils'
+import { cacheProducts, loadProductsFromCache } from 'src/utils/cache-products'
+import { memoScroll, restoreScroll } from 'src/utils/scroll-manager'
 import OptionSelector from './OptionSelector'
 import './style.scss'
 import SubCategorySelector from './SubCategorySelector'
@@ -44,6 +47,10 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   const [isLoading, setLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(0)
 
+  useEffect(() => {
+    cacheProducts(window.location.pathname, products, page)
+  }, [products, page])
+
   const self = useRef<HTMLDivElement>()
 
   function onLoadMore() {
@@ -55,6 +62,25 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   }
 
   async function getProducts() {
+    const previousPage = window.localStorage.getItem('previousPage')
+
+    if (
+      previousPage &&
+      typeof previousPage === 'string' &&
+      previousPage.startsWith('/products')
+    ) {
+      const cached = loadProductsFromCache(window.location.pathname)
+
+      setProducts(cached.products)
+      setPage(cached.page)
+
+      setTimeout(() => {
+        restoreScroll(window.location.pathname, $sel('.category-details'))
+      }, 1000)
+
+      return
+    }
+
     setLoading(true)
     const newProducts = (await getProductsBySubCategory({
       subCategory,
@@ -95,7 +121,13 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
   }, [page])
 
   return (
-    <div className="category-details" ref={self}>
+    <div
+      className="category-details"
+      ref={self}
+      onScroll={(e) => {
+        memoScroll(window.location.pathname, e.currentTarget.scrollTop, 'top')
+      }}
+    >
       <div className="title" onClick={() => setCategoryOpened(true)}>
         {category}
         <ChevronDownIcon />

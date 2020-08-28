@@ -18,8 +18,8 @@
     height: 0.8em;
     line-height: 140%;
     margin-right: 0.7em;
-    background-color: #bbb;
-    color: #bbb;
+    background-color: var(--element);
+    color: transparent;
 
     &.red {
       background-color: red;

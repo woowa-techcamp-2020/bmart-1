@@ -12,6 +12,7 @@
   position: relative;
   overflow: hidden;
   user-select: none;
+  cursor: pointer;
 
   &::before {
     content: '';
