@@ -1,10 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import './app.style.scss'
 import SearchAndCart from './components/shortcuts/SearchAndCart'
 import Addresses from './pages/Addresses'
@@ -38,8 +33,18 @@ const AppRouter: React.FC = () => {
     initSigned()
   }, [])
 
+  const location = useLocation()
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      'previousPage',
+      window.localStorage.getItem('currentPage') ?? '/'
+    )
+    window.localStorage.setItem('currentPage', location.pathname)
+  }, [location])
+
   return (
-    <Router>
+    <>
       <div className="app">
         <Switch>
           <Route path="/" exact>
@@ -72,7 +77,7 @@ const AppRouter: React.FC = () => {
         </Switch>
       </div>
       <SearchAndCart />
-    </Router>
+    </>
   )
 }
 

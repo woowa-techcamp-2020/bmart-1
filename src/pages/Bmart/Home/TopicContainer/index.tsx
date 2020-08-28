@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getProductsByTopic } from 'src/apis'
 import ProductItem from 'src/components/ProductItem'
 import { ProductWithJjimmed } from 'src/types/api'
-import { useLazy } from 'src/utils/hooks'
+import { cacheProducts, loadProductsFromCache } from 'src/utils/cache-products'
+import { memoScroll, restoreScroll } from 'src/utils/scroll-manager'
 import './style.scss'
 
 export type TopicContainerProps = {
@@ -19,7 +20,32 @@ const TopicContainer: React.FC<TopicContainerProps> = ({
   const [products, setProducts] = useState<ProductWithJjimmed[]>([])
   const [isLoading, setLoading] = useState(true)
 
+  useEffect(() => {
+    cacheProducts('topic-' + type, products)
+  }, [products])
+
   async function loadProducts() {
+    // ⚠️ Bug!! Previous Page is not really previous page
+    const previousPage = window.localStorage.getItem('currentPage')
+
+    if (
+      previousPage &&
+      typeof previousPage === 'string' &&
+      (previousPage.startsWith('/products') ||
+        previousPage.startsWith('/category'))
+    ) {
+      const cached = loadProductsFromCache('topic-' + type)
+
+      setProducts(cached.products)
+      setLoading(false)
+
+      onFinished && onFinished()
+
+      restoreScroll('topic-' + type, containerRef.current)
+
+      return
+    }
+
     const newProducts = (await getProductsByTopic(type)) as ProductWithJjimmed[]
 
     setProducts(newProducts)
@@ -34,19 +60,28 @@ const TopicContainer: React.FC<TopicContainerProps> = ({
     })
   }
 
-  useLazy(initLoadProducts)
+  useEffect(() => {
+    initLoadProducts()
+  }, [])
+
+  // useLazy(initLoadProducts)
 
   const [scrollEnd, setScrollEnd] = useState<'left' | 'right' | 'middle'>(
     'left'
   )
+
+  const containerRef = useRef<HTMLDivElement>()
 
   return (
     <div className="topic-container">
       <div className="title">{title}</div>
       <div className="scroll-container">
         <div
+          ref={containerRef}
           className="container"
           onScroll={(e) => {
+            memoScroll('topic-' + type, e.currentTarget.scrollLeft, 'left')
+
             if (
               e.currentTarget.scrollLeft + e.currentTarget.clientWidth >=
               e.currentTarget.scrollWidth
