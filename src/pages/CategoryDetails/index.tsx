@@ -125,6 +125,7 @@ const Component: React.FC<CategoryDetailsProps> = ({ category }) => {
       <Drawer isOpened={isSortByOpened} setOpened={setSortByOpened}>
         <OptionSelector
           options={DEFAULTS.SORT_OPTIONS.slice()}
+          option={sortBy}
           setOption={setSortBy}
         ></OptionSelector>
       </Drawer>
