@@ -38,13 +38,13 @@ const Home: React.FC<HomeProps> = () => {
         />
 
         <div className="version">
-          <a
+          {/* <a
             href="https://github.com/woowa-techcamp-2020/bmart-1"
             target="_blank"
             rel="noopener noreferrer"
-          >
-            <div className="label">v{packageJson.version}</div>
-          </a>
+          > */}
+          <div className="label">v{packageJson.version}</div>
+          {/* </a> */}
         </div>
       </SlotMachine>
     </div>
